@@ -1,4 +1,6 @@
 import { getTakeoffPosts } from "./action/getTakeoffPosts";
+import Footer from "./components/common/Footer";
+import Header from "./components/common/Header";
 import SmallPost from "./components/post/SmallPost";
 import { Post } from "./types/post";
 
@@ -8,28 +10,10 @@ export default async function Home() {
   return (
     <div className="min-h-screen relative">
       {/* 헤더 섹션 */}
-      <header className="top-0 z-50">
-        <div className="max-w-4xl mx-auto px-6 py-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-gradient-to-br from-zinc-900 to-zinc-700 dark:from-zinc-100 dark:to-zinc-300 rounded-lg flex items-center justify-center">
-                <span className="text-white dark:text-zinc-900 font-bold text-sm">T</span>
-              </div>
-              <h1 className="text-xl font-semibold text-zinc-900 dark:text-zinc-100">
-                Takeoff Posts
-              </h1>
-            </div>
-            <div className="flex items-center gap-3">
-              <span className="px-3 py-1.5 text-xs font-medium bg-zinc-100/80 dark:bg-zinc-800/80 text-zinc-600 dark:text-zinc-400 rounded-full backdrop-blur-sm">
-                {posts.posts.length}개 게시글
-              </span>
-            </div>
-          </div>
-        </div>
-      </header>
+      <Header postCount={posts.posts.length} />
 
       {/* 메인 콘텐츠 */}
-      <main className="max-w-4xl mx-auto px-6 py-12">
+      <main className="max-w-4xl mx-auto px-6 mt-12 py-12">
         {posts.posts.length > 0 ? (
           <div className="space-y-4">
             {posts.posts.map((post: Post, index: number) => (
@@ -64,15 +48,7 @@ export default async function Home() {
       </main>
 
       {/* 푸터 */}
-      <footer className="mt-24 border-t border-zinc-200/20 dark:border-zinc-800/20">
-        <div className="max-w-4xl mx-auto px-6 py-12">
-          <div className="text-center">
-            <p className="text-sm text-zinc-400 dark:text-zinc-500">
-              Takeoff.
-            </p>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }
