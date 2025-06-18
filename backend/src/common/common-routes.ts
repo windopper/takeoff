@@ -6,6 +6,8 @@ export class CommonRoutes {
 		const url = new URL(req.url);
 		const limit = parseInt(url.searchParams.get('limit') || '10');
 		const offset = parseInt(url.searchParams.get('offset') || '0');
+		const sort = url.searchParams.get('sort') || 'createdAt';
+		const order = url.searchParams.get('order') || 'desc';
 		const q = url.searchParams.get('q');
 		const platform = url.searchParams.get('platform');
 		const community = url.searchParams.get('community');
@@ -13,7 +15,15 @@ export class CommonRoutes {
 		const postManager = new PostManager(env.DB);
 
 		let posts;
-		posts = await postManager.getPosts({ limit, offset, query: q || '', platform: platform || '', community: community || '' });
+		posts = await postManager.getPosts({
+			limit,
+			offset,
+			query: q || '',
+			platform: platform || '',
+			community: community || '',
+			sort,
+			order,
+		});
 
 		return Response.json({
 			posts,
@@ -24,6 +34,12 @@ export class CommonRoutes {
 				community,
 			},
 		});
+	}
+
+	static async getPostCount(req: Request, env: Env): Promise<Response> {
+		const postManager = new PostManager(env.DB);
+		const count = await postManager.getPostCount();
+		return Response.json({ count });
 	}
 
     static async getPostById(req: Request, env: Env): Promise<Response> {

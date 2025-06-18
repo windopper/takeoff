@@ -11,7 +11,8 @@ interface PostPageProps {
 }
 
 export default async function PostPage({ params }: PostPageProps) {
-  const response = await getTakeoffPostById((await params).id);
+  const id = (await params).id;
+  const response = await getTakeoffPostById(id);
 
   const post: Post | null = response.post;
 
@@ -67,16 +68,16 @@ export default async function PostPage({ params }: PostPageProps) {
           <div className="flex items-center justify-between pt-4 border-t border-zinc-200/50 dark:border-zinc-800/50">
             <div className="flex items-center gap-4">
               <Link
-                href={post.original_url}
+                href={post.originalUrl}
                 target="_blank"
                 className="text-sm font-medium text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
               >
-                {post.original_url}
+                {post.originalUrl}
               </Link>
             </div>
             <div className="text-right">
               <p className="text-sm text-zinc-500 dark:text-zinc-400">
-                {new Date(post.created_at).toLocaleDateString("ko-KR", {
+                {new Date(post.createdAt).toLocaleDateString("ko-KR", {
                   year: "numeric",
                   month: "long",
                   day: "numeric",

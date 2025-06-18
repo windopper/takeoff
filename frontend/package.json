@@ -14,7 +14,8 @@
     "react-dom": "^19.0.0",
     "react-markdown": "^10.1.0",
     "remark-gfm": "^4.0.1",
-    "remark-rehype": "^11.1.2"
+    "remark-rehype": "^11.1.2",
+    "swr": "^2.3.3"
   },
   "devDependencies": {
     "@iconify-json/material-symbols": "^1.2.26",

@@ -34,6 +34,10 @@ export default {
 			return await CommonRoutes.getPosts(request, env);
 		}
 
+		if (pathname === "/api/post-count") {
+			return await CommonRoutes.getPostCount(request, env);
+		}
+
 		// /api/posts/:id 형식으로 특정 게시글 조회 API
 		if (pathname.startsWith("/api/posts/")) {
 			return await CommonRoutes.getPostById(request, env);

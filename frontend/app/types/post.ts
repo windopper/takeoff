@@ -2,12 +2,12 @@ export interface Post {
     id: number;
     title: string;
     content: string;
-    created_at: string;
-    updated_at: string;
+    createdAt: string;
+    updatedAt: string;
     post_score: number;
-    original_title: string;
-    original_url: string;
-    original_author: string;
+    originTitle: string;
+    originalUrl: string;
+    originalAuthor: string;
     author: string;
     category: string;
     community: string;

@@ -1,6 +1,6 @@
 import { drizzle, DrizzleD1Database } from 'drizzle-orm/d1';
 import { aiPosts } from '../db/schema';
-import { count, desc, and, ilike, like } from 'drizzle-orm';
+import { count, desc, and, ilike, like, asc } from 'drizzle-orm';
 import { eq } from 'drizzle-orm';
 
 export interface ProcessedPost {
@@ -103,17 +103,22 @@ export class PostManager {
 		limit = 10,
 		offset = 0,
 		query,
+    sort = 'createdAt',
+    order = 'desc',
 		platform,
 		community,
 	}: {
 		limit?: number;
 		offset?: number;
 		query?: string;
+    sort?: string;
+    order?: string;
 		platform?: string;
 		community?: string;
 	}): Promise<any[]> {
 		try {
       const where = [];
+      const orderBy = [];
       if (query) {
         where.push(like(aiPosts.title, `%${query}%`));
       }
@@ -124,11 +129,17 @@ export class PostManager {
         where.push(eq(aiPosts.community, community));
       }
 
+      if (sort === 'createdAt') {
+        orderBy.push(order === 'desc' ? desc(aiPosts.createdAt) : asc(aiPosts.createdAt));
+      } else if (sort === 'postScore') {
+        orderBy.push(order === 'desc' ? desc(aiPosts.postScore) : asc(aiPosts.postScore));
+      }
+
 			const result = await this.db
 				.select()
 				.from(aiPosts)
 				.where(and(...where))
-				.orderBy(desc(aiPosts.createdAt))
+				.orderBy(...orderBy)
 				.limit(limit)
 				.offset(offset)
 				.execute();
@@ -155,4 +166,9 @@ export class PostManager {
 			return null;
 		}
 	}
+
+  async getPostCount(): Promise<number> {
+    const result = await this.db.select({ count: count() }).from(aiPosts).execute();
+    return result[0].count;
+  }
 }

@@ -37,7 +37,7 @@ export default function SmallPost({ post }: { post: Post }) {
       <div className="flex items-center justify-between">
         <div className="text-right">
           <p className="text-sm text-zinc-500 dark:text-zinc-400">
-            {formatDate(post.created_at)}
+            {formatDate(post.createdAt)}
           </p>
         </div>
       </div>
