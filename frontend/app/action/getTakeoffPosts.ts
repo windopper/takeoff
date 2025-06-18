@@ -1,11 +1,21 @@
-'use server';
+"use server";
 
-export async function getTakeoffPosts({ limit = 20, offset = 0 }: { limit?: number, offset?: number }) {
+export async function getTakeoffPosts({
+  limit = 20,
+  offset = 0,
+  query = "",
+  category = "",
+}: {
+  limit?: number;
+  offset?: number;
+  query?: string;
+  category?: string;
+}) {
   const response = await fetch(
-    `https://takeoff-backend.kamilereon.workers.dev/api/posts?limit=${limit}&offset=${offset}`,
+    `https://takeoff-backend.kamilereon.workers.dev/api/posts?limit=${limit}&offset=${offset}&q=${query}&category=${category}`,
     {
       next: {
-        revalidate: 360,
+        revalidate: 600,
       },
     }
   );
@@ -13,12 +23,18 @@ export async function getTakeoffPosts({ limit = 20, offset = 0 }: { limit?: numb
   return data;
 }
 
-export async function getTakeoffPostCount() {
+export async function getTakeoffPostCount({
+  query = "",
+  category = "",
+}: {
+  query?: string;
+  category?: string;
+}) {
   const response = await fetch(
-    `https://takeoff-backend.kamilereon.workers.dev/api/post-count`,
+    `https://takeoff-backend.kamilereon.workers.dev/api/post-count?q=${query}&category=${category}`,
     {
       next: {
-        revalidate: 360,
+        revalidate: 600,
       },
     }
   );
@@ -31,7 +47,7 @@ export async function getTakeoffPostById(id: string) {
     `https://takeoff-backend.kamilereon.workers.dev/api/posts/${id}`,
     {
       next: {
-        revalidate: 360,
+        revalidate: 3600,
       },
     }
   );

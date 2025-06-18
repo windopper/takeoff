@@ -133,6 +133,8 @@ export class RedditFilter {
 
     /**
      * 게시글을 필터링하여 처리할 가치가 있는지 판단
+     * 
+     * 현재 Reddit RSS 피드에서는 점수 정보가 제공되지 않음
      */
     async shouldProcessRedditPost(post: RedditPost, subreddit: string): Promise<{
         shouldProcess: boolean;
@@ -140,24 +142,24 @@ export class RedditFilter {
         aiFilter: FilterResult;
     }> {
         // 1. 룰 기반 필터: 추천 수 확인
-        const scoreFilter = this.passesScoreFilter(post);
+        // const scoreFilter = this.passesScoreFilter(post);
         
-        if (!scoreFilter) {
-            return {
-                shouldProcess: false,
-                scoreFilter: false,
-                aiFilter: { isRelevant: false, reason: '점수 필터 통과 실패', confidence: 0 },
-            };
-        }
+        // if (!scoreFilter) {
+        //     return {
+        //         shouldProcess: false,
+        //         scoreFilter: false,
+        //         aiFilter: { isRelevant: false, reason: '점수 필터 통과 실패', confidence: 0 },
+        //     };
+        // }
 
         // 2. AI 기반 필터: 관련성 확인
         const aiFilter = await this.filterByRelevance(post, subreddit);
         
-        const shouldProcess = scoreFilter && aiFilter.isRelevant && aiFilter.confidence >= 0.6;
+        const shouldProcess = aiFilter.isRelevant && aiFilter.confidence >= 0.6;
         
         return {
             shouldProcess,
-            scoreFilter,
+            scoreFilter: true,
             aiFilter,
         };
     }

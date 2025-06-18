@@ -1,5 +1,6 @@
 import { Post } from "@/app/types/post";
 import Link from "next/link";
+import CategoryPills from "./CategoryPills";
 
 export default function SmallPost({ post }: { post: Post }) {
   // 날짜 포맷팅 함수
@@ -25,6 +26,7 @@ export default function SmallPost({ post }: { post: Post }) {
           <span className="px-2.5 py-1 text-xs font-medium bg-blue-50/80 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 rounded-lg">
             {post.platform}
           </span>
+          <CategoryPills categories={post.category.split(",")} />
         </div>
       </div>
 

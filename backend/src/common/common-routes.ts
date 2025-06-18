@@ -11,6 +11,7 @@ export class CommonRoutes {
 		const q = url.searchParams.get('q');
 		const platform = url.searchParams.get('platform');
 		const community = url.searchParams.get('community');
+		const category = url.searchParams.get('category');
 
 		const postManager = new PostManager(env.DB);
 
@@ -23,6 +24,7 @@ export class CommonRoutes {
 			community: community || '',
 			sort,
 			order,
+			category: category || '',
 		});
 
 		return Response.json({
@@ -38,7 +40,9 @@ export class CommonRoutes {
 
 	static async getPostCount(req: Request, env: Env): Promise<Response> {
 		const postManager = new PostManager(env.DB);
-		const count = await postManager.getPostCount();
+		const url = new URL(req.url);
+		const q = url.searchParams.get('q');
+		const count = await postManager.getPostCount({ query: q || '' });
 		return Response.json({ count });
 	}
 

@@ -79,9 +79,11 @@ export async function processRedditPosts(params: ProcessRedditPostsParams): Prom
 					)})`
 				);
 				console.log(`이유: ${filterResult.aiFilter.reason}`);
+				console.log(`최종 판정: ${filterResult.shouldProcess ? '처리 진행' : '처리 건너뜀'}`);
 
 				// 4. 점수 필터 실패시 스킵
 				if (!filterResult.scoreFilter) {
+					console.log('❌ 점수 필터 실패 - 건너뜀');
 					filterStats.scoreFiltered++;
 					skipped++;
 					continue;
@@ -89,6 +91,7 @@ export async function processRedditPosts(params: ProcessRedditPostsParams): Prom
 
 				// 5. AI 필터 실패시 필터링 테이블에 저장
 				if (!filterResult.aiFilter.isRelevant || filterResult.aiFilter.confidence < 0.6) {
+					console.log('❌ AI 필터 실패 - 필터링 테이블에 저장');
 					filterStats.aiFiltered++;
 					await filteredPostManager.saveFilteredPost({
 						originalUrl: post.link,
@@ -104,8 +107,19 @@ export async function processRedditPosts(params: ProcessRedditPostsParams): Prom
 					continue;
 				}
 
-				// 6. 필터를 통과한 게시글만 AI로 처리
-				console.log('✅ 필터 통과 - AI 처리 시작');
+				// 6. 모든 필터를 통과한 게시글만 AI로 처리
+				// shouldProcess가 false인 경우는 이미 위에서 걸러졌으므로 여기까지 오면 처리 가능
+				// 추가 안전장치: shouldProcess가 true인지 재확인
+				if (!filterResult.shouldProcess) {
+					console.error('⚠️ 예상치 못한 상황: shouldProcess가 false인데 여기까지 도달했습니다.');
+					console.error('점수 필터:', filterResult.scoreFilter);
+					console.error('AI 필터 관련성:', filterResult.aiFilter.isRelevant);
+					console.error('AI 필터 신뢰도:', filterResult.aiFilter.confidence);
+					skipped++;
+					continue;
+				}
+				
+				console.log('✅ 모든 필터 통과 - AI 처리 시작');
 				const processedPost = await aiWriter.processPost(post, subReddit.subreddit);
 				console.log(`처리 완료: ${processedPost.title}`);
 

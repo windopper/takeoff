@@ -17,11 +17,11 @@ export class RedditParser {
   private subreddits: SubredditConfig[] = [
     {
       name: 'LocalLLaMA',
-      rssUrl: 'https://www.reddit.com/r/LocalLLaMA/.rss?sort=hot'
+      rssUrl: 'https://www.reddit.com/r/LocalLLaMA/.rss?sort=top'
     },
     {
       name: 'singularity',
-      rssUrl: 'https://www.reddit.com/r/singularity/.rss?sort=hot'
+      rssUrl: 'https://www.reddit.com/r/singularity/.rss?sort=top'
     }
   ];
 
@@ -133,10 +133,7 @@ export class RedditParser {
    * 제목에 점수가 포함된 경우 추출하거나 기본값을 반환합니다.
    */
   private extractScoreFromTitle(title: string): number {
-    // Reddit RSS 피드에서는 점수 정보가 제공되지 않음
-    // 향후 Reddit API를 사용하거나 다른 방법으로 점수 정보를 가져올 수 있음
-    // 현재는 모든 게시글에 기본 점수 부여
-    return Math.floor(Math.random() * 300) + 50; // 50-350 사이의 랜덤 점수 (테스트용)
+    return 0;
   }
 
   /**

@@ -107,6 +107,7 @@ export class PostManager {
     order = 'desc',
 		platform,
 		community,
+		category,
 	}: {
 		limit?: number;
 		offset?: number;
@@ -115,6 +116,7 @@ export class PostManager {
     order?: string;
 		platform?: string;
 		community?: string;
+		category?: string;
 	}): Promise<any[]> {
 		try {
       const where = [];
@@ -127,6 +129,9 @@ export class PostManager {
       }
       if (community) {
         where.push(eq(aiPosts.community, community));
+      }
+      if (category) {
+        where.push(like(aiPosts.category, `%${category}%`));
       }
 
       if (sort === 'createdAt') {
@@ -167,8 +172,12 @@ export class PostManager {
 		}
 	}
 
-  async getPostCount(): Promise<number> {
-    const result = await this.db.select({ count: count() }).from(aiPosts).execute();
+  async getPostCount({ query = '' }: { query?: string }): Promise<number> {
+    const where = [];
+    if (query) {
+      where.push(like(aiPosts.title, `%${query}%`));
+    }
+    const result = await this.db.select({ count: count() }).from(aiPosts).where(and(...where)).execute();
     return result[0].count;
   }
 }
