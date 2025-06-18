@@ -26,12 +26,12 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   const posts = await getTakeoffPosts({ 
     limit: postsToLoad, 
     offset: 0, 
-    query: query || undefined,
-    category: category || undefined,
+    query: query,
+    category: category,
   });
   const postCount = await getTakeoffPostCount({
-    query: query || undefined,
-    category: category || undefined,
+    query: query,
+    category: category,
   });
 
   return (

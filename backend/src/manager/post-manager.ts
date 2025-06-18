@@ -103,8 +103,8 @@ export class PostManager {
 		limit = 10,
 		offset = 0,
 		query,
-    sort = 'createdAt',
-    order = 'desc',
+		sort = 'createdAt',
+		order = 'desc',
 		platform,
 		community,
 		category,
@@ -112,33 +112,33 @@ export class PostManager {
 		limit?: number;
 		offset?: number;
 		query?: string;
-    sort?: string;
-    order?: string;
+		sort?: string;
+		order?: string;
 		platform?: string;
 		community?: string;
 		category?: string;
 	}): Promise<any[]> {
 		try {
-      const where = [];
-      const orderBy = [];
-      if (query) {
-        where.push(like(aiPosts.title, `%${query}%`));
-      }
-      if (platform) {
-        where.push(eq(aiPosts.platform, platform));
-      }
-      if (community) {
-        where.push(eq(aiPosts.community, community));
-      }
-      if (category) {
-        where.push(like(aiPosts.category, `%${category}%`));
-      }
+			const where = [];
+			const orderBy = [];
+			if (query) {
+				where.push(like(aiPosts.title, `%${query}%`));
+			}
+			if (platform) {
+				where.push(eq(aiPosts.platform, platform));
+			}
+			if (community) {
+				where.push(eq(aiPosts.community, community));
+			}
+			if (category) {
+				where.push(like(aiPosts.category, `%${category}%`));
+			}
 
-      if (sort === 'createdAt') {
-        orderBy.push(order === 'desc' ? desc(aiPosts.createdAt) : asc(aiPosts.createdAt));
-      } else if (sort === 'postScore') {
-        orderBy.push(order === 'desc' ? desc(aiPosts.postScore) : asc(aiPosts.postScore));
-      }
+			if (sort === 'createdAt') {
+				orderBy.push(order === 'desc' ? desc(aiPosts.createdAt) : asc(aiPosts.createdAt));
+			} else if (sort === 'postScore') {
+				orderBy.push(order === 'desc' ? desc(aiPosts.postScore) : asc(aiPosts.postScore));
+			}
 
 			const result = await this.db
 				.select()
@@ -172,12 +172,19 @@ export class PostManager {
 		}
 	}
 
-  async getPostCount({ query = '' }: { query?: string }): Promise<number> {
-    const where = [];
-    if (query) {
-      where.push(like(aiPosts.title, `%${query}%`));
-    }
-    const result = await this.db.select({ count: count() }).from(aiPosts).where(and(...where)).execute();
-    return result[0].count;
-  }
+	async getPostCount({ query = '', category = '' }: { query?: string; category?: string }): Promise<number> {
+		const where = [];
+		if (query) {
+			where.push(like(aiPosts.title, `%${query}%`));
+		}
+		if (category) {
+			where.push(like(aiPosts.category, `%${category}%`));
+		}
+		const result = await this.db
+			.select({ count: count() })
+			.from(aiPosts)
+			.where(and(...where))
+			.execute();
+		return result[0].count;
+	}
 }

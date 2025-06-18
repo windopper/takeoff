@@ -42,7 +42,8 @@ export class CommonRoutes {
 		const postManager = new PostManager(env.DB);
 		const url = new URL(req.url);
 		const q = url.searchParams.get('q');
-		const count = await postManager.getPostCount({ query: q || '' });
+		const category = url.searchParams.get('category');
+		const count = await postManager.getPostCount({ query: q || '', category: category || '' });
 		return Response.json({ count });
 	}
 

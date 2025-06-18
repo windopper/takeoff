@@ -6,9 +6,24 @@ import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkRehype from "remark-rehype";
 import CategoryPills from "@/app/components/post/CategoryPills";
+import { Metadata } from "next";
 
 interface PostPageProps {
   params: Promise<{ id: string }>;
+}
+
+export async function generateMetadata({ params }: PostPageProps): Promise<Metadata> {
+  const id = (await params).id;
+  const response = await getTakeoffPostById(id);
+  const post: Post | null = response.post;
+  return {
+    title: post?.title,
+    openGraph: {
+      title: post?.title,
+      locale: 'ko-KR',
+      type: 'website',
+    },
+  }
 }
 
 export default async function PostPage({ params }: PostPageProps) {
