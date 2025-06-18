@@ -30,17 +30,20 @@ export class HackernewsAIWriter {
     const response = await this.llm.bindTools([{ urlContext: {} }]).pipe(new StringOutputParser()).invoke(prompt);
     const titleMatch = response.match(/<title>\s*(.*?)\s*<\/title>/s);
     const contentMatch = response.match(/<content>\s*(.*?)\s*<\/content>/s);
+    const categoryMatch = response.match(/<category>\s*(.*?)\s*<\/category>/s);
 
-    if (!titleMatch || !contentMatch) {
-      throw new XmlParseError('Failed to parse title or content');
+    if (!titleMatch || !contentMatch || !categoryMatch) {
+      throw new XmlParseError('Failed to parse title or content or category');
     }
+
+    const category = categoryMatch[1].trim().split(',').map(c => c.trim());
 
     return {
       title: titleMatch ? titleMatch[1].trim() : post.title,
       content: contentMatch ? contentMatch[1].trim() : response,
-      author: post.by,
+      author: 'takeoff-writer',
       originalUrl: post.url,
-      category: 'hackernews',
+      category: category.join(','),
       platform: 'hackernews',
       community: 'hackernews',
       originalTitle: post.title,

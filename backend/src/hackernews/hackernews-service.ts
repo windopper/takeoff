@@ -111,7 +111,7 @@ export async function processHackernewsPosts(params: ProcessHackernewsPostsParam
                     originalUrl: item.url,
                     originalTitle: item.title,
                     platform: 'hackernews',
-                    postScore: item.score,
+                    postScore: 0,
                     confidence: 0.5,
                 });
             } else {

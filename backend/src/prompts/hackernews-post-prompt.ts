@@ -26,6 +26,11 @@ export function generateHackernewsPostPrompt({ url }: HackernewsPostPromptParams
   하면 안되는 것:
   - ~다, ~요 등의 조사 표현을 사용하지 말 것.
   </content>
+  <category>
+  - 해당 포스트의 카테고리. 예시: LLM, ML, AI, CS
+  - 2개 이상일 경우 콤마(,)로 구분.
+  - 카테고리는 반드시 영어로 작성.
+  </category>
   
   위 원칙을 바탕으로 내용에 가장 적합한 형식으로 자유롭게 작성할 것.
   오직 포스트만 작성할 것. 다른 부가적인 내용은 작성하지 말 것.`;

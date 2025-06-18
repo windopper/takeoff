@@ -55,6 +55,7 @@ wrangler secret put GEMINI_API_KEY
 ## 기술 스택
 - **Runtime**: Cloudflare Workers
 - **Database**: Cloudflare D1 (SQLite)
+- **ORM**: Drizzle ORM
 - **AI Framework**: LangChain
 - **AI Model**: Google Gemini 2.5 Flash Preview
 - **Language**: TypeScript

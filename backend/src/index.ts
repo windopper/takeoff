@@ -4,6 +4,7 @@ import { RedditRoutes } from './reddit/reddit-routes';
 import { ArticleAIWriter } from './common/article-ai-writer';
 import { processHackernewsPosts } from './hackernews/hackernews-service';
 import { CommonRoutes } from './common/common-routes';
+import { processRedditPosts } from './reddit/reddit-service';
 
 export interface Env {
 	// If you set another name in the Wrangler config file for the value for 'binding',
@@ -80,12 +81,16 @@ export default {
 				return;
 			}
 
-			const result = await processHackernewsPosts({
+			const hackernewResult = await processHackernewsPosts({
 				limit: 100,
 				storyType: 'best'
 			})
+			console.log(`HackerNews 게시글 처리 결과: ${hackernewResult.processed}개 처리됨, ${hackernewResult.saved}개 저장됨, ${hackernewResult.skipped}개 건너뜀`);
 
-			console.log(`HackerNews 게시글 처리 결과: ${result.processed}개 처리됨, ${result.saved}개 저장됨, ${result.skipped}개 건너뜀`);
+			const redditResult = await processRedditPosts({
+				limit: 15,
+			})
+			console.log(`Reddit 게시글 처리 결과: ${redditResult.processed}개 처리됨, ${redditResult.saved}개 저장됨, ${redditResult.skipped}개 건너뜀`);
 		} catch (error) {
 			console.error('Scheduled 작업 중 오류 발생:', error);
 		}

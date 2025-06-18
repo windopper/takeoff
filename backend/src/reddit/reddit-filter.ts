@@ -12,16 +12,16 @@ export interface FilterResult {
 }
 
 export class RedditFilter {
-    private minScore: number = 100;
+    private minScore: number = 150;
     private llm?: ChatGoogleGenerativeAI;
 
     constructor({ minScore, geminiApiKey }: { minScore?: number; geminiApiKey?: string } = {}) {
-        this.minScore = minScore || 100;
+        this.minScore = minScore || 150;
         
         if (geminiApiKey) {
             this.llm = new ChatGoogleGenerativeAI({
                 apiKey: geminiApiKey,
-                model: 'gemini-2.5-flash-preview-05-20',
+                model: 'gemini-2.5-flash-lite-preview-06-17',
                 temperature: 0.7,
             });
         }
@@ -52,6 +52,7 @@ export class RedditFilter {
     async filterByRelevance(post: RedditPost, subreddit: string): Promise<FilterResult> {
         if (!this.llm) {
             // AI가 설정되지 않은 경우 키워드 기반 fallback 사용
+            console.log('RedditFilter: AI가 설정되어 있지 않습니다.')
             return this.fallbackKeywordFilter(post, '');
         }
 

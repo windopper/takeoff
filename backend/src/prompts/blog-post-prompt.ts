@@ -1,18 +1,16 @@
 export interface BlogPostPromptParams {
-  description: string;
+	description: string;
 }
 
-export function generateBlogPostPrompt({ 
-  description, 
-}: BlogPostPromptParams): string {  
-  return `주어진 내용을 바탕으로 개조식(個條式) 스타일로 정리하여 한국어 블로그 포스트로 작성할 것.
+export function generateBlogPostPrompt({ description }: BlogPostPromptParams): string {
+	return `주어진 내용을 바탕으로 개조식(個條式) 스타일로 정리하여 한국어 블로그 포스트로 작성할 것.
 내용:
 ${description}
 
-개조식 블로그 포스트 작성 원칙:
+작성 원칙:
 1. 제목은 핵심 내용을 간결하게 요약.
 2. 본문은 번호와 기호를 활용한 개조식으로 체계적으로 구성.
-3. 각 항목은 간결하고 명확하게 작성 (한 문장 또는 짧은 구문).
+3. 각 항목은 간결하고 명확하게 작성하되, 너무 짧은 문장은 지양.
 4. 중요한 내용은 굵은 글씨(**텍스트**)로 강조.
 5. 계층 구조를 활용하여 주제별로 분류.
 6. 기술적 내용을 이해하기 쉽게 설명.
@@ -20,8 +18,20 @@ ${description}
 8. 내용의 성격에 따라 자유롭게 구성하되, 읽기 쉽고 이해하기 쉽게 작성
 
 출력 형식:
-제목: <개조식 포스트 제목>
-내용: <개조식 포스트 내용>
+<title>
+개조식 포스트 제목. 제목만 반드시 작성. 다른 부가적인 설명 및 주석은 작성하지 말 것.
+</title>
+<content>
+개조식 포스트 내용. 내용만 반드시 작성. 다른 부가적인 설명 및 주석은 작성하지 말 것.
+
+하면 안되는 것:
+- ~다, ~요 등의 조사 표현을 사용하지 말 것.
+</content>
+<category>
+- 해당 포스트의 카테고리. 예시: LLM, ML, AI, CS
+- 2개 이상일 경우 콤마(,)로 구분.
+- 카테고리는 반드시 영어로 작성.
+</category>
 
 위 원칙을 바탕으로 내용에 가장 적합한 형식으로 자유롭게 작성할 것.
 오직 포스트만 작성할 것. 다른 부가적인 내용은 작성하지 말 것.`;
@@ -31,14 +41,14 @@ ${description}
  * 플랫폼과 커뮤니티에 따른 표시 문구를 반환합니다.
  */
 function getPlatformDisplay(platform: string, community: string): string {
-  switch (platform.toLowerCase()) {
-    case 'reddit':
-      return `Reddit의 ${community} 서브레딧`;
-    case 'hackernews':
-      return 'Hacker News';
-    case 'medium':
-      return 'Medium';
-    default:
-      return `${platform}의 ${community}`;
-  }
-} 
+	switch (platform.toLowerCase()) {
+		case 'reddit':
+			return `Reddit의 ${community} 서브레딧`;
+		case 'hackernews':
+			return 'Hacker News';
+		case 'medium':
+			return 'Medium';
+		default:
+			return `${platform}의 ${community}`;
+	}
+}

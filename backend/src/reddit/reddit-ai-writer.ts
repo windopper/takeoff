@@ -3,6 +3,7 @@ import { StringOutputParser } from '@langchain/core/output_parsers';
 import { RedditPost } from './reddit-parser';
 import { templateLoader } from '../utils/template-loader';
 import { PostManager, ProcessedPost } from '../manager/post-manager';
+import { XmlParseError } from '../exceptions/xml-parse-error';
 
 export interface AIWriteConfig {
   geminiApiKey: string;
@@ -30,27 +31,29 @@ export class RedditAIWriter {
         post.description,
       );
       
-      const chain = this.llm.pipe(new StringOutputParser());
-      const result = await chain.invoke(prompt);
+      const response = await this.llm.bindTools([{ urlContext: {} }]).pipe(new StringOutputParser()).invoke(prompt);
 
-      // AI 응답에서 제목과 내용을 분리
-      const titleMatch = result.match(/제목:\s*(.+)/);
-      const contentMatch = result.match(/내용:\s*([\s\S]+?)(?=---|\n\n출처:|$)/);
-      
-      const processedTitle = titleMatch ? titleMatch[1].trim() : post.title;
-      const processedContent = contentMatch ? contentMatch[1].trim() : result;
+      const titleMatch = response.match(/<title>\s*(.*?)\s*<\/title>/s);
+      const contentMatch = response.match(/<content>\s*(.*?)\s*<\/content>/s);
+      const categoryMatch = response.match(/<category>\s*(.*?)\s*<\/category>/s);
+
+      if (!titleMatch || !contentMatch || !categoryMatch) {
+        throw new XmlParseError('Failed to parse title or content or category');
+      }
+
+      const category = categoryMatch[1].trim().split(',').map(c => c.trim());
 
       return {
-        title: processedTitle,
-        content: processedContent,
-        author: 'AI Assistant', // AI가 정리한 글이므로
+        title: titleMatch[1].trim(),
+        content: contentMatch[1].trim(),
+        author: 'takeoff-writer',
         originalUrl: post.link,
-        category: post.category || 'General',
+        category: category.join(','),
         platform: 'reddit', // 현재는 Reddit만 지원
         community: subreddit,
         originalTitle: post.title,
         originalAuthor: post.author,
-        postScore: post.score,
+        postScore: 0,
       };
     } catch (error) {
       console.error('AI 처리 중 오류:', error);
