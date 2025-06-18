@@ -1,6 +1,7 @@
 import { APIEmbed, JSONEncodable, WebhookClient } from 'discord.js';
 import { DiscordWebhookManager } from '../manager/discord-webhook-manager';
 import { env } from 'cloudflare:workers';
+import { FRONTEND_URL } from '../constants';
 
 interface WebhookData {
 	title: string;
@@ -9,6 +10,28 @@ interface WebhookData {
 }
 
 export class WebhookService {
+	static async sendWelcomeMessage(webhookUrl: string) {
+		const webhookClient = new WebhookClient({ url: webhookUrl });
+
+		await webhookClient.send({
+			username: 'Takeoff.',
+			avatarURL: 'https://takeoff-backend.kamilereon.workers.dev/takeoff.png',
+			embeds: [
+				{
+					title: 'Takeoff. Discord 봇 등록 완료 ',
+					description: 'Takeoff. 디스코드 봇이 등록되었습니다. 커뮤니티에서 화제가 된 AI/SW/CS 관련 글을 디스코드에서 바로 확인해보세요.',
+					url: FRONTEND_URL,
+					color: 0x800080, // 보라색
+					footer: {
+						text: 'Takeoff.',
+						icon_url: 'https://takeoff-backend.kamilereon.workers.dev/takeoff.png',
+					},
+					timestamp: new Date().toISOString(),
+				},
+			],
+		});
+	}
+
 	static async sendWebhookTest(webhookUrl: string) {
 		await this.sendWebhook(webhookUrl, {
 			title: 'Test',

@@ -29,9 +29,11 @@ export class DiscordWebhookManager {
             .select()
             .from(discordWebhook)
             .where(eq(discordWebhook.webhookUrl, webhookUrl));
+
         if (result.length > 0) {
-            throw new Error('Webhook URL already exists');
+            return result[0].id;
         }
+
         const id = await this.db.insert(discordWebhook).values({ webhookUrl }).returning({ id: discordWebhook.id });
         return id[0].id;
     }

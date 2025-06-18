@@ -23,6 +23,7 @@ export class WebhookRoutes {
             return Response.json({ error: 'Webhook URL is required' }, { status: 400 });
         }
         await new DiscordWebhookManager(env.DB).createWebhookUrl(webhookUrl);
+        await WebhookService.sendWelcomeMessage(webhookUrl);
         return Response.json({ message: 'Webhook URL created successfully' });
     }
 

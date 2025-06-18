@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import Header from "../components/common/Header";
 import Footer from "../components/common/Footer";
 import { registerWebhook } from "../action/webhook";
@@ -33,30 +33,26 @@ export default function Webhook() {
 
     try {
       const result = await registerWebhook(webhookUrl);
+      setStatus("success");
+      setMessage("웹훅이 성공적으로 등록되었습니다!");
+      setWebhookUrl("");
 
-      if (result.success) {
-        setStatus("success");
-        setMessage("웹훅이 성공적으로 등록되었습니다!");
-        setWebhookUrl("");
-
-        // 2초 후에 기본 상태로 돌아가기
-        setTimeout(() => {
-          setStatus("idle");
-          setMessage("");
-        }, 2000);
-      } else {
-        setStatus("error");
-        setMessage(result.message || "웹훅 등록에 실패했습니다.");
-      }
+      // 2초 후에 기본 상태로 돌아가기
+      setTimeout(() => {
+        setStatus("idle");
+        setMessage("");
+      }, 2000);
     } catch (error) {
       setStatus("error");
-      setMessage("서버 오류가 발생했습니다. 다시 시도해주세요.");
+      setMessage("서버 오류가 발생했습니다. 다시 시도해주세요. " + error);
     }
   };
 
   return (
     <div className="min-h-screen relative">
-      <Header />
+      <Suspense>
+        <Header />
+      </Suspense>
       <div className="max-w-4xl mx-auto px-6 py-24">
         <div className="max-w-2xl mx-auto flex flex-col">
           <h1 className="text-3xl font-bold text-zinc-900 dark:text-zinc-100 mb-2">
@@ -79,8 +75,8 @@ export default function Webhook() {
               value={webhookUrl}
               onChange={(e) => setWebhookUrl(e.target.value)}
               placeholder="https://discord.com/api/webhooks/..."
-              className="w-full py-3 border-zinc-200 dark:border-zinc-700 outline-none
-                         rounded-lg"
+              className="w-full py-1 border-zinc-200 dark:border-zinc-700 outline-none
+                         border-b"
               disabled={status === "loading"}
             />
             <p className="mt-2 text-xs text-zinc-500 dark:text-zinc-400">
@@ -91,7 +87,8 @@ export default function Webhook() {
 
           <button
             disabled={status === "loading"}
-            className={`p-2 mt-8 font-medium cursor-pointer hover:dark:bg-zinc-800/50 rounded-lg`}
+            className={`p-2 mt-2 font-medium cursor-pointer dark:bg-zinc-800/50 bg-zinc-100/50
+               hover:bg-zinc-100/80 dark:hover:bg-zinc-800/80 rounded-lg`}
             onClick={handleSubmit}
           >
             <div className="text-white">웹훅 등록하기</div>
@@ -122,7 +119,6 @@ export default function Webhook() {
               {status === "loading" && "등록 중..."}
               {status === "success" && "등록 완료!"}
               {status === "error" && (message || "등록 실패")}
-              {status === "idle" && "웹훅 등록"}
             </span>
           </div>
 
