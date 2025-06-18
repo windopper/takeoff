@@ -5,6 +5,8 @@ import { RedditFilter } from './reddit-filter';
 import { PostManager } from '../manager/post-manager';
 import { RedditParser } from './reddit-parser';
 import { XmlParseError } from '../exceptions/xml-parse-error';
+import { WebhookService } from '../webhook/webhook-service';
+import { FRONTEND_URL, PUBLIC_URL } from '../constants';
 
 interface ProcessRedditPostsParams {
 	limit: number;
@@ -128,6 +130,12 @@ export async function processRedditPosts(params: ProcessRedditPostsParams): Prom
 					saved++;
 				}
 
+				// 웹훅 전송
+				await WebhookService.sendWebhookBatchToSubscribers([{
+					title: processedPost.title,
+					content: processedPost.content,
+					url: `${FRONTEND_URL}/posts/${savedPost}`,
+				}]);
 				filterStats.processed++;
 
 				// API 호출 제한을 고려하여 잠시 대기

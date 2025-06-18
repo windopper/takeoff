@@ -45,10 +45,14 @@ export default function TakeoffSearchWithInfiniteScroll({
         const newPage = Math.floor(
           (posts.length + newPosts.posts.length) / PAGE_SIZE
         );
-        router.replace(`/search?q=${q}&category=${category}&page=${newPage}`, { scroll: false });
+        router.replace(`/search?q=${q}&category=${category}&page=${newPage}`, {
+          scroll: false,
+        });
       } else {
         const newPage = Math.floor(posts.length / PAGE_SIZE) + 1;
-        router.replace(`/search?q=${q}&category=${category}&page=${newPage}`, { scroll: false });
+        router.replace(`/search?q=${q}&category=${category}&page=${newPage}`, {
+          scroll: false,
+        });
       }
     } catch (error) {
       console.error("Failed to load more posts:", error);
@@ -100,7 +104,19 @@ export default function TakeoffSearchWithInfiniteScroll({
       )}
 
       {/* Scroll End Indicator */}
-      {hasMore && !isFetching && <div className="h-4" ref={scrollRef}></div>}
+      {hasMore && !isFetching && (
+        <div
+          className="p-4 text-center flex items-center justify-center"
+          onClick={loadMore}
+        >
+          <div
+            className="flex items-center justify-center gap-2 p-2 hover:bg-zinc-100 hover:dark:bg-zinc-800/50 rounded-lg 
+          cursor-pointer dark:text-zinc-400"
+          >
+            더 불러오기
+          </div>
+        </div>
+      )}
     </main>
   );
 }

@@ -49,8 +49,17 @@ export const aiFiltered = sqliteTable('ai_filtered', {
   typeIdx: index('idx_ai_filtered_type').on(table.filterType),
 }));
 
+export const discordWebhook = sqliteTable('discord_webhook', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  webhookUrl: text('webhook_url').notNull(),
+  createdAt: text('created_at').notNull().default(sql`CURRENT_TIMESTAMP`),
+  updatedAt: text('updated_at').notNull().default(sql`CURRENT_TIMESTAMP`),
+})
+
 // TypeScript 타입 정의
 export type AiPost = typeof aiPosts.$inferSelect;
 export type NewAiPost = typeof aiPosts.$inferInsert;
 export type AiFiltered = typeof aiFiltered.$inferSelect;
 export type NewAiFiltered = typeof aiFiltered.$inferInsert;
+export type DiscordWebhook = typeof discordWebhook.$inferSelect;
+export type NewDiscordWebhook = typeof discordWebhook.$inferInsert;

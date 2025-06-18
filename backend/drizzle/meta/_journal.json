@@ -15,6 +15,13 @@
       "when": 1750222852786,
       "tag": "0001_huge_aqueduct",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1750250702179,
+      "tag": "0002_lethal_galactus",
+      "breakpoints": true
     }
   ]
 }

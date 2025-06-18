@@ -17,7 +17,7 @@ export default function TakeoffMainWithInfiniteScroll({
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const [_posts, setPosts] = useState<Post[]>(posts);
   const [hasMore, setHasMore] = useState<boolean>(posts.length < postCount);
-  const scrollRef = useRef<HTMLDivElement>(null);
+//   const scrollRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
   const loadMore = async () => {
@@ -56,25 +56,25 @@ export default function TakeoffMainWithInfiniteScroll({
     }
   };
 
-  useEffect(() => {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          loadMore();
-        }
-      });
-    });
+  //   useEffect(() => {
+  //     const observer = new IntersectionObserver((entries) => {
+  //       entries.forEach((entry) => {
+  //         if (entry.isIntersecting) {
+  //           loadMore();
+  //         }
+  //       });
+  //     });
 
-    if (scrollRef.current) {
-      observer.observe(scrollRef.current);
-    }
+  //     if (scrollRef.current) {
+  //       observer.observe(scrollRef.current);
+  //     }
 
-    return () => {
-      if (scrollRef.current) {
-        observer.unobserve(scrollRef.current);
-      }
-    };
-  }, [loadMore]);
+  //     return () => {
+  //       if (scrollRef.current) {
+  //         observer.unobserve(scrollRef.current);
+  //       }
+  //     };
+  //   }, [loadMore]);
 
   return (
     <main className="max-w-4xl mx-auto px-6 mt-12 py-12">
@@ -99,7 +99,17 @@ export default function TakeoffMainWithInfiniteScroll({
       )}
 
       {/* Scroll End Indicator */}
-      {hasMore && !isFetching && <div className="h-4" ref={scrollRef}></div>}
+      {hasMore && !isFetching && (
+        <div
+          className="p-4 text-center flex items-center justify-center"
+          onClick={loadMore}
+        >
+          <div className="flex items-center justify-center gap-2 p-2 hover:bg-zinc-100 hover:dark:bg-zinc-800/50 rounded-lg 
+          cursor-pointer dark:text-zinc-400">
+            더 불러오기
+          </div>
+        </div>
+      )}
     </main>
   );
 }

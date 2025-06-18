@@ -40,15 +40,15 @@ export class PostManager {
 	/**
 	 * 처리된 게시글을 데이터베이스에 저장합니다.
 	 */
-	async savePost(post: ProcessedPost): Promise<boolean> {
+	async savePost(post: ProcessedPost): Promise<number | null> {
 		try {
 			// 이미 존재하는 게시글인지 확인
 			if (await this.isPostExists(post.originalUrl)) {
 				console.log(`이미 존재하는 게시글: ${post.originalTitle}`);
-				return false;
+				return null;
 			}
 
-			await this.db
+			const result = await this.db
 				.insert(aiPosts)
 				.values({
 					title: post.title,
@@ -62,10 +62,11 @@ export class PostManager {
 					originalAuthor: post.originalAuthor,
 					postScore: post.postScore,
 				})
+				.returning({ id: aiPosts.id })
 				.execute();
 
 			console.log(`게시글 저장 완료: ${post.title}`);
-			return true;
+			return result[0].id;
 		} catch (error) {
 			console.error('게시글 저장 중 오류:', error);
 			throw new Error(`게시글 저장 실패: ${error instanceof Error ? error.message : '알 수 없는 오류'}`);

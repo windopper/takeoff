@@ -5,6 +5,7 @@ import { ArticleAIWriter } from './common/article-ai-writer';
 import { processHackernewsPosts } from './hackernews/hackernews-service';
 import { CommonRoutes } from './common/common-routes';
 import { processRedditPosts } from './reddit/reddit-service';
+import { WebhookRoutes } from './webhook/webhook-routes';
 
 export interface Env {
 	// If you set another name in the Wrangler config file for the value for 'binding',
@@ -12,6 +13,8 @@ export interface Env {
 	DB: D1Database;
 	// Google Gemini API Key를 환경 변수로 추가
 	GEMINI_API_KEY: string;
+	// Static Assets binding
+	ASSETS: Fetcher;
 }
 
 export default {
@@ -62,6 +65,36 @@ export default {
 			console.log(`Processing URL: ${url}`);
 			const processedPost = await aiWriter.processPost(url);
 			return Response.json(processedPost);
+		}
+
+		if (pathname === "/api/webhook-register" && request.method === 'POST') {
+			return await WebhookRoutes.createWebhookUrl(request, env);
+		}
+
+		if (pathname === "/api/webhook-list") {
+			return await WebhookRoutes.getWebhookList(request, env);
+		}
+
+		if (pathname === "/api/webhook-delete" && request.method === 'POST') {
+			return await WebhookRoutes.deleteWebhookUrl(request, env);
+		}
+
+		if (pathname === "/api/webhook-test" && request.method === 'POST') {
+			return await WebhookRoutes.sendWebhookTest(request, env);
+		}
+
+		if (pathname === "/takeoff.png") {
+			try {
+				return await env.ASSETS.fetch(request);
+			} catch (error) {
+				console.error('이미지 파일 제공 중 오류:', error);
+				return new Response('이미지를 불러올 수 없습니다.', {
+					status: 500,
+					headers: {
+						'Content-Type': 'text/plain; charset=utf-8',
+					},
+				});
+			}
 		}
 
 		return new Response(`사용 가능한 API:

@@ -10,6 +10,7 @@ export default function Footer() {
           </p>
           <FooterLink href="/about" content="About" />
           <FooterLink href="https://github.com/windopper/takeoff" content="Github" />
+          <FooterLink href="/webhook" content="Webhook" />
         </div>
       </div>
     </footer>

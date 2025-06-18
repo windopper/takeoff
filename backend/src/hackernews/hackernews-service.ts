@@ -5,6 +5,8 @@ import { HackernewsAIWriter } from './hackernews-ai-writer';
 import { PostManager } from '../manager/post-manager';
 import { FilteredPostManager } from '../manager/filter-post-manager';
 import { XmlParseError } from '../exceptions/xml-parse-error';
+import { WebhookService } from '../webhook/webhook-service';
+import { FRONTEND_URL, PUBLIC_URL } from '../constants';
 
 interface ProcessHackernewsPostsParams {
 	limit: number;
@@ -99,6 +101,13 @@ export async function processHackernewsPosts(params: ProcessHackernewsPostsParam
 			console.log(`처리 완료: ${processedPost.title}`);
 			const savedPost = await postManager.savePost(processedPost);
 			if (savedPost) saved++;
+
+			// 웹훅 전송
+			await WebhookService.sendWebhookBatchToSubscribers([{
+				title: processedPost.title,
+				content: processedPost.content,
+				url: `${FRONTEND_URL}/posts/${savedPost}`,
+			}]);
 		} catch (error) {
             if (error instanceof XmlParseError) {
                 console.error('HackerNews 게시글 처리 중 오류:', error);

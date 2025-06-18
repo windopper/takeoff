@@ -4,7 +4,7 @@ import SearchInput from "./Search";
 export default function Header({
   postCount,
 }: {
-  postCount: number;
+  postCount?: number;
 }) {
   return (
     <header className="fixed top-0 z-50 w-full min-h-12 backdrop-blur-xl">
@@ -20,9 +20,11 @@ export default function Header({
           </div>
           <div className="flex items-center gap-3">
             <SearchInput />
-            <span className="px-3 py-1.5 text-xs font-medium bg-zinc-100/80 dark:bg-zinc-800/80 text-zinc-600 dark:text-zinc-400 rounded-full backdrop-blur-sm">
-              {postCount}개 게시글
-            </span>
+            {postCount && (
+              <span className="px-3 py-1.5 text-xs font-medium bg-zinc-100/80 dark:bg-zinc-800/80 text-zinc-600 dark:text-zinc-400 rounded-full backdrop-blur-sm">
+                {postCount}개 게시글
+              </span>
+            )}
           </div>
         </div>
       </div>
