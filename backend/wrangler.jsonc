@@ -15,7 +15,8 @@
 		{
 			"binding": "DB",
 			"database_name": "takeoff",
-			"database_id": "4c3a0f08-16c2-440e-873b-0e92afefcee5"
+			"database_id": "4c3a0f08-16c2-440e-873b-0e92afefcee5",
+			"migrations_dir": "drizzle"
 		}
 	],
 	"triggers": {

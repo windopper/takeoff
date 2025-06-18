@@ -10,16 +10,18 @@
 		"test": "jest",
 		"test:watch": "jest --watch",
 		"test:coverage": "jest --coverage",
-		"db:init": "wrangler d1 execute takeoff --remote --file=./schema.sql",
+		"db:generate": "npx drizzle-kit generate",
+		"db:init": "wrangler d1 execute takeoff --remote",
 		"db:local-init": "wrangler d1 execute takeoff --local --file=./schema.sql",
-		"db:migrate": "wrangler d1 execute takeoff --remote --file=./schema.sql",
-		"db:local-migrate": "wrangler d1 execute takeoff --local --file=./schema.sql",
+		"db:migrate": "npx wrangler d1 migrations apply takeoff --remote",
+		"db:local-migrate": "npx wrangler d1 migrations apply takeoff --local",
 		"db:shell": "wrangler d1 execute takeoff --remote --command=\"SELECT name FROM sqlite_master WHERE type='table';\"",
 		"db:local-shell": "wrangler d1 execute takeoff --local --command=\"SELECT name FROM sqlite_master WHERE type='table';\""
 	},
 	"devDependencies": {
 		"@types/jest": "^29.5.14",
 		"@types/node": "^24.0.1",
+		"drizzle-kit": "^0.31.1",
 		"jest": "^30.0.0",
 		"ts-jest": "^29.4.0",
 		"typescript": "^5.5.2",
@@ -29,6 +31,7 @@
 		"@langchain/core": "^0.3.0",
 		"@langchain/google-genai": "^0.2.0",
 		"@langchain/openai": "^0.3.0",
+		"drizzle-orm": "^0.44.2",
 		"langchain": "^0.3.0"
 	}
 }

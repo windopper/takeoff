@@ -1,9 +1,14 @@
+import { drizzle, DrizzleD1Database } from "drizzle-orm/d1";
+import { aiFiltered } from "../db/schema";
+import { count, gt, lt } from "drizzle-orm";
+import { and } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 
 export class FilteredPostManager {
-  private db: D1Database;
+  private db: DrizzleD1Database;
 
   constructor(db: D1Database) {
-    this.db = db;
+    this.db = drizzle(db);
   }
 
   /**
@@ -12,15 +17,12 @@ export class FilteredPostManager {
   async isPostFiltered(originalUrl: string): Promise<boolean> {
     try {
       const result = await this.db
-        .prepare(`
-          SELECT COUNT(*) as count 
-          FROM ai_filtered 
-          WHERE original_url = ? AND expires_at > CURRENT_TIMESTAMP
-        `)
-        .bind(originalUrl)
-        .first();
+        .select({ count: count() })
+        .from(aiFiltered)
+        .where(and(eq(aiFiltered.originalUrl, originalUrl), gt(aiFiltered.expiresAt, new Date().toISOString())))
+        .execute();
 
-      return (result?.count as number) > 0;
+      return result[0].count > 0;
     } catch (error) {
       console.error('필터링된 게시글 확인 중 오류:', error);
       return false;
@@ -42,24 +44,19 @@ export class FilteredPostManager {
       expiresAt.setDate(expiresAt.getDate() + 14);
 
       await this.db
-        .prepare(`
-          INSERT OR REPLACE INTO ai_filtered (
-            original_url, original_title, platform, community, filter_reason, 
-            filter_type, confidence, post_score, expires_at
-          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-        `)
-        .bind(
-          filteredPost.originalUrl,
-          filteredPost.originalTitle,
-          filteredPost.platform,
-          filteredPost.community,
-          filteredPost.filterReason,
-          filteredPost.filterType,
-          filteredPost.confidence || null,
-          filteredPost.postScore || null,
-          expiresAt.toISOString()
-        )
-        .run();
+        .insert(aiFiltered)
+        .values({
+          originalUrl: filteredPost.originalUrl,
+          originalTitle: filteredPost.originalTitle,
+          platform: filteredPost.platform,
+          community: filteredPost.community,
+          filterReason: filteredPost.filterReason,
+          filterType: filteredPost.filterType,
+          confidence: filteredPost.confidence,
+          postScore: filteredPost.postScore,
+          expiresAt: expiresAt.toISOString()
+        })
+        .execute();
 
       console.log(`필터링된 게시글 저장: ${filteredPost.originalTitle} (${filteredPost.filterType})`);
       return true;
@@ -75,8 +72,9 @@ export class FilteredPostManager {
   async cleanupExpiredFilters(): Promise<number> {
     try {
       const result = await this.db
-        .prepare('DELETE FROM ai_filtered WHERE expires_at <= CURRENT_TIMESTAMP')
-        .run();
+        .delete(aiFiltered)
+        .where(lt(aiFiltered.expiresAt, new Date().toISOString()))
+        .execute();
 
       const deleted = (result as any).changes || 0;
       if (deleted > 0) {
@@ -94,37 +92,22 @@ export class FilteredPostManager {
    */
   async getFilterStats(community?: string): Promise<any[]> {
     try {
-      let query = `
-        SELECT 
-          community,
-          filter_type,
-          COUNT(*) as filtered_count,
-          AVG(confidence) as avg_confidence,
-          MAX(filtered_at) as latest_filtered
-        FROM ai_filtered 
-        WHERE expires_at > CURRENT_TIMESTAMP
-      `;
-
-      const params: any[] = [];
-      if (community) {
-        query += ' AND community = ?';
-        params.push(community);
-      }
-
-      query += ' GROUP BY community, filter_type ORDER BY community, filter_type';
-
       const result = await this.db
-        .prepare(query)
-        .bind(...params)
-        .all();
+        .select()
+        .from(aiFiltered)
+        .where(and(eq(aiFiltered.community, community || ''), gt(aiFiltered.expiresAt, new Date().toISOString())))
+        .groupBy(aiFiltered.community, aiFiltered.filterType)
+        .orderBy(aiFiltered.community, aiFiltered.filterType)
+        .execute();
 
-      return result.results || [];
+      return result || [];
     } catch (error) {
       console.error('필터링 통계 조회 중 오류:', error);
       return [];
     }
   }
 }
+
 export interface FilteredPost {
   originalUrl: string;
   originalTitle: string;

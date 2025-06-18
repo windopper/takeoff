@@ -6,21 +6,14 @@ export class CommonRoutes {
 		const url = new URL(req.url);
 		const limit = parseInt(url.searchParams.get('limit') || '10');
 		const offset = parseInt(url.searchParams.get('offset') || '0');
+		const q = url.searchParams.get('q');
 		const platform = url.searchParams.get('platform');
 		const community = url.searchParams.get('community');
 
 		const postManager = new PostManager(env.DB);
 
 		let posts;
-		if (platform && community) {
-			// 새로운 스키마의 platform/community로 필터링
-			posts = await postManager.getPostsByPlatformCommunity(platform, community, limit);
-		} else if (community) {
-			// 레거시 호환성: community를 subreddit으로 처리
-			posts = await postManager.getPostsBySubreddit(community, limit);
-		} else {
-			posts = await postManager.getPosts(limit, offset);
-		}
+		posts = await postManager.getPosts({ limit, offset, query: q || '', platform: platform || '', community: community || '' });
 
 		return Response.json({
 			posts,

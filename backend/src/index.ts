@@ -28,11 +28,12 @@ export default {
 			return await HackerNewsRoutes.getHackerNewsPosts(request);
 		}
 
-		// AI로 처리된 게시글 목록 조회 API
+		// /api/posts 형식으로 게시글 목록 조회 API
 		if (pathname === "/api/posts") {
 			return await CommonRoutes.getPosts(request, env);
 		}
 
+		// /api/posts/:id 형식으로 특정 게시글 조회 API
 		if (pathname.startsWith("/api/posts/")) {
 			return await CommonRoutes.getPostById(request, env);
 		}
