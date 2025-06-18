@@ -2,14 +2,13 @@ import { getTakeoffPostCount, getTakeoffPosts } from "./action/getTakeoffPosts";
 import Footer from "./components/common/Footer";
 import Header from "./components/common/Header";
 import TakeoffMainWithInfiniteScroll from "./components/TakeoffMainWithInfiniteScroll";
+import { PAGE_SIZE } from "./constants/pagination";
 
 interface HomeProps {
   searchParams: Promise<{
     page?: string;
   }>;
 }
-
-export const PAGE_SIZE = 10;
 
 export default async function Home({ searchParams }: HomeProps) {
   const { page } = await searchParams;

@@ -4,17 +4,19 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { getTakeoffPosts } from "../action/getTakeoffPosts";
 import { Post } from "../types/post";
-import { PAGE_SIZE } from "./page";
+import { PAGE_SIZE } from "../constants/pagination";
 import SmallPost from "../components/post/SmallPost";
 
 export default function TakeoffSearchWithInfiniteScroll({
   posts,
   postCount,
   q,
+  category,
 }: {
   posts: Post[];
   postCount: number;
   q: string;
+  category: string;
 }) {
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const [_posts, setPosts] = useState<Post[]>(posts);
@@ -30,6 +32,7 @@ export default function TakeoffSearchWithInfiniteScroll({
         limit: PAGE_SIZE,
         offset: posts.length,
         query: q,
+        category: category,
       });
 
       setPosts((prev) => {
@@ -42,10 +45,10 @@ export default function TakeoffSearchWithInfiniteScroll({
         const newPage = Math.floor(
           (posts.length + newPosts.posts.length) / PAGE_SIZE
         );
-        router.replace(`/search?q=${q}&page=${newPage}`, { scroll: false });
+        router.replace(`/search?q=${q}&category=${category}&page=${newPage}`, { scroll: false });
       } else {
         const newPage = Math.floor(posts.length / PAGE_SIZE) + 1;
-        router.replace(`/search?q=${q}&page=${newPage}`, { scroll: false });
+        router.replace(`/search?q=${q}&category=${category}&page=${newPage}`, { scroll: false });
       }
     } catch (error) {
       console.error("Failed to load more posts:", error);
