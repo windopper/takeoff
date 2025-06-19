@@ -15,13 +15,36 @@ export interface Env {
 	GEMINI_API_KEY: string;
 	// Static Assets binding
 	ASSETS: Fetcher;
+	// 허용된 호스트 목록
+	ALLOWED_HOSTS: string;
+	TAKEOFF_API_KEY: string;
+}
+
+function checkApiKey(request: Request, env: Env): boolean {
+	const apiKey = request.headers.get('Takeoff-Api-Key');
+	return apiKey === env.TAKEOFF_API_KEY;
 }
 
 export default {
 	async fetch(request, env): Promise<Response> {
 		const { pathname } = new URL(request.url);
+		if (pathname === "/takeoff.png") {
+			try {
+				return await env.ASSETS.fetch(request);
+			} catch (error) {
+				console.error('이미지 파일 제공 중 오류:', error);
+				return new Response('이미지를 불러올 수 없습니다.', {
+					status: 500,
+					headers: {
+						'Content-Type': 'text/plain; charset=utf-8',
+					},
+				});
+			}
+		}
 
-		console.log(pathname);
+		if (!checkApiKey(request, env)) {
+			return new Response('Forbidden', { status: 403 });
+		}
 
 		if (pathname === "/api/reddit") {
 			return await RedditRoutes.getRedditPosts(request);
@@ -85,20 +108,6 @@ export default {
 
 		if (pathname === "/api/webhook-test" && request.method === 'POST') {
 			return await WebhookRoutes.sendWebhookTest(request, env);
-		}
-
-		if (pathname === "/takeoff.png") {
-			try {
-				return await env.ASSETS.fetch(request);
-			} catch (error) {
-				console.error('이미지 파일 제공 중 오류:', error);
-				return new Response('이미지를 불러올 수 없습니다.', {
-					status: 500,
-					headers: {
-						'Content-Type': 'text/plain; charset=utf-8',
-					},
-				});
-			}
 		}
 
 		return new Response(`사용 가능한 API:

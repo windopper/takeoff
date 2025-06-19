@@ -1,5 +1,7 @@
 "use server";
 
+import { getApiKeyHeader } from "@/utils/header";
+
 export async function getTakeoffPosts({
   limit = 20,
   offset = 0,
@@ -17,6 +19,7 @@ export async function getTakeoffPosts({
       next: {
         revalidate: 600,
       },
+      headers: getApiKeyHeader(),
     }
   );
   const data = await response.json();
@@ -36,6 +39,7 @@ export async function getTakeoffPostCount({
       next: {
         revalidate: 600,
       },
+      headers: getApiKeyHeader(),
     }
   );
   const data = await response.json();
@@ -49,6 +53,7 @@ export async function getTakeoffPostById(id: string) {
       next: {
         revalidate: 3600,
       },
+      headers: getApiKeyHeader(),
     }
   );
   const data = await response.json();
