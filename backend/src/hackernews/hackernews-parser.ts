@@ -73,7 +73,7 @@ export class HackerNewsParser {
   /**
    * RSS XML을 파싱하여 HackerNewsItem 배열로 변환합니다.
    */
-  private parseRssToItems(rssText: string, limit: number): HackerNewsItem[] {
+  parseRssToItems(rssText: string, limit: number): HackerNewsItem[] {
     try {
       // 정규식으로 RSS 아이템 추출
       const itemRegex = /<item>([\s\S]*?)<\/item>/g;
@@ -105,7 +105,7 @@ export class HackerNewsParser {
   /**
    * 개별 RSS 아이템을 HackerNewsItem으로 변환합니다.
    */
-  private parseRssItem(itemXml: string): HackerNewsItem | null {
+  parseRssItem(itemXml: string): HackerNewsItem | null {
     try {
       const title = this.extractTitle(itemXml);
       const description = this.extractDescription(itemXml);
@@ -119,6 +119,14 @@ export class HackerNewsParser {
       const id = this.extractItemId(description);
       
       if (!title || !url || !id) {
+        console.log('파싱 실패 - 필수 필드 누락:', { 
+          title: !!title, 
+          url: !!url, 
+          id: !!id,
+          extractedTitle: title,
+          extractedUrl: url,
+          extractedId: id
+        });
         return null;
       }
       

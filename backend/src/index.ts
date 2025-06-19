@@ -33,17 +33,21 @@ export default {
 		}
 
 		// /api/posts 형식으로 게시글 목록 조회 API
-		if (pathname === "/api/posts") {
+		if (pathname === "/api/posts" && request.method === 'GET') {
 			return await CommonRoutes.getPosts(request, env);
 		}
 
-		if (pathname === "/api/post-count") {
+		if (pathname === "/api/post-count" && request.method === 'GET') {
 			return await CommonRoutes.getPostCount(request, env);
 		}
 
 		// /api/posts/:id 형식으로 특정 게시글 조회 API
-		if (pathname.startsWith("/api/posts/")) {
+		if (pathname.startsWith("/api/posts/") && request.method === 'GET') {
 			return await CommonRoutes.getPostById(request, env);
+		}
+
+		if (pathname.startsWith("/api/posts/") && request.method === 'DELETE') {
+			return await CommonRoutes.deletePost(request, env);
 		}
 
 		// Reddit 게시글을 AI로 처리하고 저장하는 API

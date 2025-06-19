@@ -15,10 +15,10 @@ export interface SubredditConfig {
 
 export class RedditParser {
   private subreddits: SubredditConfig[] = [
-    {
-      name: 'LocalLLaMA',
-      rssUrl: 'https://www.reddit.com/r/LocalLLaMA/.rss?sort=top'
-    },
+    // {
+    //   name: 'LocalLLaMA',
+    //   rssUrl: 'https://www.reddit.com/r/LocalLLaMA/.rss?sort=top'
+    // },
     {
       name: 'singularity',
       rssUrl: 'https://www.reddit.com/r/singularity/.rss?sort=top'

@@ -188,4 +188,8 @@ export class PostManager {
 			.execute();
 		return result[0].count;
 	}
+
+	async deletePost(id: string): Promise<void> {
+		await this.db.delete(aiPosts).where(eq(aiPosts.id, parseInt(id)));
+	}
 }

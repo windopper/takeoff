@@ -64,4 +64,21 @@ export class CommonRoutes {
             post,
         });
     }   
+
+	static async deletePost(req: Request, env: Env): Promise<Response> {
+		const url = new URL(req.url);
+		const id = url.pathname.split('/').pop();
+
+		if (!id) {
+			return Response.json({
+				error: 'id is required',
+			}, { status: 400 });
+		}
+
+		const postManager = new PostManager(env.DB);
+		await postManager.deletePost(id);
+		return Response.json({
+			message: 'Post deleted successfully',
+		});
+	}
 }

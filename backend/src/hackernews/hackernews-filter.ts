@@ -4,9 +4,11 @@ type FilterReason = 'time' | 'keyword' | 'score' | 'ai_relevance';
 
 export class HackernewsFilter {
 	private minScore: number = 150;
+	private diffDays: number = 3;
 
-	constructor({ minScore }: { minScore: number } = { minScore: 150 }) {
+	constructor({ minScore = 150, diffDays = 3 }: { minScore?: number; diffDays?: number } = {}) {
 		this.minScore = minScore;
+		this.diffDays = diffDays;
 	}
 
 	public filterAll(post: HackerNewsItem): FilterReason | null {
@@ -20,7 +22,7 @@ export class HackernewsFilter {
 		const diffTime = Math.abs(now.getTime() - postDate.getTime());
 		const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-		if (diffDays > 3) {
+		if (diffDays > this.diffDays) {
 			return 'time';
 		}
 		return null;
