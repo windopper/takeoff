@@ -2,15 +2,16 @@
 해당 레포지토리는 Takeoff의 백엔드입니다.
 
 ## 개요
-1시간마다 서브레딧을 Top 게시글을 읽은 후 생성형 AI를 통해 글을 작성 후 DB에 업로드.
+1시간마다 기술 커뮤니티의 인기글을 크롤링 후 생성형 AI를 통해 글 작성 후 DB에 업로드.
 
-서브레딧 목록은 다음과 같음.
-- LocalLLaMA, singularity
+커뮤니티 목록은 다음과 같음.
+- https://news.ycombinator.com/
+- https://www.reddit.com/r/singularity/
 
 ## 주요 기능
 
-### 1. HackerNews 게시글 파싱
-- HackerNews RSS 피드를 통해 인기 게시글을 자동으로 수집
+### 1. 게시글 파싱
+- RSS 피드를 통해 인기 게시글을 자동으로 수집
 
 ### 2. AI 기반 게시글 정리
 - **LangChain**과 **Google Gemini 2.5 Flash Preview**를 사용하여 HackerNews 게시글의 원본 아티클을 한국어로 정리
@@ -40,6 +41,7 @@
 `.dev.vars` 파일에서 `GEMINI_API_KEY` 값을 업데이트하세요:
 ```yaml
 GEMINI_API_KEY="여기에 실제 API키를 입력하세요"
+TAKEOFF_API_KEY="여기에 실제 API키를 입력하세요"
 ```
 
 #### 3. 보안이 중요한 프로덕션 환경에서는 Cloudflare Workers 시크릿 사용
@@ -59,7 +61,7 @@ wrangler secret put GEMINI_API_KEY
 - **AI Framework**: LangChain
 - **AI Model**: Google Gemini 2.5 Flash Preview
 - **Language**: TypeScript
-- **Testing**: Jest
+- **Testing**: Vitest
 
 ## 데이터베이스 설정 및 스키마 관리
 
@@ -85,7 +87,7 @@ npm run db:shell
 
 ### 2. 스키마 업데이트
 
-스키마 파일(`schema.sql`)을 수정하거나 `migrations/` 폴더의 마이그레이션 파일을 생성한 후 다음 명령어로 데이터베이스에 적용:
+스키마 파일(`schema.ts`)을 수정 후 `npm run db:generate`로 마이그레이션 파일 생성 후 다음 명령어로 데이터베이스에 적용:
 
 #### 로컬 환경에서 스키마 업데이트
 ```bash
