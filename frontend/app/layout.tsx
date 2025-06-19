@@ -15,6 +15,11 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Takeoff.",
+  verification: {
+    google: "d8Ovesw9e_k8y4kyS7FT6fTDVniHGZ46W5Dzo_pGlLk"
+  },
+  category: "technology",
+  description: "Takeoff는 AI/SW/CS 관련 아티클을 자동으로 정리 및 게시하는 서비스입니다"
 };
 
 export default function RootLayout({
