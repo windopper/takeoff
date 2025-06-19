@@ -32,8 +32,6 @@ export async function processRedditPosts(params: ProcessRedditPostsParams): Prom
 	const redditFilter = new RedditFilter({ minScore: MIN_SCORE, geminiApiKey: env.GEMINI_API_KEY });
 	const filteredPostManager = new FilteredPostManager(env.DB);
 
-	await filteredPostManager.cleanupExpiredFilters();
-
 	const postWithSubreddit = await parser.getAllTopPosts(limit);
 
 	const filterStats = {

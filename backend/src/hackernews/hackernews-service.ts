@@ -32,8 +32,6 @@ export async function processHackernewsPosts(params: ProcessHackernewsPostsParam
 	const filteredPostManager = new FilteredPostManager(env.DB);
 	let hackernews;
 
-    await filteredPostManager.cleanupExpiredFilters();
-
 	switch (storyType) {
 		case 'new':
 			hackernews = await parser.getNewPosts(limit);

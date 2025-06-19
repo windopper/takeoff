@@ -1,4 +1,4 @@
-import { PostManager } from './manager/post-manager';
+import { PostManager, ProcessedPost } from './manager/post-manager';
 import { HackerNewsRoutes } from './hackernews/hackernews-routes';
 import { RedditRoutes } from './reddit/reddit-routes';
 import { ArticleAIWriter } from './common/article-ai-writer';
@@ -7,6 +7,7 @@ import { CommonRoutes } from './common/common-routes';
 import { processRedditPosts } from './reddit/reddit-service';
 import { WebhookRoutes } from './webhook/webhook-routes';
 import { ArxivRoutes } from './arxiv/arxiv-routes';
+import { FilteredPostManager } from './manager/filter-post-manager';
 
 export interface Env {
 	// If you set another name in the Wrangler config file for the value for 'binding',
@@ -135,6 +136,13 @@ export default {
 				console.error('Gemini API Key가 설정되지 않았습니다.');
 				return;
 			}
+
+			const filteredPostManager = new FilteredPostManager(env.DB);
+			await filteredPostManager.cleanupExpiredFilters();
+
+			const postManager = new PostManager(env.DB);
+			const deletedPosts = await postManager.cleanupOldPosts();
+			console.log(`오래된 게시글 삭제 결과: ${deletedPosts}개 삭제됨`);
 
 			const hackernewResult = await processHackernewsPosts({
 				limit: 100,

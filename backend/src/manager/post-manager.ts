@@ -1,7 +1,8 @@
 import { drizzle, DrizzleD1Database } from 'drizzle-orm/d1';
 import { aiPosts } from '../db/schema';
-import { count, desc, and, ilike, like, asc } from 'drizzle-orm';
+import { count, desc, and, ilike, like, asc, lt } from 'drizzle-orm';
 import { eq } from 'drizzle-orm';
+import { POST_EXPIRATION_TIME } from '../constants';
 
 export interface ProcessedPost {
 	title: string;
@@ -191,5 +192,15 @@ export class PostManager {
 
 	async deletePost(id: string): Promise<void> {
 		await this.db.delete(aiPosts).where(eq(aiPosts.id, parseInt(id)));
+	}
+
+	async cleanupOldPosts(): Promise<number> {
+		try {
+			const result = await this.db.delete(aiPosts).where(lt(aiPosts.createdAt, new Date(Date.now() - POST_EXPIRATION_TIME).toISOString())).execute();
+			return (result as any).changes || 0;
+		} catch (error) {
+			console.error('오래된 게시글 삭제 중 오류:', error);
+			return 0;
+		}
 	}
 }
