@@ -5,9 +5,23 @@ import { usePathname, useRouter } from "next/navigation";
 
 export default function ReturnButton() {
     const router = useRouter();
+    
+    const handleClick = () => {
+        if (window.history.length > 1) {
+            const previousPath = document.referrer;
+            const currentSiteUrl = process.env.NEXT_PUBLIC_SITE_URL || window.location.origin;
+            if (previousPath && previousPath.includes(currentSiteUrl)) {
+                router.back();
+            } else {
+                router.push('/');
+            }
+        } else {
+            router.push('/');
+        }
+    }
 
     return (
-        <button onClick={() => router.back()} className="inline-flex items-center gap-2 text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors mb-8">
+        <button onClick={handleClick} className="inline-flex items-center gap-2 text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors mb-8">
             <MaterialSymbolsChevronLeft className="w-4 h-4" />
             목록으로 돌아가기
         </button>
