@@ -1,4 +1,4 @@
-import { getTakeoffPostCount, getTakeoffPosts } from "./action/getTakeoffPosts";
+import { getTakeoffPostCount, getTakeoffPosts } from "./action/takeoffPosts";
 import Footer from "./components/common/Footer";
 import Header from "./components/common/Header";
 import TakeoffMainWithInfiniteScroll from "./components/TakeoffMainWithInfiniteScroll";

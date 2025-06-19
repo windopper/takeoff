@@ -1,4 +1,4 @@
-import { getTakeoffPostById } from "@/app/action/getTakeoffPosts";
+import { getTakeoffPostById } from "@/app/action/takeoffPosts";
 import { Post } from "@/app/types/post";
 import Link from "next/link";
 import ReturnButton from "./ReturnButton";

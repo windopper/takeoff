@@ -1,6 +1,6 @@
 "use server";
 
-import { getApiKeyHeader } from "@/utils/header";
+import { takeoffFetch } from "@/utils/fetch";
 
 export async function getTakeoffPosts({
   limit = 20,
@@ -13,13 +13,12 @@ export async function getTakeoffPosts({
   query?: string;
   category?: string;
 }) {
-  const response = await fetch(
+  const response = await takeoffFetch(
     `https://takeoff-backend.kamilereon.workers.dev/api/posts?limit=${limit}&offset=${offset}&q=${query}&category=${category}`,
     {
       next: {
         revalidate: 600,
       },
-      headers: getApiKeyHeader(),
     }
   );
   const data = await response.json();
@@ -33,13 +32,12 @@ export async function getTakeoffPostCount({
   query?: string;
   category?: string;
 }) {
-  const response = await fetch(
+  const response = await takeoffFetch(
     `https://takeoff-backend.kamilereon.workers.dev/api/post-count?q=${query}&category=${category}`,
     {
       next: {
         revalidate: 600,
       },
-      headers: getApiKeyHeader(),
     }
   );
   const data = await response.json();
@@ -47,13 +45,23 @@ export async function getTakeoffPostCount({
 }
 
 export async function getTakeoffPostById(id: string) {
-  const response = await fetch(
+  const response = await takeoffFetch(
     `https://takeoff-backend.kamilereon.workers.dev/api/posts/${id}`,
     {
       next: {
         revalidate: 3600,
       },
-      headers: getApiKeyHeader(),
+    }
+  );
+  const data = await response.json();
+  return data;
+}
+
+export async function deleteTakeoffPostById(id: string) {
+  const response = await takeoffFetch(
+    `https://takeoff-backend.kamilereon.workers.dev/api/posts/${id}`,
+    {
+      method: 'DELETE',
     }
   );
   const data = await response.json();

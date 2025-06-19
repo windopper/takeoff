@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { getTakeoffPosts } from "../action/getTakeoffPosts";
+import { getTakeoffPosts } from "../action/takeoffPosts";
 import { PAGE_SIZE } from "../constants/pagination";
 import { Post } from "../types/post";
 import SmallPost from "./post/SmallPost";

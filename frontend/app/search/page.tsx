@@ -1,7 +1,7 @@
 import {
   getTakeoffPostCount,
   getTakeoffPosts,
-} from "../action/getTakeoffPosts";
+} from "../action/takeoffPosts";
 import { Suspense } from "react";
 import Footer from "../components/common/Footer";
 import Header from "../components/common/Header";
