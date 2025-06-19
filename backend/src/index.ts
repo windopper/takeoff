@@ -6,6 +6,7 @@ import { processHackernewsPosts } from './hackernews/hackernews-service';
 import { CommonRoutes } from './common/common-routes';
 import { processRedditPosts } from './reddit/reddit-service';
 import { WebhookRoutes } from './webhook/webhook-routes';
+import { ArxivRoutes } from './arxiv/arxiv-routes';
 
 export interface Env {
 	// If you set another name in the Wrangler config file for the value for 'binding',
@@ -81,6 +82,10 @@ export default {
 		// HackerNews 게시글을 AI로 처리하고 저장하는 API
 		if (pathname === "/api/process-hackernews" && request.method === 'POST') {
 			return await HackerNewsRoutes.processHackerNewsPosts(request, env);
+		}
+
+		if (pathname === "/api/process-arxiv" && request.method === 'POST') {
+			return await ArxivRoutes.processArxivPaper(request, env);
 		}
 
 		if (pathname === "/api/process-url" && request.method === 'POST') {
