@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { version } from '@/package.json'
 
 export default function Footer() {
   return (
@@ -6,10 +7,9 @@ export default function Footer() {
       <div className="max-w-4xl mx-auto px-6 py-12">
         <div className="flex items-center justify-center gap-3">
           <p className="text-sm text-zinc-400 dark:text-zinc-500">
-            Takeoff.
+            Takeoff. {version}
           </p>
-          <FooterLink href="/about" content="About" />
-          <FooterLink href="https://github.com/windopper/takeoff" content="Github" />
+          <FooterLink href="https://github.com/windopper" content="Github" />
           <FooterLink href="/webhook" content="Webhook" />
         </div>
       </div>
