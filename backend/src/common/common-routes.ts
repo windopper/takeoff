@@ -1,7 +1,31 @@
 import { Env } from '..';
 import { PostManager } from '../manager/post-manager';
+import { processUrl } from './common-service';
 
 export class CommonRoutes {
+	static async processUrl(req: Request, env: Env): Promise<Response> {
+		const body = await req.json().catch(() => ({})) as any;
+		const url = body.url;
+
+		if (!url) {
+			return Response.json({
+				error: 'url is required',
+			}, { status: 400 });
+		}
+
+		try {
+			const post = await processUrl(url);
+			return Response.json({
+				post,
+			});
+		} catch (error) {
+			console.error(error);
+			return Response.json({
+				error: error instanceof Error ? error.message : 'Failed to process url',
+			}, { status: 500 });
+		}
+	}
+
 	static async getPosts(req: Request, env: Env): Promise<Response> {
 		const url = new URL(req.url);
 		const limit = parseInt(url.searchParams.get('limit') || '10');

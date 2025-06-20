@@ -123,14 +123,7 @@ export default {
 		}
 
 		if (pathname === "/api/process-url" && request.method === 'POST') {
-			const aiWriter = new ArticleAIWriter({ 
-				geminiApiKey: env.GEMINI_API_KEY, 
-			});
-			const body = await request.json().catch(() => ({})) as any;
-			const url = body.url;
-			console.log(`Processing URL: ${url}`);
-			const processedPost = await aiWriter.processPost(url);
-			const response = Response.json(processedPost);
+			const response = await CommonRoutes.processUrl(request, env);
 			return addCorsHeaders(response);
 		}
 
