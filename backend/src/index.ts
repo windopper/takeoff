@@ -159,11 +159,6 @@ export default {
 				return addCorsHeaders(response);
 			}
 
-			if (pathname === "/api/vectorize-all-post-not-indexed-and-save-in-batch" && request.method === 'POST') {
-				const response = await VectorizeRoutes.vectorizeAllPostNotIndexedAndSaveInBatch(request, env);
-				return addCorsHeaders(response);
-			}
-
 			if (pathname === "/api/vectorize-all-post-not-indexed-and-save" && request.method === 'POST') {
 				const response = await VectorizeRoutes.vectorizeAllPostNotIndexedAndSave(request, env);
 				return addCorsHeaders(response);

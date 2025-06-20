@@ -22,11 +22,11 @@ export class HackernewsAIWriter {
     })
   }
 
-  async processPost(post: HackerNewsItem): Promise<ProcessedPost> {
+  async processPost(post: HackerNewsItem, similarPosts?: string[]): Promise<ProcessedPost> {
     if (!post.url) {
       throw new Error('Post URL is required');
     }
-    const prompt = generateHackernewsPostPrompt({ url: post.url });
+    const prompt = generateHackernewsPostPrompt({ url: post.url, similarPosts });
     const response = await this.llm.bindTools([{ urlContext: {} }]).pipe(new StringOutputParser()).invoke(prompt);
     const titleMatch = response.match(/<title>\s*(.*?)\s*<\/title>/s);
     const contentMatch = response.match(/<content>\s*(.*?)\s*<\/content>/s);

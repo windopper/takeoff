@@ -1,9 +1,9 @@
 import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
 import { StringOutputParser } from '@langchain/core/output_parsers';
 import { RedditPost } from './reddit-parser';
-import { templateLoader } from '../utils/template-loader';
-import { PostManager, ProcessedPost } from '../manager/post-manager';
+import { ProcessedPost } from '../manager/post-manager';
 import { XmlParseError } from '../exceptions/xml-parse-error';
+import { generateBlogPostPrompt } from '../prompts/blog-post-prompt';
 
 export interface AIWriteConfig {
   geminiApiKey: string;
@@ -25,11 +25,12 @@ export class RedditAIWriter {
   /**
    * Reddit 게시글을 AI로 정리합니다.
    */
-  async processPost(post: RedditPost, subreddit: string): Promise<ProcessedPost> {
+  async processPost(post: RedditPost, subreddit: string, similarPosts?: string[]): Promise<ProcessedPost> {
     try {
-      const prompt = templateLoader.renderRedditBlogPostPrompt(
-        post.description,
-      );
+      const prompt = generateBlogPostPrompt({
+        description: post.description,
+        similarPosts,
+      });
       
       const response = await this.llm.bindTools([{ urlContext: {} }]).pipe(new StringOutputParser()).invoke(prompt);
 
