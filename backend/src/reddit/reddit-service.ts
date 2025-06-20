@@ -7,6 +7,7 @@ import { RedditParser } from './reddit-parser';
 import { XmlParseError } from '../exceptions/xml-parse-error';
 import { WebhookService } from '../webhook/webhook-service';
 import { FRONTEND_URL, PUBLIC_URL } from '../constants';
+import { retrieveSimilarPosts, vectorizePostAndSave } from '../vectorize/vectorize-service';
 
 interface ProcessRedditPostsParams {
 	limit: number;
@@ -118,44 +119,54 @@ export async function processRedditPosts(params: ProcessRedditPostsParams): Prom
 					skipped++;
 					continue;
 				}
-				
-				console.log('✅ 모든 필터 통과 - AI 처리 시작');
-				const processedPost = await aiWriter.processPost(post, subReddit.subreddit);
-				console.log(`처리 완료: ${processedPost.title}`);
 
+				console.log('✅ 모든 필터 통과 - AI 처리 시작');
+				const similarPosts = await retrieveSimilarPosts(post.title);
+				console.log(`유사 포스트 검색 완료: ${similarPosts.length}`);
+				const processedPost = await aiWriter.processPost(
+					post,
+					subReddit.subreddit,
+					similarPosts.map((post) => post.content)
+				);
+				console.log(`포스트 생성 완료: ${processedPost.title}`);
 				const savedPost = await postManager.savePost(processedPost);
+				console.log(`포스트 저장 완료: ${savedPost}`);
 				if (savedPost) {
+					await vectorizePostAndSave(savedPost);
+					console.log(`포스트 벡터화 완료: ${savedPost.id}`);
 					saved++;
 				}
 
 				// 웹훅 전송
-				await WebhookService.sendWebhookBatchToSubscribers([{
-					title: processedPost.title,
-					content: processedPost.content,
-					url: `${FRONTEND_URL}/posts/${savedPost}`,
-				}]);
+				await WebhookService.sendWebhookBatchToSubscribers([
+					{
+						title: processedPost.title,
+						content: processedPost.content,
+						url: `${FRONTEND_URL}/posts/${savedPost}`,
+					},
+				]);
 				filterStats.processed++;
 
 				// API 호출 제한을 고려하여 잠시 대기
 				await new Promise((resolve) => setTimeout(resolve, 2000));
 			} catch (error) {
-                if (error instanceof XmlParseError) {
-                    console.error('Reddit 게시글 처리 중 오류:', error);
-                    skipped++;
-                    await filteredPostManager.saveFilteredPost({
-                        community: subReddit.subreddit,
-                        filterReason: 'xml_parse_error',
-                        filterType: 'xml_parse_error',
-                        originalUrl: post.link,
-                        originalTitle: post.title,
-                        platform: 'reddit',
-                        postScore: 0,
-                        confidence: 0.5,
-                    });
-                } else {
-                    console.error(`게시글 처리 실패 (${post.title}):`, error);
-                    skipped++;
-                }
+				if (error instanceof XmlParseError) {
+					console.error('Reddit 게시글 처리 중 오류:', error);
+					skipped++;
+					await filteredPostManager.saveFilteredPost({
+						community: subReddit.subreddit,
+						filterReason: 'xml_parse_error',
+						filterType: 'xml_parse_error',
+						originalUrl: post.link,
+						originalTitle: post.title,
+						platform: 'reddit',
+						postScore: 0,
+						confidence: 0.5,
+					});
+				} else {
+					console.error(`게시글 처리 실패 (${post.title}):`, error);
+					skipped++;
+				}
 				continue;
 			}
 		}

@@ -1,0 +1,1 @@
+ALTER TABLE `ai_posts` ADD `is_vectorized` integer DEFAULT 0 NOT NULL;

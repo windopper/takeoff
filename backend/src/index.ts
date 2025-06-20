@@ -10,11 +10,14 @@ import { ArxivRoutes } from './arxiv/arxiv-routes';
 import { FilteredPostManager } from './manager/filter-post-manager';
 import { FetchError } from './exceptions/fetch-error';
 import { XmlParseError } from './exceptions/xml-parse-error';
+import { VectorizeRoutes } from './vectorize/vectorize-routes';
 
 export interface Env {
 	// If you set another name in the Wrangler config file for the value for 'binding',
 	// replace "DB" with the variable name you defined.
 	DB: D1Database;
+
+	VECTORIZE: Vectorize;
 	// Google Gemini API Key를 환경 변수로 추가
 	GEMINI_API_KEY: string;
 	// Static Assets binding
@@ -148,6 +151,21 @@ export default {
 	
 			if (pathname === "/api/webhook-test" && request.method === 'POST') {
 				const response = await WebhookRoutes.sendWebhookTest(request, env);
+				return addCorsHeaders(response);
+			}
+
+			if (pathname === "/api/vectorize" && request.method === 'POST') {
+				const response = await VectorizeRoutes.vectorizeText(request, env);
+				return addCorsHeaders(response);
+			}
+
+			if (pathname === "/api/vectorize-all-post-not-indexed-and-save" && request.method === 'POST') {
+				const response = await VectorizeRoutes.vectorizeAllPostNotIndexedAndSave(request, env);
+				return addCorsHeaders(response);
+			}
+
+			if (pathname === "/api/retrieve-similar-posts" && request.method === 'POST') {
+				const response = await VectorizeRoutes.retrieveSimilarPosts(request, env);
 				return addCorsHeaders(response);
 			}
 	

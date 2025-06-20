@@ -7,6 +7,7 @@ import { FilteredPostManager } from '../manager/filter-post-manager';
 import { XmlParseError } from '../exceptions/xml-parse-error';
 import { WebhookService } from '../webhook/webhook-service';
 import { FRONTEND_URL, PUBLIC_URL } from '../constants';
+import { retrieveSimilarPosts, vectorizePostAndSave } from '../vectorize/vectorize-service';
 
 interface ProcessHackernewsPostsParams {
 	limit: number;
@@ -94,12 +95,18 @@ export async function processHackernewsPosts(params: ProcessHackernewsPostsParam
 		}
 
 		try {
-			console.log(`처리 중: ${item.title} (점수: ${item.score})`);
-			const processedPost = await aiWriter.processPost(item);
+			console.log(`포스트 생성 중: ${item.title}`);
+			const similarPosts = await retrieveSimilarPosts(item.title);
+			console.log(`유사 포스트 검색 완료: ${similarPosts.length}`);
+			const processedPost = await aiWriter.processPost(item, similarPosts.map((post) => post.content));
 			console.log(`처리 완료: ${processedPost.title}`);
 			const savedPost = await postManager.savePost(processedPost);
-			if (savedPost) saved++;
-
+			console.log(`포스트 저장 완료: ${savedPost}`);
+			if (savedPost) {
+				await vectorizePostAndSave(savedPost);
+				console.log(`포스트 벡터화 완료: ${savedPost.id}`);
+				saved++;
+			}
 			// 웹훅 전송
 			await WebhookService.sendWebhookBatchToSubscribers([{
 				title: processedPost.title,

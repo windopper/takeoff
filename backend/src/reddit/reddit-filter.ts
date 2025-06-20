@@ -1,7 +1,7 @@
 import { RedditPost } from "./reddit-parser";
 import { ChatGoogleGenerativeAI } from '@langchain/google-genai';
 import { StringOutputParser } from '@langchain/core/output_parsers';
-import { templateLoader } from '../utils/template-loader';
+import { generateFilterPrompt } from "../prompts/filter-prompt";
 
 type FilterReason = 'time' | 'keyword' | 'score' | 'ai_relevance';
 
@@ -57,11 +57,11 @@ export class RedditFilter {
         }
 
         try {
-            const prompt = templateLoader.renderFilterPrompt(
-                post.title,
-                post.description || post.title,
-                subreddit
-            );
+            const prompt = generateFilterPrompt({
+                title: post.title,
+                description: post.description || post.title,
+                subreddit,
+            });
             
             const chain = this.llm.pipe(new StringOutputParser());
             const result = await chain.invoke(prompt);

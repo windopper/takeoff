@@ -28,6 +28,7 @@
 	},
 	"dependencies": {
 		"@cloudflare/vitest-pool-workers": "^0.8.41",
+		"@google/genai": "^1.5.1",
 		"@langchain/core": "^0.3.0",
 		"@langchain/google-genai": "^0.2.0",
 		"@langchain/openai": "^0.3.0",

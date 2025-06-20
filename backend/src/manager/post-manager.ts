@@ -1,6 +1,6 @@
 import { drizzle, DrizzleD1Database } from 'drizzle-orm/d1';
-import { aiPosts } from '../db/schema';
-import { count, desc, and, ilike, like, asc, lt } from 'drizzle-orm';
+import { AiPost, aiPosts } from '../db/schema';
+import { count, desc, and, ilike, like, asc, lt, inArray } from 'drizzle-orm';
 import { eq } from 'drizzle-orm';
 import { POST_EXPIRATION_TIME } from '../constants';
 
@@ -41,7 +41,7 @@ export class PostManager {
 	/**
 	 * 처리된 게시글을 데이터베이스에 저장합니다.
 	 */
-	async savePost(post: ProcessedPost): Promise<number | null> {
+	async savePost(post: ProcessedPost): Promise<AiPost | null> {
 		try {
 			// 이미 존재하는 게시글인지 확인
 			if (await this.isPostExists(post.originalUrl)) {
@@ -63,11 +63,11 @@ export class PostManager {
 					originalAuthor: post.originalAuthor,
 					postScore: post.postScore,
 				})
-				.returning({ id: aiPosts.id })
+				.returning()
 				.execute();
 
 			console.log(`게시글 저장 완료: ${post.title}`);
-			return result[0].id;
+			return result[0];
 		} catch (error) {
 			console.error('게시글 저장 중 오류:', error);
 			throw new Error(`게시글 저장 실패: ${error instanceof Error ? error.message : '알 수 없는 오류'}`);
@@ -174,6 +174,11 @@ export class PostManager {
 		}
 	}
 
+	async getPostsByIds(ids: string[]): Promise<AiPost[]> {
+		const result = await this.db.select().from(aiPosts).where(inArray(aiPosts.id, ids.map((id) => parseInt(id)))).execute();
+		return result;
+	}
+
 	async getPostCount({ query = '', category = '' }: { query?: string; category?: string }): Promise<number> {
 		const where = [];
 		if (query) {
@@ -188,6 +193,15 @@ export class PostManager {
 			.where(and(...where))
 			.execute();
 		return result[0].count;
+	}
+
+	async getAllPostNotVectorized(): Promise<AiPost[]> {
+		const result = await this.db.select().from(aiPosts).where(eq(aiPosts.isVectorized, 0)).execute();
+		return result;
+	}
+
+	async updatePost(id: number, data: Partial<AiPost>): Promise<void> {
+		await this.db.update(aiPosts).set(data).where(eq(aiPosts.id, id));
 	}
 
 	async deletePost(id: string): Promise<void> {
