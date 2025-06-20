@@ -2,6 +2,7 @@ import { GoogleGenAI } from "@google/genai";
 import { env } from "cloudflare:workers";
 import { PostManager } from "../manager/post-manager";
 import { AiPost } from "../db/schema";
+import { VECTORIZE_DELAY } from "../constants";
 
 export async function vectorizeText(text: string) {
     const embeddings = new GoogleGenAI({
@@ -117,7 +118,7 @@ export async function vectorizeAllPostNotIndexedAndSave() {
         console.log(`Vectorizing post ${post.id}`);
         await vectorizePostAndSave(post);
         // delay 1 second
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+        await new Promise((resolve) => setTimeout(resolve, VECTORIZE_DELAY));
         console.log(`Vectorized post ${post.id}`);
     }
 }
