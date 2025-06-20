@@ -7,6 +7,7 @@ import remarkGfm from "remark-gfm";
 import remarkRehype from "remark-rehype";
 import CategoryPills from "@/app/components/post/CategoryPills";
 import { Metadata } from "next";
+import NotFound from "./NotFound";
 
 interface PostPageProps {
   params: Promise<{ id: string }>;
@@ -32,25 +33,9 @@ export default async function PostPage({ params }: PostPageProps) {
 
   const post: Post | null = response.post;
 
-  if (!post) {
+  if (! post) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-100 mb-2">
-            게시글을 찾을 수 없습니다
-          </h1>
-          <p className="text-zinc-500 dark:text-zinc-400 mb-6">
-            요청하신 게시글이 존재하지 않거나 삭제되었습니다.
-          </p>
-          <Link 
-            href="/" 
-            className="inline-flex items-center gap-2 px-4 py-2 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 rounded-lg hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors"
-          >
-            <ReturnButton />
-            홈으로 돌아가기
-          </Link>
-        </div>
-      </div>
+      <NotFound />
     );
   }
 
