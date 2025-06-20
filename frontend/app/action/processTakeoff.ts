@@ -1,6 +1,8 @@
 'use server';
 
 import { takeoffFetch } from "@/utils/fetch";
+import { POSTS_TAG, getPostByIdTag, POST_COUNT_TAG } from "../constants/tags";
+import { revalidateTag } from "next/cache";
 
 export const processArxivPaper = async (url: string) => {
     try {
@@ -24,6 +26,8 @@ export const processArxivPaper = async (url: string) => {
         }
         
         const data = await response.json();
+        revalidateTag(POSTS_TAG);
+        revalidateTag(POST_COUNT_TAG);
         return data;
     } catch (error) {
         if (error instanceof Error) {
@@ -54,6 +58,8 @@ export const processRedditPosts = async (url: string) => {
         }
         
         const data = await response.json();
+        revalidateTag(POSTS_TAG);
+        revalidateTag(POST_COUNT_TAG);
         return data;
     } catch (error) {
         if (error instanceof Error) {
@@ -84,6 +90,8 @@ export const processHackerNewsPosts = async (url: string) => {
         }
         
         const data = await response.json();
+        revalidateTag(POSTS_TAG);
+        revalidateTag(POST_COUNT_TAG);
         return data;
     } catch (error) {
         if (error instanceof Error) {
@@ -115,6 +123,9 @@ export const processUrl = async (url: string) => {
         }
 
         const data = await response.json();
+        revalidateTag(POSTS_TAG);
+        revalidateTag(POST_COUNT_TAG);
+        revalidateTag(getPostByIdTag(data.post));
         return data;
     } catch (error) {
         if (error instanceof Error) {

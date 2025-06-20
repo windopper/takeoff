@@ -1,6 +1,8 @@
 "use server";
 
 import { takeoffFetch } from "@/utils/fetch";
+import { revalidateTag } from "next/cache";
+import { POSTS_TAG, POST_COUNT_TAG, getPostByIdTag } from "../constants/tags";
 
 export async function getTakeoffPosts({
   limit = 20,
@@ -18,6 +20,7 @@ export async function getTakeoffPosts({
     {
       next: {
         revalidate: 600,
+        tags: [POSTS_TAG],
       },
     }
   );
@@ -37,6 +40,7 @@ export async function getTakeoffPostCount({
     {
       next: {
         revalidate: 600,
+        tags: [POST_COUNT_TAG],
       },
     }
   );
@@ -50,6 +54,7 @@ export async function getTakeoffPostById(id: string) {
     {
       next: {
         revalidate: 3600,
+        tags: [getPostByIdTag(id)],
       },
     }
   );
@@ -65,5 +70,8 @@ export async function deleteTakeoffPostById(id: string) {
     }
   );
   const data = await response.json();
+  revalidateTag(POSTS_TAG);
+  revalidateTag(POST_COUNT_TAG);
+  revalidateTag(getPostByIdTag(id));
   return data;
 }
