@@ -9,6 +9,12 @@ type ProcessingState = {
   hackernews: boolean;
 };
 
+type ErrorState = {
+  arxiv: string | null;
+  reddit: string | null;
+  hackernews: string | null;
+};
+
 export default function ProcessingPanel() {
   const [arxivUrl, setArxivUrl] = useState('');
   const [isProcessing, setIsProcessing] = useState<ProcessingState>({
@@ -17,16 +23,24 @@ export default function ProcessingPanel() {
     hackernews: false,
   });
   const [results, setResults] = useState<Record<string, any>>({});
+  const [errors, setErrors] = useState<ErrorState>({
+    arxiv: null,
+    reddit: null,
+    hackernews: null,
+  });
 
   const handleArxivProcess = async () => {
     if (!arxivUrl.trim()) return;
     
     setIsProcessing((prev: ProcessingState) => ({ ...prev, arxiv: true }));
+    setErrors((prev: ErrorState) => ({ ...prev, arxiv: null }));
     try {
       const result = await processArxivPaper(arxivUrl);
       setResults((prev: Record<string, any>) => ({ ...prev, arxiv: result }));
     } catch (error) {
       console.error('ArXiv processing error:', error);
+      const errorMessage = error instanceof Error ? error.message : 'ArXiv 처리 중 오류가 발생했습니다.';
+      setErrors((prev: ErrorState) => ({ ...prev, arxiv: errorMessage }));
     } finally {
       setIsProcessing((prev: ProcessingState) => ({ ...prev, arxiv: false }));
     }
@@ -34,11 +48,14 @@ export default function ProcessingPanel() {
 
   const handleRedditProcess = async () => {
     setIsProcessing((prev: ProcessingState) => ({ ...prev, reddit: true }));
+    setErrors((prev: ErrorState) => ({ ...prev, reddit: null }));
     try {
       const result = await processRedditPosts('');
       setResults((prev: Record<string, any>) => ({ ...prev, reddit: result }));
     } catch (error) {
       console.error('Reddit processing error:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Reddit 처리 중 오류가 발생했습니다.';
+      setErrors((prev: ErrorState) => ({ ...prev, reddit: errorMessage }));
     } finally {
       setIsProcessing((prev: ProcessingState) => ({ ...prev, reddit: false }));
     }
@@ -46,11 +63,14 @@ export default function ProcessingPanel() {
 
   const handleHackerNewsProcess = async () => {
     setIsProcessing((prev: ProcessingState) => ({ ...prev, hackernews: true }));
+    setErrors((prev: ErrorState) => ({ ...prev, hackernews: null }));
     try {
       const result = await processHackerNewsPosts('');
       setResults((prev: Record<string, any>) => ({ ...prev, hackernews: result }));
     } catch (error) {
       console.error('HackerNews processing error:', error);
+      const errorMessage = error instanceof Error ? error.message : 'HackerNews 처리 중 오류가 발생했습니다.';
+      setErrors((prev: ErrorState) => ({ ...prev, hackernews: errorMessage }));
     } finally {
       setIsProcessing((prev: ProcessingState) => ({ ...prev, hackernews: false }));
     }
@@ -80,9 +100,14 @@ export default function ProcessingPanel() {
               {isProcessing.arxiv ? '처리 중...' : '처리하기'}
             </button>
           </div>
-          {results.arxiv && (
-            <div className="p-3 bg-zinc-100 dark:bg-zinc-700 rounded-md">
-              <p className="text-sm text-zinc-600 dark:text-zinc-300">처리 완료: {JSON.stringify(results.arxiv)}</p>
+          {errors.arxiv && (
+            <div className="p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md">
+              <p className="text-sm text-red-600 dark:text-red-400">❌ {errors.arxiv}</p>
+            </div>
+          )}
+          {results.arxiv && !errors.arxiv && (
+            <div className="p-3 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-md">
+              <p className="text-sm text-green-600 dark:text-green-400">✅ 처리 완료: {JSON.stringify(results.arxiv)}</p>
             </div>
           )}
         </div>
@@ -97,9 +122,14 @@ export default function ProcessingPanel() {
           >
             {isProcessing.reddit ? '처리 중...' : 'Reddit 포스트 처리하기'}
           </button>
-          {results.reddit && (
-            <div className="p-3 bg-zinc-100 dark:bg-zinc-700 rounded-md">
-              <p className="text-sm text-zinc-600 dark:text-zinc-300">처리 완료: {JSON.stringify(results.reddit)}</p>
+          {errors.reddit && (
+            <div className="p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md">
+              <p className="text-sm text-red-600 dark:text-red-400">❌ {errors.reddit}</p>
+            </div>
+          )}
+          {results.reddit && !errors.reddit && (
+            <div className="p-3 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-md">
+              <p className="text-sm text-green-600 dark:text-green-400">✅ 처리 완료: {JSON.stringify(results.reddit)}</p>
             </div>
           )}
         </div>
@@ -114,9 +144,14 @@ export default function ProcessingPanel() {
           >
             {isProcessing.hackernews ? '처리 중...' : 'HackerNews 포스트 처리하기'}
           </button>
-          {results.hackernews && (
-            <div className="p-3 bg-zinc-100 dark:bg-zinc-700 rounded-md">
-              <p className="text-sm text-zinc-600 dark:text-zinc-300">처리 완료: {JSON.stringify(results.hackernews)}</p>
+          {errors.hackernews && (
+            <div className="p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md">
+              <p className="text-sm text-red-600 dark:text-red-400">❌ {errors.hackernews}</p>
+            </div>
+          )}
+          {results.hackernews && !errors.hackernews && (
+            <div className="p-3 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-md">
+              <p className="text-sm text-green-600 dark:text-green-400">✅ 처리 완료: {JSON.stringify(results.hackernews)}</p>
             </div>
           )}
         </div>
