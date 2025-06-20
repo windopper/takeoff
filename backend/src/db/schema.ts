@@ -16,7 +16,8 @@ export const aiPosts = sqliteTable('ai_posts', {
   originalTitle: text('original_title').notNull().default(''),
   originalAuthor: text('original_author').notNull().default(''),
   postScore: integer('post_score').notNull().default(0),
-  updatedAt: text('updated_at').notNull().default(sql`CURRENT_TIMESTAMP`)
+  updatedAt: text('updated_at').notNull().default(sql`CURRENT_TIMESTAMP`),
+  isVectorized: integer('is_vectorized').notNull().default(0)
 }, (table) => ({
   // 인덱스 생성 (검색 성능 향상)
   categoryIdx: index('idx_ai_posts_category').on(table.category),

@@ -1,6 +1,6 @@
 import { drizzle, DrizzleD1Database } from 'drizzle-orm/d1';
-import { aiPosts } from '../db/schema';
-import { count, desc, and, ilike, like, asc, lt } from 'drizzle-orm';
+import { AiPost, aiPosts } from '../db/schema';
+import { count, desc, and, ilike, like, asc, lt, inArray } from 'drizzle-orm';
 import { eq } from 'drizzle-orm';
 import { POST_EXPIRATION_TIME } from '../constants';
 
@@ -174,6 +174,11 @@ export class PostManager {
 		}
 	}
 
+	async getPostsByIds(ids: string[]): Promise<AiPost[]> {
+		const result = await this.db.select().from(aiPosts).where(inArray(aiPosts.id, ids.map((id) => parseInt(id)))).execute();
+		return result;
+	}
+
 	async getPostCount({ query = '', category = '' }: { query?: string; category?: string }): Promise<number> {
 		const where = [];
 		if (query) {
@@ -188,6 +193,15 @@ export class PostManager {
 			.where(and(...where))
 			.execute();
 		return result[0].count;
+	}
+
+	async getAllPostNotVectorized(): Promise<AiPost[]> {
+		const result = await this.db.select().from(aiPosts).where(eq(aiPosts.isVectorized, 0)).execute();
+		return result;
+	}
+
+	async updatePost(id: number, data: Partial<AiPost>): Promise<void> {
+		await this.db.update(aiPosts).set(data).where(eq(aiPosts.id, id));
 	}
 
 	async deletePost(id: string): Promise<void> {

@@ -101,6 +101,7 @@ export class CommonRoutes {
 
 		const postManager = new PostManager(env.DB);
 		await postManager.deletePost(id);
+		await env.VECTORIZE.deleteByIds([id]);
 		return Response.json({
 			message: 'Post deleted successfully',
 		});
