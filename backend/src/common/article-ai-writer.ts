@@ -26,16 +26,18 @@ export class ArticleAIWriter {
     }
     const prompt = generateHackernewsPostPrompt({ url });
     const response = await this.llm.bindTools([{ urlContext: {} }]).pipe(new StringOutputParser()).invoke(prompt);
+
     const titleMatch = response.match(/<title>\s*(.*?)\s*<\/title>/s);
     const contentMatch = response.match(/<content>\s*(.*?)\s*<\/content>/s);
+    const errorMatch = response.match(/<error>\s*(.*?)\s*<\/error>/s);
 
-    if (!titleMatch || !contentMatch) {
-      throw new Error('Failed to parse title or content');
+    if (!titleMatch || !contentMatch || errorMatch) {
+      throw new Error(errorMatch ? errorMatch[1].trim() : 'Failed to parse title or content');
     }
 
     return {
       title: titleMatch ? titleMatch[1].trim() : "article",
-      content: contentMatch ? contentMatch[1].trim() : response,
+      content: contentMatch ? contentMatch[1].trim() : "",
       author: "takeoff-ai",
       originalUrl: url,
       category: 'article',

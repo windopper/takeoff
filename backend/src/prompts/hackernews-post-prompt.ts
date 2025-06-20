@@ -31,6 +31,13 @@ export function generateHackernewsPostPrompt({ url }: HackernewsPostPromptParams
   - 2개 이상일 경우 콤마(,)로 구분.
   - 카테고리는 반드시 영어로 작성.
   </category>
+
+  URL 접근이 불가능한 경우 다음 출력 형식을 사용할 것:
+  <error>
+  에러 발생 메시지.
+  </error>
+
+  title, content, category와 error 태그는 동시에 존재할 수 없습니다.
   
   위 원칙을 바탕으로 내용에 가장 적합한 형식으로 자유롭게 작성할 것.
   오직 포스트만 작성할 것. 다른 부가적인 내용은 작성하지 말 것.`;

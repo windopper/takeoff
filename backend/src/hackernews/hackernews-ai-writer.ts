@@ -31,6 +31,11 @@ export class HackernewsAIWriter {
     const titleMatch = response.match(/<title>\s*(.*?)\s*<\/title>/s);
     const contentMatch = response.match(/<content>\s*(.*?)\s*<\/content>/s);
     const categoryMatch = response.match(/<category>\s*(.*?)\s*<\/category>/s);
+    const errorMatch = response.match(/<error>\s*(.*?)\s*<\/error>/s);
+
+    if (errorMatch) {
+      throw new Error(errorMatch[1].trim());
+    }
 
     if (!titleMatch || !contentMatch || !categoryMatch) {
       throw new XmlParseError('Failed to parse title or content or category');
