@@ -27,66 +27,99 @@ function checkApiKey(request: Request, env: Env): boolean {
 	return apiKey === env.TAKEOFF_API_KEY;
 }
 
+// CORS 헤더를 추가하는 헬퍼 함수
+function addCorsHeaders(response: Response): Response {
+	const headers = new Headers(response.headers);
+	headers.set('Access-Control-Allow-Origin', '*');
+	headers.set('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS');
+	headers.set('Access-Control-Allow-Headers', 'Content-Type, Takeoff-Api-Key, Authorization');
+	headers.set('Access-Control-Max-Age', '86400');
+	
+	return new Response(response.body, {
+		status: response.status,
+		statusText: response.statusText,
+		headers: headers
+	});
+}
+
 export default {
 	async fetch(request, env): Promise<Response> {
 		const { pathname } = new URL(request.url);
+		
+		// OPTIONS 요청 (CORS preflight) 처리
+		if (request.method === 'OPTIONS') {
+			return addCorsHeaders(new Response(null, { status: 204 }));
+		}
+		
 		if (pathname === "/takeoff.png") {
 			try {
-				return await env.ASSETS.fetch(request);
+				const assetResponse = await env.ASSETS.fetch(request);
+				return addCorsHeaders(assetResponse);
 			} catch (error) {
 				console.error('이미지 파일 제공 중 오류:', error);
-				return new Response('이미지를 불러올 수 없습니다.', {
+				const errorResponse = new Response('이미지를 불러올 수 없습니다.', {
 					status: 500,
 					headers: {
 						'Content-Type': 'text/plain; charset=utf-8',
 					},
 				});
+				return addCorsHeaders(errorResponse);
 			}
 		}
 
 		if (!checkApiKey(request, env)) {
-			return new Response('Forbidden', { status: 403 });
+			const forbiddenResponse = new Response('Forbidden', { status: 403 });
+			return addCorsHeaders(forbiddenResponse);
 		}
 
 		if (pathname === "/api/reddit") {
-			return await RedditRoutes.getRedditPosts(request);
+			const response = await RedditRoutes.getRedditPosts(request);
+			return addCorsHeaders(response);
 		}
 
 		// HackerNews 게시글 목록 조회 API
 		if (pathname === "/api/hackernews") {
-			return await HackerNewsRoutes.getHackerNewsPosts(request);
+			const response = await HackerNewsRoutes.getHackerNewsPosts(request);
+			return addCorsHeaders(response);
 		}
 
 		// /api/posts 형식으로 게시글 목록 조회 API
 		if (pathname === "/api/posts" && request.method === 'GET') {
-			return await CommonRoutes.getPosts(request, env);
+			const response = await CommonRoutes.getPosts(request, env);
+			return addCorsHeaders(response);
 		}
 
 		if (pathname === "/api/post-count" && request.method === 'GET') {
-			return await CommonRoutes.getPostCount(request, env);
+			const response = await CommonRoutes.getPostCount(request, env);
+			return addCorsHeaders(response);
 		}
 
 		// /api/posts/:id 형식으로 특정 게시글 조회 API
 		if (pathname.startsWith("/api/posts/") && request.method === 'GET') {
-			return await CommonRoutes.getPostById(request, env);
+			const response = await CommonRoutes.getPostById(request, env);
+			return addCorsHeaders(response);
 		}
 
 		if (pathname.startsWith("/api/posts/") && request.method === 'DELETE') {
-			return await CommonRoutes.deletePost(request, env);
+			const response = await CommonRoutes.deletePost(request, env);
+			return addCorsHeaders(response);
 		}
 
 		// Reddit 게시글을 AI로 처리하고 저장하는 API
 		if (pathname === "/api/process-reddit" && request.method === 'POST') {
-			return await RedditRoutes.processRedditPosts(request, env);
+			const response = await RedditRoutes.processRedditPosts(request, env);
+			return addCorsHeaders(response);
 		}
 
 		// HackerNews 게시글을 AI로 처리하고 저장하는 API
 		if (pathname === "/api/process-hackernews" && request.method === 'POST') {
-			return await HackerNewsRoutes.processHackerNewsPosts(request, env);
+			const response = await HackerNewsRoutes.processHackerNewsPosts(request, env);
+			return addCorsHeaders(response);
 		}
 
 		if (pathname === "/api/process-arxiv" && request.method === 'POST') {
-			return await ArxivRoutes.processArxivPaper(request, env);
+			const response = await ArxivRoutes.processArxivPaper(request, env);
+			return addCorsHeaders(response);
 		}
 
 		if (pathname === "/api/process-url" && request.method === 'POST') {
@@ -97,26 +130,31 @@ export default {
 			const url = body.url;
 			console.log(`Processing URL: ${url}`);
 			const processedPost = await aiWriter.processPost(url);
-			return Response.json(processedPost);
+			const response = Response.json(processedPost);
+			return addCorsHeaders(response);
 		}
 
 		if (pathname === "/api/webhook-register" && request.method === 'POST') {
-			return await WebhookRoutes.createWebhookUrl(request, env);
+			const response = await WebhookRoutes.createWebhookUrl(request, env);
+			return addCorsHeaders(response);
 		}
 
 		if (pathname === "/api/webhook-list") {
-			return await WebhookRoutes.getWebhookList(request, env);
+			const response = await WebhookRoutes.getWebhookList(request, env);
+			return addCorsHeaders(response);
 		}
 
 		if (pathname === "/api/webhook-delete" && request.method === 'POST') {
-			return await WebhookRoutes.deleteWebhookUrl(request, env);
+			const response = await WebhookRoutes.deleteWebhookUrl(request, env);
+			return addCorsHeaders(response);
 		}
 
 		if (pathname === "/api/webhook-test" && request.method === 'POST') {
-			return await WebhookRoutes.sendWebhookTest(request, env);
+			const response = await WebhookRoutes.sendWebhookTest(request, env);
+			return addCorsHeaders(response);
 		}
 
-		return new Response(`사용 가능한 API:
+		const helpResponse = new Response(`사용 가능한 API:
 		- GET /api/reddit?subreddit=LocalLLaMA&limit=5 - Reddit 게시글 목록
 		- GET /api/hackernews?minScore=150&limit=10&storyType=top - HackerNews 게시글 목록
 		- GET /api/community?platform=all&quality=default - 통합 커뮤니티 게시글 목록
@@ -126,6 +164,7 @@ export default {
 		- POST /api/process-community - 통합 커뮤니티 게시글 AI 처리 및 저장
 		- POST /api/process-url - 임의 URL 아티클 처리
 		- GET /api/posts/:id - 특정 게시글 조회`);
+		return addCorsHeaders(helpResponse);
 	},
 
 	// Cron Trigger를 위한 scheduled 핸들러 추가
