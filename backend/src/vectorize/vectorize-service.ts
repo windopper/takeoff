@@ -153,7 +153,11 @@ export async function retrieveSimilarPosts(query: string): Promise<AiPost[]> {
         throw new Error('Failed to query vectorize');
     }
 
-    const postIds = result.matches.filter((match) => match.metadata?.postId).map((match) => match.metadata?.postId!.toString()) as string[];
+    const threshold = 0.5;
+    
+    const postIds = result.matches
+			.filter((match) => match.metadata?.postId && match.score && match.score > threshold)
+			.map((match) => match.metadata?.postId!.toString()) as string[];
     const posts = await postManager.getPostsByIds(postIds);
     return posts;
 }
