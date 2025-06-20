@@ -116,6 +116,9 @@ export async function vectorizeAllPostNotIndexedAndSave() {
     for (const post of posts) {
         console.log(`Vectorizing post ${post.id}`);
         await vectorizePostAndSave(post);
+        // delay 1 second
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        console.log(`Vectorized post ${post.id}`);
     }
 }
 
