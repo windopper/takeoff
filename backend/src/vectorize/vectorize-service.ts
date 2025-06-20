@@ -10,11 +10,11 @@ export async function vectorizeText(text: string) {
     })
 
     const vector = await embeddings.models.embedContent({
-        model: "gemini-embedding-exp-03-07",
+        model: "text-embedding-004",
         contents: text,
         config: {
             taskType: 'RETRIEVAL_DOCUMENT',
-            outputDimensionality: 1536,
+            outputDimensionality: 768,
         }
     });
 
@@ -31,11 +31,11 @@ export async function vectorizeTextBatch(texts: string[]) {
     })
     
     const vectors = await embeddings.models.embedContent({
-        model: "gemini-embedding-exp-03-07",
+        model: "text-embedding-004",
         contents: texts,
         config: {
             taskType: 'RETRIEVAL_DOCUMENT',
-            outputDimensionality: 1536,
+            outputDimensionality: 768,
         }
     });
 
@@ -118,8 +118,8 @@ export async function vectorizeAllPostNotIndexedAndSave() {
         console.log(`Vectorizing post ${post.id}`);
         await vectorizePostAndSave(post);
         // delay 1 second
-        await new Promise((resolve) => setTimeout(resolve, VECTORIZE_DELAY));
-        console.log(`Vectorized post ${post.id}`);
+        // await new Promise((resolve) => setTimeout(resolve, VECTORIZE_DELAY));
+        // console.log(`Vectorized post ${post.id}`);
     }
 }
 
@@ -131,11 +131,11 @@ export async function retrieveSimilarPosts(query: string): Promise<AiPost[]> {
     })
 
     const vector = await embeddings.models.embedContent({
-        model: "gemini-embedding-exp-03-07",
+        model: "text-embedding-004",
         contents: query,
         config: {
             taskType: 'RETRIEVAL_DOCUMENT',
-            outputDimensionality: 1536,
+            outputDimensionality: 768,
         }
     });
     
