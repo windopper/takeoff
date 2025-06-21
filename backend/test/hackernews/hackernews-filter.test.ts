@@ -1,18 +1,18 @@
 import { beforeEach, describe, expect, test } from 'vitest'
 import { HackernewsFilter } from '../../src/hackernews/hackernews-filter';
-import { HackerNewsItem } from '../../src/hackernews/hackernews-parser';
+import { ParserResult } from '../../src/common/common-parser';
 
 describe('HackernewsFilter', () => {
-    let mockPost: HackerNewsItem;
+    let mockPost: ParserResult;
 
     beforeEach(() => {
         mockPost = {
-            id: 1,
             title: 'Test Post',
-            time: new Date().getTime() / 1000,
+            description: 'Test Description',
+            publishedAt: new Date().toISOString(),
+            url: 'https://test.com',
             score: 999,
             by: 'Test User',
-            type: 'story',
         }
     });
 
@@ -23,15 +23,15 @@ describe('HackernewsFilter', () => {
 	});
 
     test('should filter score', () => {
-        const filter = new HackernewsFilter({ minScore: 150 });
+        const filter = new HackernewsFilter();
         mockPost.score = 100;
         const result = filter.filterAll(mockPost);
         expect(result).toBe('score');
     });
 
     test('should filter time', () => {
-        const filter = new HackernewsFilter({ diffDays: 3 });
-        mockPost.time = new Date().getTime() / 1000 - 4 * 24 * 60 * 60;
+        const filter = new HackernewsFilter();
+        mockPost.publishedAt = new Date(Date.now() - 4 * 24 * 60 * 60 * 1000).toISOString();
         const result = filter.filterAll(mockPost);
         expect(result).toBe('time');
     });

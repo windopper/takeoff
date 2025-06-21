@@ -1,5 +1,7 @@
+import { CommonFetcher } from '../common/common-fetcher';
+import { ParserResult } from '../common/common-parser';
 import { RedditParser } from './reddit-parser';
-import { processRedditPosts } from './reddit-service';
+import { processRedditPosts, subreddits } from './reddit-service';
 
 export interface Env {
     DB: D1Database;
@@ -7,19 +9,20 @@ export interface Env {
 }
 
 export class RedditRoutes {
-    
     // Reddit 게시글 목록 조회 API
     static async getRedditPosts(request: Request): Promise<Response> {
         try {
             const url = new URL(request.url);
             const limit = parseInt(url.searchParams.get('limit') || '5');
             const subreddit = url.searchParams.get('subreddit');
-
-            const parser = new RedditParser();
+            const fetcher = new CommonFetcher();
+            const parser = new RedditParser(limit);
             let posts;
             
             if (subreddit) {
-                posts = await parser.getTopPosts(subreddit, limit);
+                const response = await fetcher.fetch(subreddit);
+                const text = await response.text();
+                posts = parser.parse(text);
                 return Response.json({
                     success: true,
                     posts,
@@ -28,12 +31,17 @@ export class RedditRoutes {
                     message: `Reddit ${subreddit} 서브레딧: ${posts.length}개 게시글`
                 });
             } else {
-                const allPosts = await parser.getAllTopPosts(limit);
+                let posts: ParserResult[] = [];
+                for (const subreddit of subreddits) {
+                    const response = await fetcher.fetch(subreddit.rssUrl);
+                    const text = await response.text();
+                    posts.push(...parser.parse(text));
+                }
                 return Response.json({
                     success: true,
-                    allPosts,
+                    posts,
                     params: { limit },
-                    message: `Reddit 전체 서브레딧: ${allPosts.length}개 서브레딧`
+                    message: `Reddit 전체 서브레딧: ${posts.length}개 서브레딧`
                 });
             }
         } catch (error) {
@@ -56,11 +64,11 @@ export class RedditRoutes {
             const limit = body.limit || 20;
                 
             const result = await processRedditPosts({ limit });
-            const { processed, saved, skipped, success } = result;
+            const { filtered, saved, skipped, total } = result;
 
             return Response.json({
-                success,
-                processed,
+                total,
+                filtered,
                 saved,
                 skipped,
                 params: { limit },

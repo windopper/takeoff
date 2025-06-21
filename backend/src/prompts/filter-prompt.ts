@@ -1,15 +1,13 @@
 export interface FilterPromptParams {
   title: string;
   description: string;
-  subreddit: string;
 }
 
-export function generateFilterPrompt({ title, description, subreddit }: FilterPromptParams): string {
+export function generateFilterPrompt({ title, description }: FilterPromptParams): string {
   return `다음 Reddit 게시글이 새로운 논문이나 새로운 기술에 관한 내용인지 판단해주세요.
 
 제목: ${title}
 내용: ${description}
-서브레딧: ${subreddit}
 
 판단 기준:
 1. 새로운 연구 논문이나 학술 연구 발표

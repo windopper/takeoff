@@ -209,15 +209,15 @@ export default {
 			console.log(`오래된 게시글 삭제 결과: ${deletedPosts}개 삭제됨`);
 
 			const hackernewResult = await processHackernewsPosts({
-				limit: 100,
+				limit: 30,
 				storyType: 'best'
 			})
-			console.log(`HackerNews 게시글 처리 결과: ${hackernewResult.processed}개 처리됨, ${hackernewResult.saved}개 저장됨, ${hackernewResult.skipped}개 건너뜀`);
+			console.log(`HackerNews 게시글 처리 결과: ${hackernewResult.saved}개 처리됨, ${hackernewResult.saved}개 저장됨, ${hackernewResult.skipped}개 건너뜀`);
 
 			const redditResult = await processRedditPosts({
 				limit: 15,
 			})
-			console.log(`Reddit 게시글 처리 결과: ${redditResult.processed}개 처리됨, ${redditResult.saved}개 저장됨, ${redditResult.skipped}개 건너뜀`);
+			console.log(`Reddit 게시글 처리 결과: ${redditResult.saved}개 처리됨, ${redditResult.saved}개 저장됨, ${redditResult.skipped}개 건너뜀`);
 		} catch (error) {
 			console.error('Scheduled 작업 중 오류 발생:', error);
 		}

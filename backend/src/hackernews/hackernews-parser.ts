@@ -1,3 +1,6 @@
+import { CommonParser, ParserResult } from "../common/common-parser";
+import { HACKERNEWS_RSS_BEST_URL, HACKERNEWS_RSS_NEWEST_URL } from "../constants";
+
 export interface HackerNewsItem {
   id: number;
   title: string;
@@ -9,93 +12,42 @@ export interface HackerNewsItem {
   type: string; // "story", "comment", "job", "poll", "pollopt"
 }
 
-export class HackerNewsParser {
-  private readonly RSS_BEST_URL = 'https://hnrss.org/best';
-  private readonly RSS_NEWEST_URL = 'https://hnrss.org/newest';
-  private readonly USER_AGENT = 'TakeoffBot/1.0';
+export class HackerNewsParser extends CommonParser {
+  limit = 10;
+  RSS_BEST_URL = HACKERNEWS_RSS_BEST_URL;
+  RSS_NEWEST_URL = HACKERNEWS_RSS_NEWEST_URL;
+  USER_AGENT = 'TakeoffBot/1.0';
 
-  constructor() {
-
+  constructor(limit: number = 10) {
+    super();
+    this.limit = limit;
+    this.RSS_BEST_URL = `${this.RSS_BEST_URL}?count=${limit}`;
+    this.RSS_NEWEST_URL = `${this.RSS_NEWEST_URL}?count=${limit}`;
   }
-
-  /**
-   * New Stories를 가져옵니다.
-   */
-  async getNewPosts(limit: number = 10): Promise<HackerNewsItem[]> {
-    try {
-      console.log(`HackerNews New Stories RSS 가져오기 (제한: ${limit})`);
-      
-      const response = await fetch(this.RSS_NEWEST_URL, {
-        headers: { 'User-Agent': this.USER_AGENT }
-      });
-
-      if (!response.ok) {
-        throw new Error(`RSS API 오류: ${response.status}`);
-      }
-
-      const rssText = await response.text();
-      const items = this.parseRssToItems(rssText, limit);
-      
-      console.log(`총 ${items.length}개의 새로운 게시글을 수집했습니다.`);
-      return items;
-    } catch (error) {
-      console.error('HackerNews New Posts RSS 가져오기 실패:', error);
-      throw error;
-    }
-  }
-
-  /**
-   * Best Stories를 가져옵니다.
-   */
-  async getBestPosts(limit: number = 10): Promise<HackerNewsItem[]> {
-    try {
-      console.log(`HackerNews Best Stories RSS 가져오기 (제한: ${limit})`);
-      
-      const response = await fetch(`${this.RSS_BEST_URL}?count=${limit}`, {
-        headers: { 'User-Agent': this.USER_AGENT }
-      });
-
-      if (!response.ok) {
-        throw new Error(`RSS API 오류: ${response.status}`);
-      }
-
-      const rssText = await response.text();
-      const items = this.parseRssToItems(rssText, limit);
-      
-      console.log(`총 ${items.length}개의 베스트 게시글을 수집했습니다.`);
-      return items;
-    } catch (error) {
-      console.error('HackerNews Best Posts RSS 가져오기 실패:', error);
-      throw error;
-    }
-  }
-
-  /**
-   * RSS XML을 파싱하여 HackerNewsItem 배열로 변환합니다.
-   */
-  parseRssToItems(rssText: string, limit: number): HackerNewsItem[] {
+  
+  parse(text: string): ParserResult[] {
     try {
       // 정규식으로 RSS 아이템 추출
       const itemRegex = /<item>([\s\S]*?)<\/item>/g;
       const items: string[] = [];
       let match;
       
-      while ((match = itemRegex.exec(rssText)) !== null && items.length < limit) {
+      while ((match = itemRegex.exec(text)) !== null && items.length < this.limit) {
         items.push(match[1]);
       }
       
-      const hackerNewsItems: HackerNewsItem[] = [];
+      const results: ParserResult[] = [];
       
       for (const itemXml of items) {
         const parsedItem = this.parseRssItem(itemXml);
         
         if (parsedItem) {
-          hackerNewsItems.push(parsedItem);
+          results.push(parsedItem);
           console.log(`✓ 추가됨: ${parsedItem.title} (점수: ${parsedItem.score})`);
         }
       }
       
-      return hackerNewsItems;
+      return results;
     } catch (error) {
       console.error('RSS 파싱 오류:', error);
       return [];
@@ -105,7 +57,7 @@ export class HackerNewsParser {
   /**
    * 개별 RSS 아이템을 HackerNewsItem으로 변환합니다.
    */
-  parseRssItem(itemXml: string): HackerNewsItem | null {
+  parseRssItem(itemXml: string): ParserResult | null {
     try {
       const title = this.extractTitle(itemXml);
       const description = this.extractDescription(itemXml);
@@ -131,14 +83,12 @@ export class HackerNewsParser {
       }
       
       return {
-        id: id,
         title: title,
+        description: description,
         url: url,
         score: score,
         by: author,
-        time: this.parseDate(pubDate),
-        descendants: descendants,
-        type: 'story'
+        publishedAt: pubDate,
       };
     } catch (error) {
       console.error('RSS 아이템 파싱 오류:', error);

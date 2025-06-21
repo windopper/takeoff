@@ -1,3 +1,4 @@
+import { CommonFetcher } from '../common/common-fetcher';
 import { HackerNewsParser } from './hackernews-parser';
 import { processHackernewsPosts } from './hackernews-service';
 
@@ -13,19 +14,25 @@ export class HackerNewsRoutes {
 			const url = new URL(request.url);
 			const limit = parseInt(url.searchParams.get('limit') || '20');
 			const storyType = (url.searchParams.get('storyType') || 'best') as 'new' | 'best';
-
-			const parser = new HackerNewsParser();
+			const fetcher = new CommonFetcher();
+			const parser = new HackerNewsParser(limit);
 			let posts;
 
 			switch (storyType) {
 				case 'new':
-					posts = await parser.getNewPosts(limit);
+					const response = await fetcher.fetch(parser.RSS_NEWEST_URL);
+					const text = await response.text();
+					posts = parser.parse(text);
 					break;
 				case 'best':
-					posts = await parser.getBestPosts(limit);
+					const response2 = await fetcher.fetch(parser.RSS_BEST_URL);
+					const text2 = await response2.text();
+					posts = parser.parse(text2);
 					break;
 				default:
-					posts = await parser.getBestPosts(limit);
+					const response3 = await fetcher.fetch(parser.RSS_BEST_URL);
+					const text3 = await response3.text();
+					posts = parser.parse(text3);
 			}   
 
 			return Response.json({
@@ -58,15 +65,16 @@ export class HackerNewsRoutes {
 			const storyType = body.storyType || 'best';
 
 			const result = await processHackernewsPosts({ limit, storyType });
-            const { processed, saved, skipped, success } = result;
+            const { saved, skipped, total, filtered } = result;
 
 			return Response.json({
-				success,
-				processed,
+				success: true,
+				total,
+				filtered,
 				saved,
 				skipped,
 				params: { limit, storyType },
-				message: success ? `HackerNews 게시글 처리 완료: ${processed}개 처리됨` : 'HackerNews 게시글 처리 실패',
+				message: `HackerNews 게시글 처리 완료: ${saved}개 저장됨`,
 			});
 		} catch (error) {
 			console.error('HackerNews 게시글 처리 중 오류:', error);

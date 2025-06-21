@@ -1,3 +1,5 @@
+import { CommonParser, ParserResult } from "../common/common-parser";
+
 export interface RedditPost {
   title: string;
   link: string;
@@ -13,23 +15,24 @@ export interface SubredditConfig {
   rssUrl: string;
 }
 
-export class RedditParser {
-  private subreddits: SubredditConfig[] = [
-    // {
-    //   name: 'LocalLLaMA',
-    //   rssUrl: 'https://www.reddit.com/r/LocalLLaMA/.rss?sort=top'
-    // },
-    {
-      name: 'singularity',
-      rssUrl: 'https://www.reddit.com/r/singularity/.rss?sort=top'
-    }
-  ];
+export class RedditParser extends CommonParser {
+  limit: number = 10;
+
+  constructor(limit: number = 10) {
+    super();
+    this.limit = limit;
+  }
+
+  parse(text: string): ParserResult[] {
+    const posts = this.parseRSSXML(text);
+    return posts.slice(0, this.limit);
+  }
 
   /**
    * Atom/RSS XML을 파싱하여 게시글 정보를 추출합니다.
    */
-  private parseRSSXML(xmlText: string): RedditPost[] {
-    const posts: RedditPost[] = [];
+  private parseRSSXML(xmlText: string): ParserResult[] {
+    const posts: ParserResult[] = [];
     
     // Atom 피드의 entry 태그들을 추출 (Reddit은 Atom 피드 사용)
     let entryMatches = xmlText.match(/<entry[\s>][\s\S]*?<\/entry>/g);
@@ -59,18 +62,18 @@ export class RedditParser {
         // Reddit RSS에서 점수 정보 추출 시도 (제목에서 추출)
         const score = this.extractScoreFromTitle(title);
 
-        const post: RedditPost = {
+        const post: ParserResult = {
           title,
-          link: linkHref,
-          author,
-          pubDate,
           description,
-          category,
-          score
+          publishedAt: pubDate,
+          url: linkHref,
+          score,
+          by: author,
         };
+        console.log(`✓ 추가됨: ${post.title}`);
 
         // 제목과 링크가 있는 경우만 추가
-        if (post.title && post.link) {
+        if (post.title && post.url) {
           posts.push(post);
         }
       } catch (error) {
@@ -134,72 +137,5 @@ export class RedditParser {
    */
   private extractScoreFromTitle(title: string): number {
     return 0;
-  }
-
-  /**
-   * 특정 서브레딧의 Top 게시글을 가져옵니다.
-   */
-  async getTopPosts(subredditName: string, limit: number = 10): Promise<RedditPost[]> {
-    const subreddit = this.subreddits.find(sub => sub.name.toLowerCase() === subredditName.toLowerCase());
-    
-    if (!subreddit) {
-      throw new Error(`서브레딧 '${subredditName}'을 찾을 수 없습니다.`);
-    }
-
-    try {
-      console.log(`${subredditName} 서브레딧에서 게시글을 가져오는 중...`);
-      
-      const response = await fetch(subreddit.rssUrl, {
-        headers: {
-          'User-Agent': 'TakeoffBot/1.0'
-        }
-      });
-
-      if (!response.ok) {
-        throw new Error(`RSS 피드 가져오기 실패: ${response.status} ${response.statusText}`);
-      }
-
-      const xmlText = await response.text();
-      const posts = this.parseRSSXML(xmlText);
-      
-      console.log(`${subredditName}에서 ${posts.length}개의 게시글을 파싱했습니다.`);
-      
-      return posts.slice(0, limit);
-    } catch (error) {
-      console.error(`${subredditName} 서브레딧 파싱 중 오류:`, error);
-      throw error;
-    }
-  }
-
-  /**
-   * 모든 서브레딧의 Top 게시글을 가져옵니다.
-   */
-  async getAllTopPosts(limit: number = 10): Promise<{ subreddit: string; posts: RedditPost[] }[]> {
-    const results: { subreddit: string; posts: RedditPost[] }[] = [];
-
-    for (const subreddit of this.subreddits) {
-      try {
-        const posts = await this.getTopPosts(subreddit.name, limit);
-        results.push({
-          subreddit: subreddit.name,
-          posts
-        });
-      } catch (error) {
-        console.error(`${subreddit.name} 처리 중 오류:`, error);
-        results.push({
-          subreddit: subreddit.name,
-          posts: []
-        });
-      }
-    }
-
-    return results;
-  }
-
-  /**
-   * 사용 가능한 서브레딧 목록을 반환합니다.
-   */
-  getAvailableSubreddits(): string[] {
-    return this.subreddits.map(sub => sub.name);
   }
 } 

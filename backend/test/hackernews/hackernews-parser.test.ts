@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it, MockedFunction, vitest } from 'vitest';
 import { HackerNewsParser } from '../../src/hackernews/hackernews-parser';
+import { CommonFetcher } from '../../src/common/common-fetcher';
 
 // Mock fetch for the first test
 global.fetch = vitest.fn();
@@ -44,8 +45,11 @@ ${Array.from(
 		} as Response);
 
 		const parser = new HackerNewsParser();
-		const items = await parser.getBestPosts(20);
-		expect(items.length).toBe(20);
+		const fetcher = new CommonFetcher();
+		const response = await fetcher.fetch(parser.RSS_BEST_URL);
+		const text = await response.text();
+		const items = parser.parse(text);
+		expect(items.length).toBe(10);
 	});
 
 	it('should parse RSS to items', () => {
@@ -58,14 +62,11 @@ ${Array.from(
 <guid isPermaLink="false">https://news.ycombinator.com/item?id=44315472</guid>`;
 		const parser = new HackerNewsParser();
 		const item = parser.parseRssItem(xmlText);
-		console.log(item);
 		expect(item).toBeDefined();
 		expect(item?.title).toBe('Show HN: Gurney Halleck from Dune tells you to do stuff');
 		expect(item?.url).toBe('https://gurney-gurney-halleck.fly.dev/');
 		expect(item?.by).toBe('big_cloud_bill');
-		expect(item?.time).toBe(1750307687);
+		expect(item?.publishedAt).toBe('Thu, 19 Jun 2025 04:34:47 +0000');
 		expect(item?.score).toBe(1);
-		expect(item?.descendants).toBe(0);
-		expect(item?.type).toBe('story');
 	});
 });
