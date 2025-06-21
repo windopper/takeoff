@@ -25,8 +25,7 @@ export function generateFilterPrompt({ title, description }: FilterPromptParams)
 
 응답 형식 (JSON):
 {
-  "isRelevant": true/false,
   "reason": "판단 이유를 한 문장으로",
-  "confidence": 0.0-1.0
+  "confidence": 0.0-1.0 (1에 가까울 수록 관련성이 높다고 판단)
 }`;
 } 

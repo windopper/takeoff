@@ -101,9 +101,8 @@ export class CommonFilter {
                 
             const parsed = JSON.parse(cleanResult);
 
-            // confidence 0.5 이상인 경우만 반환
             console.log(`AI 필터링 결과: ${parsed.reason} - ${parsed.confidence}`);
-            if (parsed.confidence < 0.5) {
+            if (parsed.confidence > 0.5) {
                 return null;
             }
 

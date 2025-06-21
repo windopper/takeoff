@@ -3,6 +3,7 @@ import { RedditFilter } from './reddit-filter';
 import { RedditParser } from './reddit-parser';
 import { processPosts, Statistics } from '../common/common-service';
 import { CommonFetcher } from '../common/common-fetcher';
+import { env } from 'cloudflare:workers';
 
 interface ProcessRedditPostsParams {
 	limit: number;
@@ -39,7 +40,9 @@ export async function processRedditPosts(params: ProcessRedditPostsParams): Prom
 			url: subreddit.rssUrl,
 			platform: 'reddit',
 			community: subreddit.name,
-		}, fetcher, parser, redditFilter, aiWriter);
+		}, fetcher, parser, redditFilter, aiWriter, {
+			vectorize: !!env.VECTORIZE
+		});
 
 		statistics.total += result.total;
 		statistics.filtered += result.filtered;

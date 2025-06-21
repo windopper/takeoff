@@ -3,6 +3,7 @@ import { HackerNewsParser } from './hackernews-parser';
 import { HackernewsAIWriter } from './hackernews-ai-writer';
 import { processPosts, Statistics } from '../common/common-service';
 import { CommonFetcher } from '../common/common-fetcher';
+import { env } from 'cloudflare:workers';
 
 interface ProcessHackernewsPostsParams {
 	limit: number;
@@ -21,5 +22,7 @@ export async function processHackernewsPosts(params: ProcessHackernewsPostsParam
 		url: storyType === 'newest' ? parser.RSS_NEWEST_URL : parser.RSS_BEST_URL,
 		platform: 'hackernews',
 		community: 'hackernews',
-	}, fetcher, parser, filter, aiWriter);
+	}, fetcher, parser, filter, aiWriter, {
+		vectorize: !!env.VECTORIZE
+	});
 }

@@ -21,8 +21,6 @@ export class HackerNewsParser extends CommonParser {
   constructor(limit: number = 10) {
     super();
     this.limit = limit;
-    this.RSS_BEST_URL = `${this.RSS_BEST_URL}?count=${limit}`;
-    this.RSS_NEWEST_URL = `${this.RSS_NEWEST_URL}?count=${limit}`;
   }
   
   parse(text: string): ParserResult[] {
