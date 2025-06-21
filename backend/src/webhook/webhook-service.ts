@@ -36,7 +36,7 @@ export class WebhookService {
 		await this.sendWebhook(webhookUrl, {
 			title: 'Test',
 			content:
-				'This is a test webhook This is a test webhook This is a test webhook This is a test webhook This is a test webhook This is a test webhook This is a test webhook This is a test webhook This is a test webhook ',
+				'This is a test webhook This is a test webhook This is a test webhook This is a test webhook This is a test webhook This is a test webhook This is a test webhook This is a test webhook This is a test webhook This is a test webhook This is a test webhook This is a test webhook This is a test webhook This is a test webhook This is a test webhook This is a test webhook This is a test webhook This is a test webhookThis is a test webhook This is a test webhook This is a test webhook This is a test webhook This is a test webhook This is a test webhook This is a test webhook This is a test webhook This is a test webhookThis is a test webhook This is a test webhook This is a test webhook This is a test webhook This is a test webhook This is a test webhook This is a test webhook This is a test webhook This is a test webhook',
 			url: 'https://takeoff.ai',
 		});
 	}

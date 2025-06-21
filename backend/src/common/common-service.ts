@@ -119,7 +119,7 @@ export async function processPosts(data: {
                     await WebhookService.sendWebhookBatchToSubscribers([{
                         title: processedPost.title,
                         content: processedPost.content,
-                        url: `${FRONTEND_URL}/posts/${savedPost}`,
+                        url: `${FRONTEND_URL}/posts/${savedPost.id}`,
                     }]);
                     logInfo(`Sent webhook to subscribers`, SERVICE_TAG, OPERATION_TAG);
                 } else {
