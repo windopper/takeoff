@@ -8,3 +8,4 @@ export interface HackernewsPostPromptParams {
 export function generateHackernewsPostPrompt({ url, similarPosts }: HackernewsPostPromptParams): string {
 	return generateCommonBlogWritePrompt(`링크: ${url}`, similarPosts);
 }
+ 

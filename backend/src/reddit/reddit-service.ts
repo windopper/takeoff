@@ -41,7 +41,8 @@ export async function processRedditPosts(params: ProcessRedditPostsParams): Prom
 			platform: 'reddit',
 			community: subreddit.name,
 		}, fetcher, parser, redditFilter, aiWriter, {
-			vectorize: !!env.VECTORIZE
+			vectorize: !!env.VECTORIZE,
+			webhook: true,
 		});
 
 		statistics.total += result.total;

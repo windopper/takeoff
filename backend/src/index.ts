@@ -1,7 +1,6 @@
 import { PostManager, ProcessedPost } from './manager/post-manager';
 import { HackerNewsRoutes } from './hackernews/hackernews-routes';
 import { RedditRoutes } from './reddit/reddit-routes';
-import { ArticleAIWriter } from './common/article-ai-writer';
 import { processHackernewsPosts } from './hackernews/hackernews-service';
 import { CommonRoutes } from './common/common-routes';
 import { processRedditPosts } from './reddit/reddit-service';
@@ -13,16 +12,10 @@ import { XmlParseError } from './exceptions/xml-parse-error';
 import { VectorizeRoutes } from './vectorize/vectorize-routes';
 
 export interface Env {
-	// If you set another name in the Wrangler config file for the value for 'binding',
-	// replace "DB" with the variable name you defined.
 	DB: D1Database;
-
 	VECTORIZE: Vectorize;
-	// Google Gemini API Key를 환경 변수로 추가
 	GEMINI_API_KEY: string;
-	// Static Assets binding
 	ASSETS: Fetcher;
-	// 허용된 호스트 목록
 	ALLOWED_HOSTS: string;
 	TAKEOFF_API_KEY: string;
 }
@@ -83,7 +76,7 @@ export default {
 				const response = await RedditRoutes.getRedditPosts(request);
 				return addCorsHeaders(response);
 			}
-	
+			
 			// HackerNews 게시글 목록 조회 API
 			if (pathname === "/api/hackernews") {
 				const response = await HackerNewsRoutes.getHackerNewsPosts(request);

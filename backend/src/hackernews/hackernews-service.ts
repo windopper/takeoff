@@ -23,6 +23,7 @@ export async function processHackernewsPosts(params: ProcessHackernewsPostsParam
 		platform: 'hackernews',
 		community: 'hackernews',
 	}, fetcher, parser, filter, aiWriter, {
-		vectorize: !!env.VECTORIZE
+		vectorize: !!env.VECTORIZE,
+		webhook: true,
 	});
 }
