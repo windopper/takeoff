@@ -11,6 +11,7 @@ import { XmlParseError } from "../exceptions/xml-parse-error";
 import { WebhookService } from "../webhook/webhook-service";
 import { FRONTEND_URL } from "../constants";
 import { AiPost } from "../db/schema";
+import { logError, logInfo, logSuccess } from "../log/log-stream-service";
 
 export async function processUrl(url: string) {
     const postManager = new PostManager(env.DB);
@@ -34,6 +35,9 @@ export interface Statistics {
     saved: number;
     skipped: number;
 }
+
+const SERVICE_TAG = "common";
+const OPERATION_TAG = "processPosts";
 
 export async function processPosts(data: {
     url: string;
@@ -59,12 +63,16 @@ export async function processPosts(data: {
         skipped: 0,
     }
 
+    logInfo(`Processing posts: ${results.length}`, SERVICE_TAG, OPERATION_TAG);
+
     for (const result of results) {
-        console.log('\n')
+        console.log('\n');
+        logInfo(`Processing post: ${result.url}`, SERVICE_TAG, OPERATION_TAG);
         try {
             const isPostExists = await postManager.isPostExists(result.url);
             if (isPostExists) {
                 console.log(`Post already exists: ${result.url}`);
+                logInfo(`Post already exists: ${result.url}`, SERVICE_TAG, OPERATION_TAG);
                 statistics.skipped++;
                 continue;
             }
@@ -84,28 +92,28 @@ export async function processPosts(data: {
                     });
                 }
                 statistics.filtered++;
+                logInfo(`Post filtered: ${result.url} - ${filtered.reason}`, SERVICE_TAG, OPERATION_TAG);
                 continue;
             }
 
             let similarPosts: AiPost[] = [];
     
             if (config.vectorize) {
-                console.log("Retrieve similar posts...");
+                logInfo(`Retrieve similar posts...`, SERVICE_TAG, OPERATION_TAG);
                 similarPosts = await retrieveSimilarPosts(result.title);
-                console.log(`Found ${similarPosts.length} similar posts`);
+                logInfo(`Found ${similarPosts.length} similar posts`, SERVICE_TAG, OPERATION_TAG);
             }
 
-            console.log("Process post... ", result.title);
             const processedPost = await writer.processPost(result, similarPosts.map((post) => post.content));
-            console.log(`Processed post: ${processedPost.title}`);
+            logInfo(`Processed post: ${processedPost.title}`, SERVICE_TAG, OPERATION_TAG);
             const savedPost = await postManager.savePost(processedPost);
             if (savedPost) {
-                console.log(`Saved post: ${savedPost.title}`);
                 if (config.vectorize) {
                     await vectorizePostAndSave(savedPost);
-                    console.log("Vectorized post");
+                    logInfo(`Vectorized post`, SERVICE_TAG, OPERATION_TAG);
                 }
                 statistics.saved++;
+                logSuccess(`Saved post: ${savedPost.title}`, SERVICE_TAG, OPERATION_TAG);
 
                 if (config.webhook) {
                     await WebhookService.sendWebhookBatchToSubscribers([{
@@ -113,11 +121,14 @@ export async function processPosts(data: {
                         content: processedPost.content,
                         url: `${FRONTEND_URL}/posts/${savedPost}`,
                     }]);
+                    logInfo(`Sent webhook to subscribers`, SERVICE_TAG, OPERATION_TAG);
+                } else {
+                    logInfo(`Webhook disabled`, SERVICE_TAG, OPERATION_TAG);
                 }
             }
         } catch (error) {
             if (error instanceof XmlParseError) {
-                console.error('Error parsing XML:', error);
+                logError(`Error parsing XML: ${error}`, SERVICE_TAG, OPERATION_TAG);
                 statistics.skipped++;
                 await filterManager.saveFilteredPost({
                     community: data.community,
@@ -128,7 +139,7 @@ export async function processPosts(data: {
                     platform: data.platform,
                 });
             } else {
-                console.error('Error processing post:', error);
+                logError(`Error processing post: ${error}`, SERVICE_TAG, OPERATION_TAG);
                 statistics.skipped++;
             }
         }

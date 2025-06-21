@@ -98,6 +98,32 @@ export default function ProcessingPanel() {
     }
   };
 
+  // 로그 테스트 함수 추가
+  const handleLogTest = async () => {
+    const logs = [
+      { status: 'info', message: '테스트 정보 로그입니다.', service: 'test', operation: 'log-test' },
+      { status: 'success', message: '성공 로그 테스트입니다.', service: 'test', operation: 'log-test' },
+      { status: 'warning', message: '경고 로그 테스트입니다.', service: 'test', operation: 'log-test' },
+      { status: 'error', message: '에러 로그 테스트입니다.', service: 'test', operation: 'log-test' },
+    ];
+
+    for (const log of logs) {
+      try {
+        await fetch('/api/log', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(log),
+        });
+        // 각 로그 사이에 약간의 지연
+        await new Promise(resolve => setTimeout(resolve, 500));
+      } catch (error) {
+        console.error('로그 전송 실패:', error);
+      }
+    }
+  };
+
   return (
     <div className="bg-zinc-50 dark:bg-zinc-800 rounded-lg border border-zinc-200 dark:border-zinc-700 p-6">
       <h2 className="text-xl font-semibold text-zinc-900 dark:text-zinc-100 mb-6">콘텐츠 처리</h2>
@@ -207,6 +233,20 @@ export default function ProcessingPanel() {
               <p className="text-sm text-green-600 dark:text-green-400">✅ 처리 완료: {JSON.stringify(results.hackernews)}</p>
             </div>
           )}
+        </div>
+
+        {/* 로그 테스트 */}
+        <div className="space-y-3 border-t border-zinc-200 dark:border-zinc-600 pt-6">
+          <h3 className="text-sm font-medium text-zinc-700 dark:text-zinc-300">로그 시스템 테스트</h3>
+          <button
+            onClick={handleLogTest}
+            className="w-full px-4 py-2 bg-blue-600 dark:bg-blue-700 text-white text-sm font-medium rounded-md hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors"
+          >
+            테스트 로그 전송
+          </button>
+          <p className="text-xs text-zinc-500 dark:text-zinc-400">
+            다양한 타입의 테스트 로그를 실시간 로그 패널로 전송합니다.
+          </p>
         </div>
       </div>
     </div>

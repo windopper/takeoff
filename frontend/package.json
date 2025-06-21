@@ -10,7 +10,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@types/ws": "^8.18.1",
     "@vercel/analytics": "^1.5.0",
+    "bufferutil": "^4.0.9",
     "motion": "^12.18.1",
     "next": "15.3.3",
     "react": "^19.0.0",
@@ -18,7 +20,9 @@
     "react-markdown": "^10.1.0",
     "remark-gfm": "^4.0.1",
     "remark-rehype": "^11.1.2",
-    "swr": "^2.3.3"
+    "swr": "^2.3.3",
+    "utf-8-validate": "^5.0.10",
+    "ws": "^8.18.2"
   },
   "devDependencies": {
     "@iconify-json/material-symbols": "^1.2.26",

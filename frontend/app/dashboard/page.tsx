@@ -3,6 +3,7 @@ import ThemeToggle from '../components/dashboard/ThemeToggle';
 import ProcessingPanel from '../components/dashboard/ProcessingPanel';
 import WebhookPanel from '../components/dashboard/WebhookPanel';
 import PostsPanel from '../components/dashboard/PostsPanel';
+import LogPanel from '../components/dashboard/LogPanel';
 
 export default function DashboardPage() {
     return (
@@ -30,6 +31,11 @@ export default function DashboardPage() {
                         {/* 웹훅 관리 패널 */}
                         <div className="lg:col-span-1">
                             <WebhookPanel />
+                        </div>
+
+                        {/* 실시간 로그 패널 - 전체 너비 */}
+                        <div className="lg:col-span-2">
+                            <LogPanel />
                         </div>
 
                         {/* 포스트 관리 패널 - 전체 너비 */}

@@ -10,6 +10,9 @@ import { FilteredPostManager } from './manager/filter-post-manager';
 import { FetchError } from './exceptions/fetch-error';
 import { XmlParseError } from './exceptions/xml-parse-error';
 import { VectorizeRoutes } from './vectorize/vectorize-routes';
+import { getLogs, sendLog, sendLogImmediate } from './log/log-stream-service';
+import { LogRoutes } from './log/log-routes';
+import { ProcessLogManager } from './manager/process-log-manager';
 
 export interface Env {
 	DB: D1Database;
@@ -76,7 +79,7 @@ export default {
 				const response = await RedditRoutes.getRedditPosts(request);
 				return addCorsHeaders(response);
 			}
-			
+
 			// HackerNews 게시글 목록 조회 API
 			if (pathname === "/api/hackernews") {
 				const response = await HackerNewsRoutes.getHackerNewsPosts(request);
@@ -161,6 +164,16 @@ export default {
 				const response = await VectorizeRoutes.retrieveSimilarPosts(request, env);
 				return addCorsHeaders(response);
 			}
+
+			if (pathname === "/api/log-test") {
+				await sendLogImmediate("info", "this is test log")
+				return addCorsHeaders(new Response("Log sent", { status: 200 }));
+			}
+
+			if (pathname === "/api/logs" && request.method === 'GET') {
+				const response = await LogRoutes.getLogs(request, env);
+				return addCorsHeaders(response);
+			}
 	
 			const helpResponse = new Response(`사용 가능한 API:
 			- GET /api/reddit?subreddit=LocalLLaMA&limit=5 - Reddit 게시글 목록
@@ -196,6 +209,9 @@ export default {
 
 			const filteredPostManager = new FilteredPostManager(env.DB);
 			await filteredPostManager.cleanupExpiredFilters();
+
+			const processLogManager = new ProcessLogManager(env.DB);
+			await processLogManager.cleanUpExpiredLogs();
 
 			const postManager = new PostManager(env.DB);
 			const deletedPosts = await postManager.cleanupOldPosts();

@@ -28,6 +28,7 @@ takeoff-backend는 AI, SW, CS관련 커뮤니티의 이슈들을 모아서 글�
 | src/common/ | 공통 로직 |
 | src/manager/ | DB manager |
 | src/prompts/ | LLM 프롬프트 |
+| src/log/ | 실시간 로그 스트리밍 서비스 |
 | src/utils/ | 유틸리티 함수 |
 | src/test/ | 테스트 관련 코드 |
 | migrations/ | 데이터베이스 마이그레이션 파일들 |
@@ -124,6 +125,7 @@ async getTopPost() {
 | `/api/process-reddit` | POST | Reddit 게시글 AI 처리 및 저장 |
 | `/api/process-hackernews` | POST | HackerNews 게시글 AI 처리 및 저장 |
 | `/api/process-url` | POST | 임의 URL 아티클 처리 |
+| `/api/logs` | GET | 로그 가져오기 |
 
 ## 10. 환경 설정
 - **환경 변수**: `GEMINI_API_KEY` (Google Gemini API 키)
@@ -138,25 +140,3 @@ async getTopPost() {
 3. 데이터베이스 스키마가 변경되었을 때
 4. 새로운 서비스 패턴이 도입되었을 때
 5. 기술 스택이 변경되거나 추가되었을 때
-
-## 12. 변경 이력
-### 2024년 변경사항
-- **Reddit Routes 분리 완료**: Reddit 관련 라우트를 `reddit-routes.ts`로 분리하여 HackerNews와 동일한 패턴으로 구조화
-  - `RedditRoutes` 클래스 생성 및 6개 정적 메서드 구현
-  - `index.ts`에서 Reddit 관련 라우트 로직 제거 및 Routes 클래스 호출로 변경
-  - API 엔드포인트 2개 추가: `/api/filtered-posts`, `/api/filter-stats`
-  - Reddit 서비스 완전 구현 상태로 업데이트
-
-- **Reddit 아키텍처 리팩토링**: HackerNews 패턴을 따라 Reddit 서비스 구조 개선
-  - `reddit-filter.ts`: AI 기반 필터링 로직을 `reddit-ai-writer.ts`에서 분리하여 전용 필터 클래스로 이동
-  - `reddit-ai-writer.ts`: AI 작성 기능만 담당하도록 단순화, 필터링 로직 제거
-  - `reddit-routes.ts`: 필터링 및 처리 로직을 Routes 클래스 내부에서 관리하도록 변경
-  - 통합 함수 `processAndSaveRedditPosts`를 Routes 클래스의 정적 메서드로 이동
-  - HackerNews와 동일한 구조로 통일하여 일관성 확보
-
-- **HackerNews RSS 마이그레이션**: Firebase API에서 RSS 피드 기반 데이터 수집으로 전환
-  - `hackernews-parser.ts`: Firebase API 호출을 RSS 피드 파싱으로 완전 대체
-  - RSS 소스: `https://hnrss.org/best` (Best Stories), `https://hnrss.org/newest` (New Stories)
-  - 정규식 기반 XML 파싱 구현으로 Cloudflare Workers 환경 호환성 확보
-  - RSS description에서 Article URL, Points, Comments 수 추출 로직 구현
-  - API 호출 빈도 대폭 감소로 성능 향상 및 안정성 개선

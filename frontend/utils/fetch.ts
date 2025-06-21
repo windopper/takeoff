@@ -4,10 +4,10 @@ const getApiKeyHeader = () => {
 	};
 };
 
-export const takeoffFetch = async (url: string, options: RequestInit) => await fetch(url, {
+export const takeoffFetch = async (url: string, options?: RequestInit) => await fetch(url, {
     ...options,
     headers: {
-        ...options.headers,
+        ...options?.headers,
         ...getApiKeyHeader(),
     },
 })
