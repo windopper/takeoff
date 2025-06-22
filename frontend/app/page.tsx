@@ -24,8 +24,10 @@ export default async function Home({ searchParams }: HomeProps) {
     <div className="min-h-screen relative">
       {/* 헤더 섹션 */}
       <Header postCount={postCount.count} />
-      <div className="max-w-4xl mx-auto px-6 mt-12 py-12">
-        <TimelineBanner />
+      <div className="relative max-w-4xl mx-auto px-6 mt-12 py-12">
+        <div className="flex flex-col gap-4 mb-12">
+          <TimelineBanner />
+        </div>
         <TakeoffMainWithInfiniteScroll
           posts={posts.posts}
           postCount={postCount.count}

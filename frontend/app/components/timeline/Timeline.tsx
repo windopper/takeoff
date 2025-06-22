@@ -110,7 +110,7 @@ export default function Timeline() {
     <div className="flex flex-col items-center gap-4">
       <TimelineCategories setSelectedCategories={setSelectedCategories} categories={selectedCategories} />
       <div className="relative flex-row justify-center mt-24 gap-4 flex">
-        <div className="sticky top-10 pl-6 h-[calc(100vh-120px)] -z-50 hidden sm:block">
+        <div className="sticky top-10 pl-6 h-[calc(100vh-120px)] -z-10 hidden sm:block">
           <div
             className="relative h-full transition-all duration-150"
             style={{ top: -maxStyleTopHeight * progress }}

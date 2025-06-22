@@ -32,9 +32,9 @@ export default function TimelineCard({ title, description, category, link, date,
     return (
       <div className={`
         relative group w-full sm:max-w-xl min-h-32 sm:min-h-48 rounded-xl shadow-sm border transition-all duration-300 ease-out
-        overflow-hidden bg-zinc-50/50 dark:bg-zinc-900/50
+        overflow-hidden bg-zinc-50/50 dark:bg-zinc-900/50 
         ${isFocused 
-          ? 'border-zinc-300/50 dark:border-zinc-600/50 shadow-lg shadow-zinc-200/50 dark:shadow-zinc-800/50 scale-[1.02] -translate-y-1' 
+          ? 'border-zinc-300/50 dark:border-zinc-600/50 bg-zinc-50/80 dark:bg-zinc-900/80 shadow-lg shadow-zinc-200/50 dark:shadow-zinc-800/50 scale-[1.02] -translate-y-1' 
           : 'border-zinc-200/50 dark:border-zinc-800/50 hover:border-zinc-300 dark:hover:border-zinc-700 hover:shadow-md hover:shadow-zinc-200/30 dark:hover:shadow-zinc-800/30'
         }
       `}
@@ -58,7 +58,7 @@ export default function TimelineCard({ title, description, category, link, date,
             href={link} 
             target="_blank" 
             rel="noopener noreferrer" 
-            className="group/link flex items-start gap-2 mb-2 transition-colors duration-200 hover:text-blue-600 dark:hover:text-blue-400"
+            className="group/link flex items-start gap-2 mb-2 transition-colors duration-200"
           >
             <h1 className="text-lg font-medium leading-tight text-zinc-900 dark:text-zinc-100 
             line-clamp-2 font-[MaruBuri] relative group-hover/link:text-shadow-[0_0_10px_rgba(255,255,255,0.8)]">

@@ -1,3 +1,5 @@
+import { Fragment } from "react";
+
 export default function TimelineYear({
   startYear,
   endYear,
@@ -25,7 +27,7 @@ export default function TimelineYear({
     const isCurrentYear = currentYear === year;
 
     return (
-      <>
+      <Fragment key={`${index}-year`}>
         <Year 
           year={year.toString()} 
           top={nextTop} 
@@ -53,7 +55,7 @@ export default function TimelineYear({
             isHighlighted={true}
           />
         )}
-      </>
+      </Fragment>
     );
   });
 
