@@ -5,43 +5,30 @@ import TimelineCard from "./TimelineCard";
 import TimelineProgress from "./TimelineProgress";
 import TimelineYear from "./TimelineYear";
 import TimelineIndicator from "./TimelineIndicator";
+import { CATEGORIES, TIMELINE_DATA } from "@/data/timelineData";
+import TimelineCategories from "./TimelineCategories";
 
 const STARTYEAR = 2015;
 const ENDYEAR = 2025;
 
-const randomDateBetween = (startYear: number, endYear: number) => {
-  const startDate = new Date(startYear, 0, 1);
-  const endDate = new Date(endYear, 11, 31);
-  return new Date(startDate.getTime() + Math.random() * (endDate.getTime() - startDate.getTime()));
-}
-
-// throttle 함수
-const throttle = (func: Function, delay: number) => {
-  let timeoutId: NodeJS.Timeout | null = null;
-  let lastExecTime = 0;
-  
-  return (...args: any[]) => {
-    const currentTime = Date.now();
-    
-    if (currentTime - lastExecTime > delay) {
-      func(...args);
-      lastExecTime = currentTime;
-    } else {
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
-      timeoutId = setTimeout(() => {
-        func(...args);
-        lastExecTime = Date.now();
-      }, delay - (currentTime - lastExecTime));
-    }
+const cards = TIMELINE_DATA.events.map((event) => {
+  const date = new Date(
+    parseInt(event.start_date.year),
+    parseInt(event.start_date.month) - 1,
+    parseInt(event.start_date.day)
+  );
+  return {
+    ...event,
+    date,
   };
-};
+});
 
 export default function Timeline() {
   const [time, setTime] = useState(new Date(ENDYEAR, 0, 1));
   const [progress, setProgress] = useState(0.2);
   const [focusedCardIndex, setFocusedCardIndex] = useState(0);
+  const debounceTimer = useRef<NodeJS.Timeout | null>(null);
+  const [selectedCategories, setSelectedCategories] = useState<CATEGORIES[]>(Object.values(CATEGORIES));
   const cardsRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const timelineProgressRef = useRef<HTMLDivElement>(null);
@@ -49,18 +36,21 @@ export default function Timeline() {
   const maxStyleTopHeight = timelineProgressRef.current?.clientHeight
     ? yearProgressHeight - timelineProgressRef.current.clientHeight + 140
     : 0;
-
-  // 카드 데이터 생성 (메모이제이션)
   const cards = useMemo(() => {
-    const cardData: Date[] = [];
-    for (let i = 0; i < 100; i++) {
-      cardData.push(randomDateBetween(STARTYEAR, ENDYEAR));
-    }
-    return cardData.sort((a, b) => a.getTime() - b.getTime());
-  }, []);
-
-  // 카드 배열 초기화
-  cardRefs.current = cardRefs.current.slice(0, cards.length);
+    return TIMELINE_DATA.events
+      .filter((event) => selectedCategories.includes(event.category))
+      .map((event) => {
+        const date = new Date(
+          parseInt(event.start_date.year),
+          parseInt(event.start_date.month) - 1,
+          parseInt(event.start_date.day)
+        );
+        return {
+          ...event,
+          date,
+        };
+      });
+  }, [selectedCategories]);
 
   // 스크롤 이벤트 핸들러
   const handleScroll = useCallback(() => {
@@ -87,61 +77,81 @@ export default function Timeline() {
     if (closestCardIndex !== focusedCardIndex) {
       const focusedCard = cards[closestCardIndex];
       const totalDuration = new Date(ENDYEAR, 11, 31).getTime() - new Date(STARTYEAR, 0, 1).getTime();
-      const progress = (focusedCard.getTime() - new Date(STARTYEAR, 0, 1).getTime()) / totalDuration;
+      const progress = (focusedCard.date.getTime() - new Date(STARTYEAR, 0, 1).getTime()) / totalDuration;
       
-      setTime(focusedCard);
+      setTime(focusedCard.date);
       setProgress(Math.min(Math.max(progress, 0), 1));
       setFocusedCardIndex(closestCardIndex);
     }
   }, [focusedCardIndex, cards]);
 
   // throttled 스크롤 핸들러 (16ms = 60fps)
-  const throttledHandleScroll = useMemo(
-    () => throttle(handleScroll, 500),
+  const debounceHandleScroll = useCallback(
+    () => {
+      if (debounceTimer.current) {
+        clearTimeout(debounceTimer.current);
+      }
+      debounceTimer.current = setTimeout(() => {
+        handleScroll();
+      }, 100);
+    },
     [handleScroll]
   );
 
   useEffect(() => {
-    window.addEventListener('scroll', throttledHandleScroll);
-    handleScroll(); // 초기 실행
+    window.addEventListener('scroll', debounceHandleScroll);
 
     return () => {
-      window.removeEventListener('scroll', throttledHandleScroll);
+      window.removeEventListener('scroll', debounceHandleScroll);
     };
-  }, [throttledHandleScroll, handleScroll]);
+  }, [debounceHandleScroll, handleScroll]);
 
   return (
-    <div className="relative flex flex-row justify-center mt-24 gap-4">
-      <div className="sticky top-24 pl-6 h-[calc(100vh-120px)]">
-        <div className="relative h-full" style={{ top: 10 - maxStyleTopHeight * progress }}> 
-          <TimelineProgress ref={timelineProgressRef} top={maxStyleTopHeight * progress} />
-          <TimelineIndicator progress={progress} top={maxStyleTopHeight * progress + 16} />
-          <TimelineYear
-            startYear={STARTYEAR} 
-            endYear={ENDYEAR} 
-            progress={progress}
-            currentYear={time.getFullYear()}
-            currentMonth={time.getMonth() + 1}
-          />
-        </div>
-      </div>
-      <div className="flex flex-col gap-8 ml-16" ref={cardsRef}>
-        {cards.map((card, index) => (
-          <div 
-            key={index}
-            ref={(el) => {
-              cardRefs.current[index] = el;
-            }}
+    <div className="flex flex-col items-center gap-4">
+      <TimelineCategories setSelectedCategories={setSelectedCategories} categories={selectedCategories} />
+      <div className="relative flex-row justify-center mt-24 gap-4 flex">
+        <div className="sticky top-10 pl-6 h-[calc(100vh-120px)] -z-50 hidden sm:block">
+          <div
+            className="relative h-full transition-all duration-150"
+            style={{ top: -maxStyleTopHeight * progress }}
           >
-            <TimelineCard
-              title="Timeline Card"
-              description="Timeline Card Description"
-              link="https://www.google.com"
-              date={card.toLocaleDateString()}
-              isFocused={index === focusedCardIndex}
+            <TimelineProgress
+              ref={timelineProgressRef}
+              top={maxStyleTopHeight * progress - 70}
+            />
+            <TimelineIndicator
+              progress={progress}
+              top={maxStyleTopHeight * progress + 16}
+            />
+            <TimelineYear
+              startYear={STARTYEAR}
+              endYear={ENDYEAR}
+              progress={progress}
+              currentYear={time.getFullYear()}
+              currentMonth={time.getMonth() + 1}
             />
           </div>
-        ))}
+        </div>
+        <div className="flex flex-col sm:min-w-xl gap-8 sm:ml-12 ml-0" ref={cardsRef}>
+          {cards.map((card, index) => (
+            <div
+              key={index}
+              ref={(el) => {
+                cardRefs.current[index] = el;
+              }}
+              className="px-4"
+            >
+              <TimelineCard
+                title={card.text.headline.text}
+                description={card.korean.text}
+                category={card.category}
+                link={card.korean.headline.url}
+                date={card.date.toLocaleDateString()}
+                isFocused={index === focusedCardIndex}
+              />
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

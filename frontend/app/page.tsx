@@ -2,6 +2,7 @@ import { getTakeoffPostCount, getTakeoffPosts } from "./action/takeoffPosts";
 import Footer from "./components/common/Footer";
 import Header from "./components/common/Header";
 import TakeoffMainWithInfiniteScroll from "./components/TakeoffMainWithInfiniteScroll";
+import TimelineBanner from "./components/timeline/TimelineBanner";
 import { PAGE_SIZE } from "./constants/pagination";
 
 interface HomeProps {
@@ -23,10 +24,13 @@ export default async function Home({ searchParams }: HomeProps) {
     <div className="min-h-screen relative">
       {/* 헤더 섹션 */}
       <Header postCount={postCount.count} />
-      <TakeoffMainWithInfiniteScroll
-        posts={posts.posts}
-        postCount={postCount.count}
-      />
+      <div className="max-w-4xl mx-auto px-6 mt-12 py-12">
+        <TimelineBanner />
+        <TakeoffMainWithInfiniteScroll
+          posts={posts.posts}
+          postCount={postCount.count}
+        />
+      </div>
       {/* 푸터 */}
       <Footer />
     </div>

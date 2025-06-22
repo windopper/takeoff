@@ -22,7 +22,7 @@ export default function SearchInput() {
         type="text"
         placeholder="검색"
         className="px-3 py-1.5 text-xs font-medium border-b text-zinc-600
-                 dark:text-zinc-400 backdrop-blur-sm outline-none"
+                 dark:text-zinc-400 backdrop-blur-sm outline-none md:w-64 w-32"
         onKeyUp={handleSearch}
         defaultValue={query || ''}
       />
