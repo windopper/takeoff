@@ -16,9 +16,15 @@ Takeoff는 AI/SW/CS 관련 아티클을 자동으로 정리 및 게시하는 서
 
 ## 주요 기능
 - Hackernews/Reddit에서 인기있는 글에 대한 정리
+- [2015-2025년 인공지능 타임라인](https://takeoff-one.vercel.app/timeline)
 - Discord Webhook으로 새로운 글 업로드마다 실시간 알림
 
-## 디스코드 웹훅 등록
+### 인공지능 타임라인
+[인공지능 타임라인 바로가기](https://takeoff-one.vercel.app/timeline)
+
+2015년부터 2025년까지 인공지능의 기술, 정책, 문화 등 다양한 분야에서 일어난 일들을 타임라인으로 정리
+
+### 디스코드 웹훅 등록
 [웹훅 등록하기](https://takeoff-one.vercel.app/webhook)
 
 Takeoff에서 새로운 글이 업로드될 때 디스코드 채널로 실시간 알림을 받을 수 있습니다.
