@@ -1810,6 +1810,25 @@ export const TIMELINE_DATA: { events: TimelineData[] } = {
       category: CATEGORIES.MODEL_RELEASE,
     },
     {
+      start_date: { year: "2025", month: "04", day: "16" },
+      text: {
+        headline: createLink(
+          "https://openai.com/index/introducing-o3-and-o4-mini/",
+          "o3 and o4-mini"
+        ),
+        text: "OpenAI releases o3 and o4-mini. o3 and o4-mini are trained to have agentic reasoning capabilities.",
+      },
+      korean: {
+        headline: createLink(
+          "https://openai.com/index/introducing-o3-and-o4-mini/",
+          "o3 and o4-mini"
+        ),
+        text: "OpenAI가 o3와 o4-mini를 출시했습니다. 에이전틱 추론 능력을 갖추도록 훈련되었습니다.",
+      },
+      importance: 3,
+      category: CATEGORIES.MODEL_RELEASE,
+    },
+    {
       start_date: { year: "2025", month: "05", day: "20" },
       text: {
         headline: createLink(
@@ -1843,6 +1862,25 @@ export const TIMELINE_DATA: { events: TimelineData[] } = {
           "Claude 4"
         ),
         text: "Anthropic이 최첨단 모델인 Claude Sonnet 4와 Claude Opus 4를 출시했습니다. 이번 출시는 Anthropic의 첫 ASL-3 등급 모델 달성을 기념하는 순간이었습니다.",
+      },
+      importance: 3,
+      category: CATEGORIES.MODEL_RELEASE,
+    },
+    {
+      start_date: { year: "2025", month: "06", day: "10" },
+      text: {
+        headline: createLink(
+          "https://help.openai.com/en/articles/9624314-model-release-notes",
+          "o3 pro"
+        ),
+        text: "OpenAI releases o3-pro. o3-pro is designed to think longer and provide the most reliable responses. It is currently one of the most powerful models.",
+      },
+      korean: {
+        headline: createLink(
+          "https://help.openai.com/en/articles/9624314-model-release-notes",
+          "o3 pro"
+        ),
+        text: "OpenAI가 o3-pro를 출시했습니다. 이 모델은 더 오래 생각하고 가장 안정적인 응답을 제공하도록 설계되었습니다. 또한, 현재까지 가장 강력한 모델 중 하나로 평가받고 있습니다.",
       },
       importance: 3,
       category: CATEGORIES.MODEL_RELEASE,
