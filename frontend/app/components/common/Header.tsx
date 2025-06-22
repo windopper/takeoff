@@ -1,5 +1,6 @@
 import Link from "next/link";
 import SearchInput from "./Search";
+import { Suspense } from "react";
 
 export default function Header({
   postCount,
@@ -28,7 +29,9 @@ export default function Header({
             </Link>
           </div>
           <div className="flex items-center gap-3">
-            <SearchInput />
+            <Suspense>
+              <SearchInput />
+            </Suspense>
             {/* {postCount && (
               <span className="px-3 py-1.5 text-xs font-medium bg-zinc-100/80 dark:bg-zinc-800/80 text-zinc-600 dark:text-zinc-400 rounded-full backdrop-blur-sm">
                 {postCount}개 게시글
