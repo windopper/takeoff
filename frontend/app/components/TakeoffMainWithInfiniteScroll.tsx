@@ -77,7 +77,7 @@ export default function TakeoffMainWithInfiniteScroll({
   //   }, [loadMore]);
 
   return (
-    <main className="max-w-4xl mx-auto px-6 mt-12 py-12">
+    <main>
       {_posts.length > 0 ? (
         <div className="">
           {_posts.map((post) => (
