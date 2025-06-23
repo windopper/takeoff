@@ -2,7 +2,6 @@ import { Metadata } from "next";
 import Footer from "../components/common/Footer";
 import Header from "../components/common/Header";
 import Timeline from "../components/timeline/Timeline";
-import TimelineHero from "../components/timeline/TimelineHero";
 import { TimelineSvg } from "../components/timeline/TimelineSvg";
 
 export const metadata: Metadata = {
@@ -28,7 +27,6 @@ export default function TimelinePage() {
       <Header />
       <div className="fixed top-0 left-0 w-full h-full backdrop-blur-sm -z-40"></div>
       <TimelineSvg className="fixed top-0 left-0 w-full h-full -z-50" />
-      <TimelineHero />
       <Timeline />
       <Footer />
     </div>

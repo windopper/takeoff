@@ -1,8 +1,6 @@
-import Link from "next/link";
-
 export default function TimelineHero() {
   return (
-    <div className="mt-16 pt-16 h-64 p-4 flex items-center justify-center backdrop-blur-3xl">
+    <div className="mt-16 pt-16 h-64 p-4 flex items-center justify-center w-full">
       <div className="flex flex-col items-center justify-center p-2">
         <h1 className="sm:text-4xl text-2xl font-bold">2015-2025 AI 타임라인</h1>
 

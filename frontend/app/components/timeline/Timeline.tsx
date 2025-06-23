@@ -7,6 +7,7 @@ import TimelineYear from "./TimelineYear";
 import TimelineIndicator from "./TimelineIndicator";
 import { CATEGORIES, TIMELINE_DATA } from "@/data/timelineData";
 import TimelineCategories from "./TimelineCategories";
+import TimelineHero from "./TimelineHero";
 
 const STARTYEAR = 2015;
 const ENDYEAR = 2025;
@@ -108,7 +109,10 @@ export default function Timeline() {
 
   return (
     <div className="flex flex-col items-center gap-4">
-      <TimelineCategories setSelectedCategories={setSelectedCategories} categories={selectedCategories} />
+      <div className="flex flex-col items-center w-full backdrop-blur-3xl">
+        <TimelineHero />
+        <TimelineCategories setSelectedCategories={setSelectedCategories} categories={selectedCategories} />
+      </div>
       <div className="relative flex-row justify-center mt-24 gap-4 flex">
         <div className="sticky top-10 pl-6 h-[calc(100vh-120px)] -z-10 hidden sm:block">
           <div

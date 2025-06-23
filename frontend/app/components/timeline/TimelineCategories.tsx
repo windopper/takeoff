@@ -25,7 +25,7 @@ export default function TimelineCategories({
   };
 
   return (
-    <div className="flex flex-row justify-center gap-2 backdrop-blur-3xl w-full py-8 flex-wrap">
+    <div className="flex flex-row justify-center gap-2 w-full py-8 flex-wrap">
       {Object.values(CATEGORIES).map((category) => (
         <button
           key={category}
