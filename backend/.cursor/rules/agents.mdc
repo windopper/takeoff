@@ -7,7 +7,9 @@ alwaysApply: true
 해당 파일은 AI(Claude, GPT, Cursor 등) 또는 사람이 해당 프로젝트를 진행하기 위해 지켜야 할 규칙과 아키텍처에 대해 서술한 파일입니다.
 
 ## 0. 프로젝트 개요
-takeoff-backend는 AI, SW, CS관련 커뮤니티의 이슈들을 모아서 글을 정리하는 백엔드 서비스입니다.
+takeoff는 AI, SW, CS관련 커뮤니티의 이슈들을 모아서 글을 정리하는 서비스입니다. 
+- takeoff-backend: 백엔드 API 서비스 (Cloudflare Workers)
+- takeoff-frontend: 프론트엔드 웹 애플리케이션 (Next.js)
 
 ## 1. 룰
 - test/ 디렉토리의 테스트 코드는 반드시 사람이 작성해야 합니다.
@@ -133,10 +135,51 @@ async getTopPost() {
 - **호환성**: nodejs_compat 플래그 활성화
 - **관측성**: Cloudflare 관측성 도구 활성화
 
-## 11. agents.mdc 업데이트 가이드라인
+## 11. 프론트엔드 기능
+프론트엔드는 Next.js 기반으로 구현되어 있으며 다음 기능들을 제공합니다:
+
+### 11.1 페이지 구조
+| 페이지 | 경로 | 설명 |
+|--------|------|------|
+| 메인 | `/` | AI 처리된 포스트 목록 및 무한 스크롤 |
+| 벤치마킹 | `/benchmarking` | AI 모델 성능 벤치마크 대시보드 |
+| 타임라인 | `/timeline` | AI 발전 역사 타임라인 |
+| 검색 | `/search` | 포스트 검색 기능 |
+| 대시보드 | `/dashboard` | 관리자 대시보드 (인증 필요) |
+| 개별 포스트 | `/posts/[id]` | 포스트 상세 페이지 |
+
+### 11.2 벤치마킹 시스템
+벤치마킹 페이지는 EpochAI 데이터를 활용하여 다양한 AI 벤치마크 결과를 제공합니다:
+
+**주요 기능:**
+- 13개 벤치마크 지원 (GPQA Diamond, FrontierMath, MATH Level 5, SWE-Bench 등)
+- 카테고리별 필터링 (추론, 코딩, 수학, 멀티모달, 에이전트)
+- 실시간 검색 기능
+- 4가지 뷰 모드: 차트, 테이블, 설명, 설정 (일부 개발 중)
+- 다크 테마 UI (zinc 계열 컬러)
+
+**컴포넌트 구조:**
+- `BenchmarkSelector`: 메인 선택 및 필터링 UI
+- `Citation`: EpochAI 출처 표시 컴포넌트
+- 각 벤치마크별 개별 컴포넌트 (BoxPlot/ScatterPlot 기반)
+
+**데이터 출처:**
+- EpochAI Benchmarking Hub (CC BY 라이센스)
+- Citation: "Epoch AI, 'AI Benchmarking Hub'. Published online at epoch.ai. Retrieved from 'https://epoch.ai/data/ai-benchmarking-dashboard' [online resource]. Accessed 24 Jun 2025."
+
+### 11.3 기술 스택 (Frontend)
+- **프레임워크**: Next.js 15.3.3 (React 19)
+- **스타일링**: Tailwind CSS v4
+- **차트**: @visx 라이브러리
+- **애니메이션**: Motion 라이브러리
+- **데이터 페칭**: SWR
+- **타입스크립트**: 완전 타입 안전성
+
+## 12. agents.mdc 업데이트 가이드라인
 추가되거나 업데이트되면 도움이 되는 것들:
 1. 새로운 도메인 및 아키텍처가 추가 혹은 업데이트 되었을 때
 2. 새로운 API 엔드포인트가 추가되었을 때
 3. 데이터베이스 스키마가 변경되었을 때
 4. 새로운 서비스 패턴이 도입되었을 때
 5. 기술 스택이 변경되거나 추가되었을 때
+6. 프론트엔드 기능이나 페이지가 추가되었을 때

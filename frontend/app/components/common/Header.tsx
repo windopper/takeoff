@@ -8,7 +8,7 @@ export default function Header({
   postCount?: number;
 }) {
   return (
-    <header className="fixed top-0 z-50 w-full min-h-12 backdrop-blur-xl">
+    <header className="fixed top-0 z-50 w-full min-h-20 backdrop-blur-xl">
       <div className="max-w-4xl mx-auto px-6 py-6">
         <div className="relative flex items-center justify-between">
           <div className="flex items-center gap-3">

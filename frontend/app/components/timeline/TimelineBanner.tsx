@@ -11,7 +11,7 @@ export default function TimelineBanner() {
       href="/timeline"
     >
       <h1
-        className="text-4xl text-cyan-200/90 z-10
+        className="text-3xl text-cyan-200/90 z-10
       text-shadow-[rgba(255, 255, 255, 0.5)]"
       >
         2015-2025 인공지능 타임라인
