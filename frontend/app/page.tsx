@@ -26,7 +26,7 @@ export default async function Home({ searchParams }: HomeProps) {
       {/* 헤더 섹션 */}
       <Header postCount={postCount.count} />
       <div className="relative max-w-4xl mx-auto px-6 mt-12 py-12">
-        <div className="flex flex-row gap-4 mb-12">
+        <div className="flex md:flex-row gap-4 mb-12 flex-col">
           <TimelineBanner />
           <BenchmarkBanner />
         </div>

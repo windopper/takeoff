@@ -172,7 +172,6 @@ async getTopPost() {
 - **스타일링**: Tailwind CSS v4
 - **차트**: @visx 라이브러리
 - **애니메이션**: Motion 라이브러리
-- **데이터 페칭**: SWR
 - **타입스크립트**: 완전 타입 안전성
 
 ## 12. agents.mdc 업데이트 가이드라인

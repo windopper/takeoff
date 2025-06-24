@@ -27,6 +27,12 @@ export default function Header({
             >
               AI 타임라인
             </Link>
+            <Link
+              href="/benchmarking"
+              className="text-sm font-medium text-zinc-900 dark:text-zinc-100 text-nowrap"
+            >
+              벤치마크
+            </Link>
           </div>
           <div className="flex items-center gap-3">
             <Suspense>

@@ -33,6 +33,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
           Object.keys(point.extra).length > 0 &&
           Object.entries(point.extra).map(([key, value], index) => (
             <div
+              key={key}
               className={`flex flex-row gap-2 px-4 py-2 ${
                 index % 2 === 0 ? `${index === 0 ? "bg-zinc-600/20" : "bg-zinc-800/20"}` : "bg-zinc-900/20"
               }`}

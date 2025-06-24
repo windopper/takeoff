@@ -1,3 +1,5 @@
+'use client';
+
 import { useModelVersions } from "./useModelVersions";
 import { useOrganizations } from "./useOrganizations";
 import { useEffect, useState } from "react";
