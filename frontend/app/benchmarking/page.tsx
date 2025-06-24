@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   description:
     "인공지능 벤치마크 대시보드",
   openGraph: {
-    images: ["/image/benchmark.webp"],
+    images: ["/image/benchmark.png"],
     title: "Takeoff. AI Benchmarking",
     description:
       "GPQA, Frontier Math등 13종의 벤치마크 결과를 비교해보세요.",
