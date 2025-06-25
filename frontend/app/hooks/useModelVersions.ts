@@ -18,7 +18,9 @@ export function useModelVersions() {
 
     useEffect(() => {
         const fetchModelVersions = async () => {
-            const data = await d3.csv('/data/model_versions.csv');
+            const data = await d3.csv('/data/model_versions.csv', {
+                cache: 'force-cache'
+            });
             setModelVersions((prevModelVersions) => {
                 return data.map((d) => ({
                     id: d['id'] as string,

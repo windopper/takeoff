@@ -1,18 +1,82 @@
 import { scaleLinear, scaleTime } from "@visx/scale";
 import { ScatterPlotData, AxisLimits, Margin, BoxPlotData } from "./types";
 
-export const getOrganizationColors = {
-    OpenAI: "#3b82f6",
-    Anthropic: "#10b981",
-    "Google DeepMind": "#f59e0b",
-    "Google": "#f59e0b",
-    "Meta AI": "#8b5cf6",
-    Microsoft: "#ec4899",
-    "xAI": "#ffffff",
-    "Deepseek": "#4f46e5",
-    "Alibaba": "#8b5cf6",
-    "Mistral AI": "#22c55e",
+
+export const DEFAULT_COLOR = "rgba(100, 200, 200, 0.8)"; // 소프트 네온 시안
+
+const colors = [
+  "rgba(255, 100, 120, 0.8)", // 소프트 네온 레드
+  "rgba(255, 160, 80, 0.8)",  // 소프트 네온 오렌지
+  "rgba(255, 255, 120, 0.8)", // 소프트 네온 옐로우
+  "rgba(120, 255, 100, 0.8)", // 소프트 네온 그린
+  "rgba(100, 200, 255, 0.8)", // 소프트 네온 시안
+  "rgba(120, 150, 255, 0.8)", // 소프트 네온 블루
+  "rgba(200, 120, 255, 0.8)", // 소프트 네온 바이올렛
+  "rgba(255, 120, 255, 0.8)", // 소프트 네온 마젠타
+  "rgba(255, 120, 180, 0.8)", // 소프트 네온 핑크
+  "rgba(200, 255, 100, 0.8)", // 소프트 네온 라임
+  "rgba(180, 180, 180, 0.8)", // 소프트 네온 실버
+]
+
+export const getOrganizationColors = (organization: string) => {
+  switch (organization) {
+    case "OpenAI":
+      return colors[0];
+    case "Anthropic":
+      return colors[1];
+    case "Google DeepMind":
+    case "Google AI":
+    case "Google Brain":
+    case "Google Cloud":
+    case "Google Research":
+    case "Google":
+      return colors[2];
+    case "Meta AI":
+    case "Facebook":
+    case "Facebook AI":
+    case "Facebook AI Research":
+      return colors[3];
+    case "Microsoft":
+      return colors[4];
+    case "xAI":
+      return colors[5];
+    case "DeepSeek":
+      return colors[6];
+    case "Alibaba":
+      return colors[7];
+    case "Mistral AI":
+      return colors[8];
+    default:
+      return colors[9];
+  }
 };
+
+export const getCountryColors = (country: string) => {
+  switch (country) {
+    case "Multinational":
+      return colors[0];
+    case "United States of America":
+      return colors[1];
+    case "Canada":
+      return colors[2];
+    case "United Kingdom":
+      return colors[3];
+    case "France":
+      return colors[4];
+    case "China":
+      return colors[5];
+    case "India":
+      return colors[6];
+    case "Japan":
+      return colors[7];
+    case "Belgium":
+      return colors[8];
+    case "Korea (Republic of)":
+      return colors[9];
+    default:
+      return colors[10];
+  }
+}
 
 const Y_PADDING_RATIO = 0.1;
 const X_PADDING_RATIO = 0.2;

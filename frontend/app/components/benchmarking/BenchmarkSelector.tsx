@@ -2,6 +2,7 @@
 
 import { Benchmark, benchmarkDisplayNames } from "@/data/benchmarking/description"; 
 import { useState } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import BALROG from "./BALROG";
 import AiderPolyGlot from "./AiderPolyGlot";
 import FictionLiveBench from "./FictionLiveBench";
@@ -15,6 +16,8 @@ import WeirdML from "./WeirdML";
 import Factorio from "./Factorio";
 import GeoBench from "./GeoBench";
 import SimpleBench from "./SimpleBench";
+import Description from "./Description";
+import { GraphFilter, GraphSettingWrapper} from "./components/GraphSetting";
 
 const benchmarks: Benchmark[] = [
     "aider-polyglot",
@@ -40,7 +43,7 @@ export default function BenchmarkSelector() {
         <div className="sticky top-20 py-3 mb-6 z-[100] w-screen flex justify-center backdrop-blur-lg">
           <div className="flex flex-row gap-2 max-w-6xl flex-wrap justify-center w-full m-auto">
             {benchmarks.map((benchmark) => (
-              <div
+              <motion.div
                 key={benchmark}
                 className={`rounded-full px-3 flex-nowrap cursor-pointer transition-all duration-200 hover:bg-zinc-700 ${
                   selectedBenchmark === benchmark
@@ -48,27 +51,43 @@ export default function BenchmarkSelector() {
                     : "bg-zinc-800 text-zinc-400"
                 }`}
                 onClick={() => setSelectedBenchmark(benchmark)}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.2, delay: benchmarks.indexOf(benchmark) * 0.05 }}
               >
                 <span className="text-xs whitespace-nowrap">
                   {benchmarkDisplayNames[benchmark]}
                 </span>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
-        {selectedBenchmark === "balrog" && <BALROG />}
-        {selectedBenchmark === "aider-polyglot" && <AiderPolyGlot />}
-        {selectedBenchmark === "fiction-live-bench" && <FictionLiveBench />}
-        {selectedBenchmark === "vpct" && <VPCT />}
-        {selectedBenchmark === "gpqa-diamond" && <GPQADiamond />}
-        {selectedBenchmark === "frontier-math" && <FrontierMath />}
-        {selectedBenchmark === "math-level-5" && <MathLevel5 />}
-        {selectedBenchmark === "otis-mock-aime" && <OTISMockAIME />}
-        {selectedBenchmark === "swe-bench-verified" && <SWEBenchVerified />}
-        {selectedBenchmark === "weird-ml" && <WeirdML />}
-        {selectedBenchmark === "factorio" && <Factorio />}
-        {selectedBenchmark === "geo-bench" && <GeoBench />}
-        {selectedBenchmark === "simple-bench" && <SimpleBench />}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={selectedBenchmark}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+          >
+            {selectedBenchmark === "balrog" && <BALROG />}
+            {selectedBenchmark === "aider-polyglot" && <AiderPolyGlot />}
+            {selectedBenchmark === "fiction-live-bench" && <FictionLiveBench />}
+            {selectedBenchmark === "vpct" && <VPCT />}
+            {selectedBenchmark === "gpqa-diamond" && <GPQADiamond />}
+            {selectedBenchmark === "frontier-math" && <FrontierMath />}
+            {selectedBenchmark === "math-level-5" && <MathLevel5 />}
+            {selectedBenchmark === "otis-mock-aime" && <OTISMockAIME />}
+            {selectedBenchmark === "swe-bench-verified" && <SWEBenchVerified />}
+            {selectedBenchmark === "weird-ml" && <WeirdML />}
+            {selectedBenchmark === "factorio" && <Factorio />}
+            {selectedBenchmark === "geo-bench" && <GeoBench />}
+            {selectedBenchmark === "simple-bench" && <SimpleBench />}
+            <Description benchmark={selectedBenchmark} />
+          </motion.div>
+        </AnimatePresence>
       </>
     );
 }

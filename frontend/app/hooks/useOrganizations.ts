@@ -16,7 +16,9 @@ export function useOrganizations() {
 
   useEffect(() => {
     const fetchOrganizations = async () => {
-      const data = await d3.csv("/data/organizations.csv");
+      const data = await d3.csv("/data/organizations.csv", {
+        cache: 'force-cache'
+      });
       setOrganizations((prevOrganizations) => {
         return data.map((d) => ({
           organization: d["Organization"] as string,
@@ -33,7 +35,7 @@ export function useOrganizations() {
   }, []);
 
   const findOrganization = (allMLSystems: string) => {
-    return organizations.find((o) => o.allMLSystems.includes(allMLSystems));
+    return organizations.find((o) => o.allMLSystems.split(',').map((s) => s.trim()).includes(allMLSystems));
   }
 
   return { organizations, findOrganization };

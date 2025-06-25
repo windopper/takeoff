@@ -155,13 +155,22 @@ async getTopPost() {
 - 13개 벤치마크 지원 (GPQA Diamond, FrontierMath, MATH Level 5, SWE-Bench 등)
 - 카테고리별 필터링 (추론, 코딩, 수학, 멀티모달, 에이전트)
 - 실시간 검색 기능
-- 4가지 뷰 모드: 차트, 테이블, 설명, 설정 (일부 개발 중)
+- 2가지 뷰 모드: 그래프, 테이블 (완전 구현됨)
 - 다크 테마 UI (zinc 계열 컬러)
 
 **컴포넌트 구조:**
 - `BenchmarkSelector`: 메인 선택 및 필터링 UI
 - `Citation`: EpochAI 출처 표시 컴포넌트
 - 각 벤치마크별 개별 컴포넌트 (BoxPlot/ScatterPlot 기반)
+- `BenchmarkTable`: 테이블 뷰를 위한 컴포넌트 (페이지네이션, 정렬, 검색 지원)
+- `GraphSettingWrapper`: 뷰 타입 전환 및 설정을 담당하는 래퍼 컴포넌트
+
+**벤치마크 테이블 기능:**
+- 모든 벤치마크 컴포넌트에서 그래프/테이블 뷰 전환 가능
+- 테이블 필드: Model version, 점수(선택된 지표), organization, country
+- 페이지네이션 (15개씩 표시)
+- 정렬 기능 (모든 컬럼에 대해 오름차순/내림차순)
+- 필터가 있는 벤치마크의 경우 선택된 지표에 따라 점수 컬럼 동적 변경
 
 **데이터 출처:**
 - EpochAI Benchmarking Hub (CC BY 라이센스)

@@ -21,6 +21,12 @@ export const useCanvasRendering = (
   const innerHeight = height - margin.top - margin.bottom;
   const labelColor = "#9ca3af";
 
+  useEffect(() => {
+    if (rendererRef.current) {
+      rendererRef.current.setPostfix(postfix);
+    }
+  }, [postfix])
+
   // Canvas 렌더링 함수
   const renderCanvas = useCallback(
     (canvas: HTMLCanvasElement, xScale: any, yScale: any) => {

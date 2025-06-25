@@ -72,6 +72,11 @@ export default function ScatterPlot({
 
     const handleWheel = (event: WheelEvent) => {
       if (rectRef.current) {
+        // 휠 이벤트가 상호작용 영역 밖에서 발생하면 무시
+        if (event.target !== rectRef.current) {
+          return;
+        }
+
         const rect = rectRef.current.getBoundingClientRect();
         if (
           event.clientX >= rect.left &&
@@ -91,16 +96,16 @@ export default function ScatterPlot({
     };
   }, []);
 
-  if (!isMounted) {
-    return (
-      <div
-        className={` bg-transparent p-4 flex items-center justify-center`}
-        style={{ width: width, height: height }}
-      >
-        <div className="text-gray-500">Loading chart...</div>
-      </div>
-    );
-  }
+  // if (!isMounted) {
+  //   return (
+  //     <div
+  //       className={` bg-transparent p-4 flex items-center justify-center`}
+  //       style={{ width: width, height: height }}
+  //     >
+  //       <div className="text-gray-500">Loading chart...</div>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="w-full bg-transparent p-4">

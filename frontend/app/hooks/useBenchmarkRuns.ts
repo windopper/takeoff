@@ -1,5 +1,5 @@
 // id,task,model,Best score (across scorers),Scores,log viewer,logs,started_at,Status
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import * as d3 from "d3";
 
 interface BenchmarkRun {
@@ -37,7 +37,9 @@ export default function useBenchmarkRuns() {
 
     useEffect(() => {
         const fetchTasks = async () => {
-            const response = await d3.csv("/data/benchmarks_scores.csv");
+            const response = await d3.csv("/data/benchmarks_scores.csv", {
+                cache: 'force-cache'
+            });
 
             setScores(response.map((row) => ({
                 name: row["Name"],
@@ -53,7 +55,9 @@ export default function useBenchmarkRuns() {
     useEffect(() => {
         if (scores.length === 0) return;
         const fetchBenchmarkRuns = async () => {
-            const response = await d3.csv("/data/benchmarks_runs.csv");
+            const response = await d3.csv("/data/benchmarks_runs.csv", {
+                cache: 'force-cache'
+            });
 
             const processedData = response.map((row) => {
                 const score = scores.findLast(score => score.benchmarkRuns === row['id']);
@@ -76,9 +80,12 @@ export default function useBenchmarkRuns() {
         fetchBenchmarkRuns();
     }, [scores])
 
-    const findBenchmarkResultByTask = (task: Tasks) => {
-        return benchmarkRuns.filter((run) => run.task === task);
-    }
+    const findBenchmarkResultByTask = useCallback(
+        (task: Tasks) => {
+            return benchmarkRuns.filter((run) => run.task === task);
+        },
+        [benchmarkRuns]
+    );
 
     return { benchmarkRuns, findBenchmarkResultByTask };
 }

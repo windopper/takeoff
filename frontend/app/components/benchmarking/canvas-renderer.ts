@@ -26,6 +26,10 @@ export class CanvasRenderer {
     this.postfix = postfix;
   }
 
+  setPostfix(postfix: string) {
+    this.postfix = postfix;
+  }
+
   setupCanvas() {
     const dpr = window.devicePixelRatio || 1;
     const rect = this.canvas.getBoundingClientRect();

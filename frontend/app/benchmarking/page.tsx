@@ -23,6 +23,7 @@ export const metadata: Metadata = {
     type: "website",
   },
 };
+
 export default function Benchmarking() {
   return (
     <div className="min-h-screen m-auto">
