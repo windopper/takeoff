@@ -4,11 +4,17 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Takeoff.",
-  verification: {
-    google: "d8Ovesw9e_k8y4kyS7FT6fTDVniHGZ46W5Dzo_pGlLk"
+  openGraph: {
+    images: ["/image/takeoff.png"],
+    title: "Takeoff.",
+    description: "Takeoff는 AI 관련 아티클을 자동으로 정리 및 게시하는 서비스입니다",
+    siteName: "Takeoff.",
+    type: "website",
+    url: "https://ai-takeoff.dev",
+    locale: "ko_KR",
   },
   other: {
-    "naver-site-verification": "91d079d1884e5ac2ed81c793a4ac22c8dad11413"
+    "naver-site-verification": "e3e531886f5222bded5c557f0221ef0c00d69e9a"
   },
   category: "technology",
   description: "Takeoff는 AI 관련 아티클을 자동으로 정리 및 게시하는 서비스입니다"
