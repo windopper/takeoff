@@ -96,17 +96,6 @@ export default function ScatterPlot({
     };
   }, []);
 
-  // if (!isMounted) {
-  //   return (
-  //     <div
-  //       className={` bg-transparent p-4 flex items-center justify-center`}
-  //       style={{ width: width, height: height }}
-  //     >
-  //       <div className="text-gray-500">Loading chart...</div>
-  //     </div>
-  //   );
-  // }
-
   return (
     <div className="w-full bg-transparent p-4">
       <div className="relative">

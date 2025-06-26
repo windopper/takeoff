@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
+import { ChartLine, Table } from "lucide-react";
 
 export interface GraphFilterProps<T extends string> {
   name: string;
@@ -133,9 +134,9 @@ export function ViewTypeSetting({
         transition={{ duration: 0.15, delay: 0.1, ease: "easeOut" }}
       >
         {[
-          { key: "graph" as const, label: "그래프" },
-          { key: "table" as const, label: "테이블" },
-        ].map(({ key, label }, index) => (
+          { key: "graph" as const, label: "그래프", icon: <ChartLine className="w-4 h-4" /> },
+          { key: "table" as const, label: "테이블", icon: <Table className="w-4 h-4" /> },
+        ].map(({ key, label, icon }, index) => (
           <motion.div
             key={key}
             className={`flex flex-row items-center justify-center gap-2 px-3 py-1 rounded-lg cursor-pointer transition-all duration-300 ease-out border min-w-20 group ${
@@ -157,7 +158,8 @@ export function ViewTypeSetting({
                   : "text-zinc-400 group-hover:text-zinc-200"
               }`}
             >
-              {label}
+              {icon}
+              <span className="text-xs font-medium">{label}</span>
             </span>
           </motion.div>
         ))}
@@ -402,6 +404,10 @@ export function GraphSettingWrapper<T extends string>({
         animate={{ opacity: 1 }}
         transition={{ duration: 0.2, ease: "easeOut" }}
       >
+        <ViewTypeSetting
+          viewType={viewType}
+          setViewType={setViewType}
+        />
         {filters.map((filter, index) => (
           <motion.div
             key={filter.name}
@@ -412,10 +418,6 @@ export function GraphSettingWrapper<T extends string>({
             <GraphFilter {...filter} />
           </motion.div>
         ))}
-        <ViewTypeSetting
-          viewType={viewType}
-          setViewType={setViewType}
-        />
         <GraphLabelGroupSetting
           isGroupColorSetting={isGroupColorSetting}
           setIsGroupColorSetting={setIsGroupColorSetting}

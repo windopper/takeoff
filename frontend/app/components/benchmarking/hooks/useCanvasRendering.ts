@@ -93,11 +93,10 @@ export const useCanvasRendering = (
     [data, width, height, margin, innerWidth, innerHeight, hoveredPoint, pinnedPoint, labelColor]
   );
 
-  // 캔버스 업데이트 함수 (애니메이션 프레임 사용)
+  // 캔버스 업데이트 함수
   const updateCanvas = useCallback(
     (xScale: any, yScale: any) => {
       if (!isMounted) return;
-
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
       }
