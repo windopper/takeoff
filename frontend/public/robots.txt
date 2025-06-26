@@ -1,9 +1,12 @@
 # *
 User-agent: *
 Allow: /
+Disallow: /dashboard
+Disallow: /posts/*
+Disallow: /search
 
 # Host
-Host: https://takeoff-one.vercel.app/
+Host: https://ai-takeoff.dev/
 
 # Sitemaps
-Sitemap: https://takeoff-one.vercel.app/sitemap.xml
+Sitemap: https://ai-takeoff.dev/sitemap.xml

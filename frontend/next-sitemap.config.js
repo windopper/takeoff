@@ -4,12 +4,25 @@ const config = {
   generateRobotsTxt: true, // robots.txt 파일 생성 여부
   sitemapSize: 7000, // 각 sitemap의 최대 URL 수
   changefreq: "daily", // 검색 엔진에 대한 URL 업데이트 빈도
-  priority: 0.7, // 기본 URL 우선 순위
+  priority: 1, // 기본 URL 우선 순위
   exclude: [
-    "*/posts*",
-    "*/dashboard*",
-    "*/search*",
+    "/posts/*",
+    "/dashboard",
+    "/search",
   ],
+  robotsTxtOptions: {
+    policies: [
+      {
+        userAgent: "*",
+        allow: "/",
+        disallow: [
+          "/dashboard",
+          "/posts/*",
+          "/search"
+        ],
+      },
+    ],
+  },
 };
 
 module.exports = config;
