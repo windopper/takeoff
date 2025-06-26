@@ -50,7 +50,7 @@ export class CanvasRenderer {
     this.ctx.lineWidth = 0.5;
     this.ctx.globalAlpha = 0.5;
 
-    // 수평 격자선 (Y축 틱에 맞춰)
+    // 수평 격자선
     const yTicks = yScale.ticks(5);
     yTicks.forEach((value: number) => {
       const y = yScale(value) + this.margin.top;
@@ -60,7 +60,7 @@ export class CanvasRenderer {
       this.ctx.stroke();
     });
 
-    // 수직 격자선 (X축 틱에 맞춰)
+    // 수직 격자선
     const xTicks = xScale.ticks(6);
     xTicks.forEach((value: Date) => {
       const x = xScale(value) + this.margin.left;

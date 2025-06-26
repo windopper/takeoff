@@ -30,6 +30,11 @@ export function generateFilterPrompt({ title, description }: FilterPromptParams)
 - 단순한 업계 뉴스나 인사 소식
 - AI가 아닌 다른 분야의 연구나 기술
 
+응답은 JSON 형태로 작성하며 reason 과 confidence를 포함해야 합니다.
+reason은 판단 이유를 한 문장으로 작성하며 confidence는 0.0-1.0 사이의 숫자로 작성해야 합니다.
+confidence는 1에 가까울 수록 관련성이 높다고 판단하며 0에 가까울 수록 관련성이 낮다고 판단합니다.
+앞서 제시한 기준을 참고하여 판단해주세요.
+
 응답 형식 (JSON):
 {
   "reason": "판단 이유를 한 문장으로",

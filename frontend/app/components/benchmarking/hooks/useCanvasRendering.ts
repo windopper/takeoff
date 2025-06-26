@@ -48,7 +48,7 @@ export const useCanvasRendering = (
         const y = yScale(point.y) + margin.top;
         const radius = 4;
 
-        // 뷰포트 내에 있는 포인트만 렌더링 (성능 최적화)
+        // 뷰포트 내에 있는 포인트만 렌더링
         if (renderer.isPointInViewport(x, y)) {
                      const isHovered = !!(hoveredPoint && hoveredPoint.id === point.id) || 
                             !!(pinnedPoint && pinnedPoint.id === point.id);
