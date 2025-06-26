@@ -1,15 +1,13 @@
-import { Fragment } from "react";
+import { motion } from "motion/react";
 
 export default function TimelineYear({
   startYear,
   endYear,
-  progress,
   currentYear,
   currentMonth,
 }: {
   startYear: number;
-  endYear: number;
-  progress: number;
+  endYear: number;  
   currentYear?: number;
   currentMonth?: number;
 }) {
@@ -27,7 +25,11 @@ export default function TimelineYear({
     const isCurrentYear = currentYear === year;
 
     return (
-      <Fragment key={`${index}-year`}>
+      <motion.div key={`${index}-year`}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, ease: "easeInOut", delay: index * 0.1 }}
+      >
         <Year 
           year={year.toString()} 
           top={nextTop} 
@@ -55,7 +57,7 @@ export default function TimelineYear({
             isHighlighted={true}
           />
         )}
-      </Fragment>
+      </motion.div>
     );
   });
 

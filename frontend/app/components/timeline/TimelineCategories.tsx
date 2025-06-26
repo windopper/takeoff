@@ -1,4 +1,5 @@
 import { CATEGORIES } from "@/data/timelineData";
+import { motion } from "motion/react";
 
 const CATEGORY_MAP = {
   [CATEGORIES.MODEL_RELEASE]: "Model Release",
@@ -25,7 +26,11 @@ export default function TimelineCategories({
   };
 
   return (
-    <div className="flex flex-row justify-center gap-2 w-full py-8 flex-wrap">
+    <motion.div className="flex flex-row justify-center gap-2 w-full py-8 flex-wrap"
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, ease: "easeInOut" }}
+    >
       {Object.values(CATEGORIES).map((category) => (
         <button
           key={category}
@@ -37,6 +42,6 @@ export default function TimelineCategories({
           {CATEGORY_MAP[category]}
         </button>
       ))}
-    </div>
+    </motion.div>
   );
 }
