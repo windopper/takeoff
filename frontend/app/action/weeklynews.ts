@@ -61,6 +61,11 @@ export async function getLatestWeeklyNews() {
             tags: [WEEKLY_NEWS_LATEST_TAG],
         },
     });
+
+    if (!response.ok) {
+        return null;
+    }
+
     const data = await response.json();
     return data;
 }

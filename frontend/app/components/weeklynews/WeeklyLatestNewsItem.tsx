@@ -6,6 +6,11 @@ import { getThemeById } from "./utils";
 
 export default async function WeeklyLatestNewsItem() {
     const latestWeeklyNews = await getLatestWeeklyNews();
+
+    if (!latestWeeklyNews) {
+        return null;
+    }
+
     const theme = getThemeById(latestWeeklyNews.id);
 
     return (
