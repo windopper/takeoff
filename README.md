@@ -14,6 +14,8 @@ Takeoff는 AI 관련 아티클을 자동으로 정리 및 게시하는 서비스
 
 ![Vercel Deploy](https://deploy-badge.vercel.app/vercel/takeoff)
 
+![메인페이지](/docs/fe-main.png)
+
 ## 주요 기능
 - Hackernews/Reddit에서 인기있는 글에 대한 정리
 - [2015-2025년 인공지능 타임라인](https://ai-takeoff.dev/timeline)
@@ -26,10 +28,14 @@ Takeoff는 AI 관련 아티클을 자동으로 정리 및 게시하는 서비스
 
 2015년부터 2025년까지 인공지능의 기술, 정책, 문화 등 다양한 분야에서 일어난 일들을 타임라인으로 정리
 
+![인공지능 타임라인](/docs/fe-timeline.png)
+
 ### LLM 벤치마크
 [LLM 벤치마크 바로가기](https://ai-takeoff.dev/benchmarking)
 
 GPQA, Frontier Math등 13종의 벤치마크 결과를 정리
+
+![LLM 벤치마크](/docs/fe-benchmarking.png)
 
 ### 디스코드 웹훅 등록
 [웹훅 등록하기](https://ai-takeoff.dev/webhook)
@@ -41,6 +47,8 @@ Takeoff에서 새로운 글이 업로드될 때 디스코드 채널로 실시간
 
 AI가 일주일에 한 번 주간 뉴스를 정리하여 게시
 
+![주간 뉴스](/docs/fe-weeklynews.png)
+
 ## 로드맵
 - [x] 유사 아티클이 이미 존재할 시 게시하지 않는 기능
 - [x] AI 타임라인 페이지
@@ -49,7 +57,9 @@ AI가 일주일에 한 번 주간 뉴스를 정리하여 게시
     - [x] 벤치마크 데이터 별 필터 기능 적용
     - [x] 벤치마크 테이블 추가
     - [x] 벤치마크 별 설명 페이지 작성
-- [x] 주간 뉴스 블로그
+- [ ] 주간 뉴스 블로그
+    - [ ] cron 지정 기능
+    - [x] AI 포스트 작성
 - [ ] 인공지능 모델 특징 및 비교 페이지
 - [ ] Arxiv 논문 정리
 
