@@ -1,6 +1,6 @@
 <h1 align="center" style="border-bottom: none">
     <div>
-        <a style="color:#36f" href="https://takeoff-one.vercel.app">
+        <a style="color:#36f" href="https://ai-takeoff.dev">
             <img src="/frontend/app/favicon.ico" width="80">
             <br>
             Takeoff.
@@ -12,28 +12,33 @@
 Takeoff는 AI 관련 아티클을 자동으로 정리 및 게시하는 서비스입니다
 <p>
 
-![Vercel Deploy](https://deploy-badge.vercel.app/vercel/takeoff-one)
+![Vercel Deploy](https://deploy-badge.vercel.app/vercel/takeoff)
 
 ## 주요 기능
 - Hackernews/Reddit에서 인기있는 글에 대한 정리
-- [2015-2025년 인공지능 타임라인](https://takeoff-one.vercel.app/timeline)
-- [LLM 벤치마크](https://takeoff-one.vercel.app/benchmarking)
+- [2015-2025년 인공지능 타임라인](https://ai-takeoff.dev/timeline)
+- [LLM 벤치마크](https://ai-takeoff.dev/benchmarking)
 - Discord Webhook으로 새로운 글 업로드마다 실시간 알림
 
 ### 인공지능 타임라인
-[인공지능 타임라인 바로가기](https://takeoff-one.vercel.app/timeline)
+[인공지능 타임라인 바로가기](https://ai-takeoff.dev/timeline)
 
 2015년부터 2025년까지 인공지능의 기술, 정책, 문화 등 다양한 분야에서 일어난 일들을 타임라인으로 정리
 
 ### LLM 벤치마크
-[LLM 벤치마크 바로가기](https://takeoff-one.vercel.app/benchmarking)
+[LLM 벤치마크 바로가기](https://ai-takeoff.dev/benchmarking)
 
 GPQA, Frontier Math등 13종의 벤치마크 결과를 정리
 
 ### 디스코드 웹훅 등록
-[웹훅 등록하기](https://takeoff-one.vercel.app/webhook)
+[웹훅 등록하기](https://ai-takeoff.dev/webhook)
 
 Takeoff에서 새로운 글이 업로드될 때 디스코드 채널로 실시간 알림을 받을 수 있습니다.
+
+### 주간 뉴스
+[주간 뉴스 바로가기](https://ai-takeoff.dev/weeklynews)
+
+AI가 일주일에 한 번 주간 뉴스를 정리하여 게시
 
 ## 로드맵
 - [x] 유사 아티클이 이미 존재할 시 게시하지 않는 기능
