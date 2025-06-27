@@ -1,9 +1,10 @@
 'use server';
 
 import { takeoffFetch } from "@/utils/fetch";
+import { BACKEND_URL } from "../constants";
 
 export async function registerWebhook(webhookUrl: string) {
-  const response = await takeoffFetch(`https://takeoff-backend.kamilereon.workers.dev/api/webhook-register`, {
+  const response = await takeoffFetch(`${BACKEND_URL}/api/webhook-register`, {
     method: 'POST',
     body: JSON.stringify({ webhookUrl }),
   });
@@ -12,7 +13,7 @@ export async function registerWebhook(webhookUrl: string) {
 }
 
 export async function getWebhookList() {
-  const response = await takeoffFetch(`https://takeoff-backend.kamilereon.workers.dev/api/webhook-list`, {
+  const response = await takeoffFetch(`${BACKEND_URL}/api/webhook-list`, {
     method: 'GET',
   });
   const data = await response.json();
@@ -20,7 +21,7 @@ export async function getWebhookList() {
 }
 
 export async function deleteWebhookUrl(id: string) {
-  const response = await takeoffFetch(`https://takeoff-backend.kamilereon.workers.dev/api/webhook-delete`, {
+  const response = await takeoffFetch(`${BACKEND_URL}/api/webhook-delete`, {
     method: 'POST',
     body: JSON.stringify({ id }),
   });

@@ -1,13 +1,13 @@
 import { getTakeoffPostById } from "@/app/action/takeoffPosts";
 import { Post } from "@/app/types/post";
 import Link from "next/link";
-import ReturnButton from "./ReturnButton";
+import ReturnButton from "../../components/common/ReturnButton";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkRehype from "remark-rehype";
 import CategoryPills from "@/app/components/post/CategoryPills";
 import { Metadata } from "next";
-import NotFound from "./NotFound";
+import NotFound from "../../components/common/NotFound";
 
 interface PostPageProps {
   params: Promise<{ id: string }>;

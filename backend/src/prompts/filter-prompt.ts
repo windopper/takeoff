@@ -14,8 +14,7 @@ export function generateFilterPrompt({ title, description }: FilterPromptParams)
 2. AI/LLM 관련 연구 논문이나 학술 연구 발표
 3. AI/LLM을 활용한 새로운 도구, 프레임워크, 라이브러리 출시
 4. AI/LLM 기술의 혁신적인 발전이나 돌파구
-5. AI/LLM을 활용한 새로운 소프트웨어, 앱, 서비스 런칭
-6. AI/LLM 업계의 주요 발표나 업데이트
+5. AI/LLM 업계의 주요 발표나 업데이트
 
 다음 중 하나에 해당하면 관련성이 높다고 판단:
 - AI/ML 관련 arXiv, Nature, Science 등의 논문 링크
@@ -29,6 +28,7 @@ export function generateFilterPrompt({ title, description }: FilterPromptParams)
 - AI와 관련 없는 일반적인 소프트웨어나 기술
 - 단순한 업계 뉴스나 인사 소식
 - AI가 아닌 다른 분야의 연구나 기술
+- 개인적인 의견에 대한 게시물
 
 응답은 JSON 형태로 작성하며 reason 과 confidence를 포함해야 합니다.
 reason은 판단 이유를 한 문장으로 작성하며 confidence는 0.0-1.0 사이의 숫자로 작성해야 합니다.

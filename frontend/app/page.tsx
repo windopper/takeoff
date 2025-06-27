@@ -5,6 +5,7 @@ import TakeoffMainWithInfiniteScroll from "./components/TakeoffMainWithInfiniteS
 import TimelineBanner from "./components/timeline/TimelineBanner";
 import { PAGE_SIZE } from "./constants/pagination";
 import BenchmarkBanner from "./components/benchmarking/BenchmarkBanner";
+import WeeklyLatestNewsItem from "./components/weeklynews/WeeklyLatestNewsItem";
 
 interface HomeProps {
   searchParams: Promise<{
@@ -26,10 +27,11 @@ export default async function Home({ searchParams }: HomeProps) {
       {/* 헤더 섹션 */}
       <Header postCount={postCount.count} />
       <div className="relative max-w-4xl mx-auto px-6 mt-12 py-12">
-        <div className="flex md:flex-row gap-4 mb-12 flex-col">
+        <div className="flex md:flex-row gap-4 mb-6 flex-col">
           <TimelineBanner />
           <BenchmarkBanner />
         </div>
+        <WeeklyLatestNewsItem />
         <TakeoffMainWithInfiniteScroll
           posts={posts.posts}
           postCount={postCount.count}

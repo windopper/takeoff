@@ -3,10 +3,11 @@
 import { takeoffFetch } from "@/utils/fetch";
 import { POSTS_TAG, getPostByIdTag, POST_COUNT_TAG } from "../constants/tags";
 import { revalidateTag } from "next/cache";
+import { BACKEND_URL } from "../constants";
 
 export const processArxivPaper = async (url: string) => {
     try {
-        const response = await takeoffFetch(`https://takeoff-backend.kamilereon.workers.dev/api/process-arxiv`, {
+        const response = await takeoffFetch(`${BACKEND_URL}/api/process-arxiv`, {
             method: 'POST',
             body: JSON.stringify({ url }),
         });
@@ -39,7 +40,7 @@ export const processArxivPaper = async (url: string) => {
 
 export const processRedditPosts = async (url: string) => {
     try {
-        const response = await takeoffFetch(`https://takeoff-backend.kamilereon.workers.dev/api/process-reddit`, {
+        const response = await takeoffFetch(`${BACKEND_URL}/api/process-reddit`, {
             method: 'POST',
         });
         
@@ -71,7 +72,7 @@ export const processRedditPosts = async (url: string) => {
 
 export const processHackerNewsPosts = async (url: string) => {
     try {
-        const response = await takeoffFetch(`https://takeoff-backend.kamilereon.workers.dev/api/process-hackernews`, {
+        const response = await takeoffFetch(`${BACKEND_URL}/api/process-hackernews`, {
             method: 'POST',
         });
         
@@ -103,7 +104,7 @@ export const processHackerNewsPosts = async (url: string) => {
 
 export const processUrl = async (url: string) => {
     try {
-        const response = await takeoffFetch(`https://takeoff-backend.kamilereon.workers.dev/api/process-url`, {
+        const response = await takeoffFetch(`${BACKEND_URL}/api/process-url`, {
             method: 'POST',
             body: JSON.stringify({ url }),
         });

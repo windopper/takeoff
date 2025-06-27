@@ -3,6 +3,7 @@
 import { takeoffFetch } from "@/utils/fetch";
 import { revalidateTag } from "next/cache";
 import { POSTS_TAG, POST_COUNT_TAG, getPostByIdTag } from "../constants/tags";
+import { BACKEND_URL } from "../constants";
 
 export async function getTakeoffPosts({
   limit = 20,
@@ -16,7 +17,7 @@ export async function getTakeoffPosts({
   category?: string;
 }) {
   const response = await takeoffFetch(
-    `https://takeoff-backend.kamilereon.workers.dev/api/posts?limit=${limit}&offset=${offset}&q=${query}&category=${category}`,
+    `${BACKEND_URL}/api/posts?limit=${limit}&offset=${offset}&q=${query}&category=${category}`,
     {
       next: {
         revalidate: 600,
@@ -36,7 +37,7 @@ export async function getTakeoffPostCount({
   category?: string;
 }) {
   const response = await takeoffFetch(
-    `https://takeoff-backend.kamilereon.workers.dev/api/post-count?q=${query}&category=${category}`,
+    `${BACKEND_URL}/api/post-count?q=${query}&category=${category}`,
     {
       next: {
         revalidate: 600,
@@ -50,7 +51,7 @@ export async function getTakeoffPostCount({
 
 export async function getTakeoffPostById(id: string) {
   const response = await takeoffFetch(
-    `https://takeoff-backend.kamilereon.workers.dev/api/posts/${id}`,
+    `${BACKEND_URL}/api/posts/${id}`,
     {
       next: {
         revalidate: 3600,
@@ -64,7 +65,7 @@ export async function getTakeoffPostById(id: string) {
 
 export async function deleteTakeoffPostById(id: string) {
   const response = await takeoffFetch(
-    `https://takeoff-backend.kamilereon.workers.dev/api/posts/${id}`,
+    `${BACKEND_URL}/api/posts/${id}`,
     {
       method: 'DELETE',
     }

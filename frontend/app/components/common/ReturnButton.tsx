@@ -3,7 +3,7 @@
 import { MaterialSymbolsChevronLeft } from "@/app/icons/MaterialSymbolsChevronLeft";
 import { usePathname, useRouter } from "next/navigation";
 
-export default function ReturnButton() {
+export default function ReturnButton({ text }: { text?: string }) {
     const router = useRouter();
     
     const handleClick = () => {
@@ -23,7 +23,7 @@ export default function ReturnButton() {
     return (
         <button onClick={handleClick} className="inline-flex items-center gap-2 text-sm text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors mb-8">
             <MaterialSymbolsChevronLeft className="w-4 h-4" />
-            목록으로 돌아가기
+            {text || "목록으로 돌아가기"}
         </button>
     )
 }

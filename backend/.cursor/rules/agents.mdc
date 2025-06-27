@@ -7,7 +7,7 @@ alwaysApply: true
 해당 파일은 AI(Claude, GPT, Cursor 등) 또는 사람이 해당 프로젝트를 진행하기 위해 지켜야 할 규칙과 아키텍처에 대해 서술한 파일입니다.
 
 ## 0. 프로젝트 개요
-takeoff는 AI, SW, CS관련 커뮤니티의 이슈들을 모아서 글을 정리하는 서비스입니다. 
+takeoff는 AI관련 커뮤니티의 이슈들을 모아서 글을 정리하는 서비스입니다. 
 - takeoff-backend: 백엔드 API 서비스 (Cloudflare Workers)
 - takeoff-frontend: 프론트엔드 웹 애플리케이션 (Next.js)
 

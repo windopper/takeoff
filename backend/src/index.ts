@@ -13,11 +13,13 @@ import { VectorizeRoutes } from './vectorize/vectorize-routes';
 import { getLogs, sendLog, sendLogImmediate } from './log/log-stream-service';
 import { LogRoutes } from './log/log-routes';
 import { ProcessLogManager } from './manager/process-log-manager';
+import { WeeklyNewsRoutes } from './weeklynews/weeklynews-routes';
 
 export interface Env {
 	DB: D1Database;
 	VECTORIZE: Vectorize;
 	GEMINI_API_KEY: string;
+	CLAUDE_API_KEY: string;
 	ASSETS: Fetcher;
 	ALLOWED_HOSTS: string;
 	TAKEOFF_API_KEY: string;
@@ -174,6 +176,32 @@ export default {
 				const response = await LogRoutes.getLogs(request, env);
 				return addCorsHeaders(response);
 			}
+
+			if (pathname === "/api/weekly-news" && request.method === 'POST') {
+				const response = await WeeklyNewsRoutes.createWeeklyNews(request, env);
+				return addCorsHeaders(response);
+			}
+
+			if (pathname === "/api/weekly-news" && request.method === 'GET') {
+				const response = await WeeklyNewsRoutes.getWeeklyNews(request, env);
+				return addCorsHeaders(response);
+			}
+
+			if (pathname === "/api/weekly-news-latest" && request.method === 'GET') {
+				const response = await WeeklyNewsRoutes.getLatestWeeklyNews(request, env);
+				return addCorsHeaders(response);
+			}
+
+			if (pathname === "/api/weekly-news-list" && request.method === 'GET') {
+				const response = await WeeklyNewsRoutes.getWeeklyNewsList(request, env);
+				return addCorsHeaders(response);
+			}
+
+			if (pathname === "/api/weekly-news-revalidate" && request.method === 'POST') {
+				const response = await WeeklyNewsRoutes.revalidateCache(request, env);
+				return addCorsHeaders(response);
+			}
+
 	
 			const helpResponse = new Response(`사용 가능한 API:
 			- GET /api/reddit?subreddit=LocalLLaMA&limit=5 - Reddit 게시글 목록

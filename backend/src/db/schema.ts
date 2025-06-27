@@ -66,6 +66,13 @@ export const processLog = sqliteTable('process_log', {
   createdAt: text('created_at').notNull().default(sql`CURRENT_TIMESTAMP`),
 })
 
+export const weeklyNewsPost = sqliteTable('weekly_news_post', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  title: text('title').notNull(),
+  content: text('content').notNull(),
+  createdAt: text('created_at').notNull().default(sql`CURRENT_TIMESTAMP`),
+})
+
 // TypeScript 타입 정의
 export type AiPost = typeof aiPosts.$inferSelect;
 export type NewAiPost = typeof aiPosts.$inferInsert;
@@ -75,3 +82,5 @@ export type DiscordWebhook = typeof discordWebhook.$inferSelect;
 export type NewDiscordWebhook = typeof discordWebhook.$inferInsert;
 export type ProcessLog = typeof processLog.$inferSelect;
 export type NewProcessLog = typeof processLog.$inferInsert;
+export type WeeklyNewsPost = typeof weeklyNewsPost.$inferSelect;
+export type NewWeeklyNewsPost = typeof weeklyNewsPost.$inferInsert;

@@ -26,7 +26,6 @@
 	"triggers": {
 		"crons": ["0 * * * *"] // 매 시간 정각에 실행 (00:00, 01:00, 02:00, ...)
 	},
-
 	/**
 	 * Smart Placement
 	 * Docs: https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement

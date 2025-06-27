@@ -1,6 +1,6 @@
 import { drizzle, DrizzleD1Database } from 'drizzle-orm/d1';
 import { AiPost, aiPosts } from '../db/schema';
-import { count, desc, and, ilike, like, asc, lt, inArray } from 'drizzle-orm';
+import { count, desc, and, ilike, like, asc, lt, inArray, gt } from 'drizzle-orm';
 import { eq } from 'drizzle-orm';
 import { POST_EXPIRATION_TIME } from '../constants';
 
@@ -197,6 +197,11 @@ export class PostManager {
 
 	async getAllPostNotVectorized(): Promise<AiPost[]> {
 		const result = await this.db.select().from(aiPosts).where(eq(aiPosts.isVectorized, 0)).execute();
+		return result;
+	}
+
+	async getPostAfterDate(date: Date): Promise<AiPost[]> {
+		const result = await this.db.select().from(aiPosts).where(gt(aiPosts.createdAt, date.toISOString())).execute();
 		return result;
 	}
 
