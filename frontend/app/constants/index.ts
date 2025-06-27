@@ -1,1 +1,1 @@
-export const BACKEND_URL = process.env.BACKEND_URL || "https://takeoff-backend.kamilereon.workers.dev";
+export const BACKEND_URL = "https://takeoff-backend.kamilereon.workers.dev";

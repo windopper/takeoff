@@ -11,7 +11,7 @@ import { JsonOutputParser } from '@langchain/core/output_parsers';
 import { AiPost } from '../db/schema';
 import { WEEKLY_NEWS_SELECTION_PROMPT } from "../prompts/weekly-news-selection-prompt";
 import { WEEKLY_NEWS_BLOG_PROMPT } from "../prompts/weekly-news-blog-prompt";
-import { FRONTEND_URL, LOCAL_FRONTEND_URL } from "../constants";
+import { FRONTEND_URL } from "../constants";
 
 export class WeeklyNewsService {
     private static gemini: ChatGoogleGenerativeAI = new ChatGoogleGenerativeAI({
