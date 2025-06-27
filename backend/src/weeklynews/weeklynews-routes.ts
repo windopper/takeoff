@@ -40,6 +40,15 @@ export class WeeklyNewsRoutes {
         return Response.json(post);
     }
 
+    static async deleteWeeklyNews(req: Request, env: Env): Promise<Response> {
+        const { id } = await req.json() as { id: number };
+        if (!id) {
+            return Response.json({ error: 'ID is required' }, { status: 400 });
+        }
+        await WeeklyNewsService.deleteWeeklyNews(id);
+        return Response.json({ message: 'Weekly news deleted' });
+    }
+
     static async revalidateCache(req: Request, env: Env): Promise<Response> {
         const { id } = await req.json() as { id: number };
         await WeeklyNewsService.revalidateCache(id);

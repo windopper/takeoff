@@ -10,7 +10,7 @@ import {
 import { JsonOutputParser } from '@langchain/core/output_parsers';
 import { AiPost } from '../db/schema';
 import { WEEKLY_NEWS_SELECTION_PROMPT } from "../prompts/weekly-news-selection-prompt";
-import { WEEKLY_NEWS_BLOG_PROMPT } from "../prompts/weekly-news-blog-prompt";
+import { WEEKLY_NEWS_BLOG_PROMPT, WEEKLY_NEWS_BLOG_PROMPT_V2 } from "../prompts/weekly-news-blog-prompt";
 import { FRONTEND_URL } from "../constants";
 
 export class WeeklyNewsService {
@@ -78,9 +78,20 @@ URL: ${post.originalUrl}
                 events: (input: any) => JSON.stringify(input.events, null, 2),
                 title: (input: any) => input.title,
             },
-            WEEKLY_NEWS_BLOG_PROMPT,
+            WEEKLY_NEWS_BLOG_PROMPT_V2,
             this.claude,
-            (output: any) => output.content,
+            (output: any) => {
+                const content = output.content;
+                // V2 프롬프트는 <blog_planning> 태그로 계획 부분을 포함하므로, 
+                // 블로그 포스트 부분만 추출합니다.
+                const planningEndIndex = content.indexOf('</blog_planning>');
+                if (planningEndIndex !== -1) {
+                    // 계획 부분 이후의 내용을 반환
+                    return content.substring(planningEndIndex + '</blog_planning>'.length).trim();
+                }
+                // 계획 태그가 없으면 전체 내용 반환
+                return content;
+            },
         ]);
 
 
@@ -113,6 +124,12 @@ URL: ${post.originalUrl}
         }
 
         return blogContent;
+    }
+
+    static async deleteWeeklyNews(id: number) {
+        const weeklyNewsManager = new WeeklyNewsManager(env.DB);
+        await weeklyNewsManager.deletePost(id);
+        await this.revalidateCache(id);
     }
 
     static async revalidateCache(id: number) {

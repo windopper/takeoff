@@ -202,6 +202,10 @@ export default {
 				return addCorsHeaders(response);
 			}
 
+			if (pathname === "/api/weekly-news-delete" && request.method === 'POST') {
+				const response = await WeeklyNewsRoutes.deleteWeeklyNews(request, env);
+				return addCorsHeaders(response);
+			}
 	
 			const helpResponse = new Response(`사용 가능한 API:
 			- GET /api/reddit?subreddit=LocalLLaMA&limit=5 - Reddit 게시글 목록
@@ -212,7 +216,12 @@ export default {
 			- POST /api/process-hackernews - HackerNews 게시글 AI 처리 및 저장
 			- POST /api/process-community - 통합 커뮤니티 게시글 AI 처리 및 저장
 			- POST /api/process-url - 임의 URL 아티클 처리
-			- GET /api/posts/:id - 특정 게시글 조회`);
+			- GET /api/posts/:id - 특정 게시글 조회
+			- POST /api/weekly-news - 주간 뉴스 생성
+			- GET /api/weekly-news - 주간 뉴스 목록
+			- GET /api/weekly-news-latest - 최신 주간 뉴스 조회
+			- POST /api/weekly-news-revalidate - 주간 뉴스 캐시 재검증
+			- POST /api/weekly-news-delete - 주간 뉴스 삭제`);
 			return addCorsHeaders(helpResponse);
 		} catch (error) {
 			if (error instanceof FetchError) {
