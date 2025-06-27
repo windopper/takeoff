@@ -1,5 +1,22 @@
 import WeeklyNewsList from "../components/weeklynews/WeeklyNewsList";
 import WeeklyNewsBackgroundSvg from "../components/weeklynews/WeeklyNewsBackgroundSvg";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Takeoff. 주간 AI 이슈 정리",
+  category: "technology",
+  description: "매주 큐레이션된 AI 분야의 최신 뉴스와 이슈를 정리해서 제공합니다.",
+  keywords: ["주간 AI 이슈", "인공지능 뉴스", "AI 정리", "주간 정리", "인공지능 트렌드", "AI 업계 동향", "takeoff"],
+  openGraph: {
+    images: ["/image/takeoff.png"],
+    title: "Takeoff. 주간 AI 이슈 정리",
+    description: "매주 큐레이션된 AI 분야의 최신 뉴스와 이슈를 정리해서 제공합니다.",
+    url: `${process.env.NEXT_PUBLIC_SITE_URL}/weeklynews`,
+    siteName: "Takeoff.",
+    locale: "ko-KR",
+    type: "website",
+  },
+};
 
 export default async function WeeklyNewsPage() {
     return (
