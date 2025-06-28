@@ -1,3 +1,5 @@
+'use server';
+
 import { BACKEND_URL } from "../constants";
 import { takeoffFetch } from "@/utils/fetch";
 import { WEEKLY_NEWS_ID_TAG, WEEKLY_NEWS_LATEST_TAG, WEEKLY_NEWS_LIST_TAG } from "../constants/tags";
