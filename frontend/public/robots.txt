@@ -4,6 +4,12 @@ Allow: /
 Disallow: /dashboard
 Disallow: /posts/*
 Disallow: /search
+Disallow: /ko/posts/*
+Disallow: /en/posts/*
+Disallow: /ko/dashboard
+Disallow: /en/dashboard
+Disallow: /ko/search
+Disallow: /en/search
 
 # Host
 Host: https://ai-takeoff.dev/

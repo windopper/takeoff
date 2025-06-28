@@ -279,7 +279,7 @@ export default {
 						month: 'long',
 						day: 'numeric',
 					})} ~ ${new Date().toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' })}`;
-					await WeeklyNewsService.createWeeklyNews(title);
+					await WeeklyNewsService.createWeeklyNews(title, env);
 					break;
 				default:
 					break;

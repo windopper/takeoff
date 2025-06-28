@@ -9,7 +9,39 @@ const config = {
     "/posts/*",
     "/dashboard",
     "/search",
+    "/ko/posts/*",
+    "/en/posts/*",
+    "/ko/dashboard",
+    "/en/dashboard", 
+    "/ko/search",
+    "/en/search",
   ],
+  // 다국어 지원을 위한 추가 URLs
+  additionalPaths: async (config) => {
+    const paths = [];
+    const locales = ['ko', 'en'];
+    const routes = [
+      '',
+      '/about',
+      '/benchmarking', 
+      '/timeline',
+      '/webhook',
+      '/weeklynews'
+    ];
+
+    for (const locale of locales) {
+      for (const route of routes) {
+        paths.push({
+          loc: `/${locale}${route}`,
+          changefreq: 'daily',
+          priority: locale === 'ko' ? 1.0 : 0.8, // 한국어를 기본 언어로 우선순위 설정
+          lastmod: new Date().toISOString(),
+        });
+      }
+    }
+
+    return paths;
+  },
   robotsTxtOptions: {
     policies: [
       {
@@ -18,7 +50,13 @@ const config = {
         disallow: [
           "/dashboard",
           "/posts/*",
-          "/search"
+          "/search",
+          "/ko/posts/*",
+          "/en/posts/*",
+          "/ko/dashboard",
+          "/en/dashboard",
+          "/ko/search",
+          "/en/search"
         ],
       },
     ],

@@ -1,4 +1,3 @@
-import { env } from "cloudflare:workers";
 import { WeeklyNewsPost } from "../db/schema";
 import { WeeklyNewsManager } from "../manager/weekly-news-manager";
 import { PostManager } from "../manager/post-manager";
@@ -12,28 +11,17 @@ import { AiPost } from '../db/schema';
 import { WEEKLY_NEWS_SELECTION_PROMPT } from "../prompts/weekly-news-selection-prompt";
 import { WEEKLY_NEWS_BLOG_PROMPT, WEEKLY_NEWS_BLOG_PROMPT_V2 } from "../prompts/weekly-news-blog-prompt";
 import { FRONTEND_URL } from "../constants";
+import { Env } from "..";
 
 export class WeeklyNewsService {
-    private static gemini: ChatGoogleGenerativeAI = new ChatGoogleGenerativeAI({
-        apiKey: env.GEMINI_API_KEY,
-        model: 'gemini-2.5-flash-preview-05-20',
-        temperature: 0.4,
-    });
-
-    private static claude: ChatAnthropic = new ChatAnthropic({
-        apiKey: env.CLAUDE_API_KEY,
-        model: 'claude-sonnet-4-20250514',
-        temperature: 0.4,
-        maxTokens: 8000,
-    });
     
-    static async getWeeklyNewsList(): Promise<WeeklyNewsPost[]> {
+    static async getWeeklyNewsList(env: Env): Promise<WeeklyNewsPost[]> {
         const weeklyNewsManager = new WeeklyNewsManager(env.DB);
         const posts = await weeklyNewsManager.getAllPosts();
         return posts;
     }
 
-    static async getWeeklyNews(id: number): Promise<WeeklyNewsPost | null> {
+    static async getWeeklyNews(id: number, env: Env): Promise<WeeklyNewsPost | null> {
         const weeklyNewsManager = new WeeklyNewsManager(env.DB);
         const post = await weeklyNewsManager.getPost(id);
         return post || null;
@@ -55,8 +43,22 @@ URL: ${post.originalUrl}
             .join('--- \n');
     }
 
-    static async createWeeklyNews(title: string): Promise<string> {
+    static async createWeeklyNews(title: string, env: Env): Promise<string> {
         console.log('--- Starting Weekly News Creation ---');
+        
+        const gemini = new ChatGoogleGenerativeAI({
+            apiKey: env.GEMINI_API_KEY,
+            model: 'gemini-2.5-flash-preview-05-20',
+            temperature: 0.4,
+        });
+
+        const claude = new ChatAnthropic({
+            apiKey: env.CLAUDE_API_KEY,
+            model: 'claude-sonnet-4-20250514',
+            temperature: 0.4,
+            maxTokens: 8000,
+        });
+        
         const weeklyNewsManager = new WeeklyNewsManager(env.DB);
         const postManager = new PostManager(env.DB);
         const posts = await postManager.getPostAfterDate(new Date(Date.now() - 7 * 24 * 60 * 60 * 1000));
@@ -69,7 +71,7 @@ URL: ${post.originalUrl}
 
         const selectionChain = RunnableSequence.from([
             WEEKLY_NEWS_SELECTION_PROMPT,
-            this.gemini,
+            gemini,
             selectionParser,
         ]);
 
@@ -79,7 +81,7 @@ URL: ${post.originalUrl}
                 title: (input: any) => input.title,
             },
             WEEKLY_NEWS_BLOG_PROMPT_V2,
-            this.claude,
+            claude,
             (output: any) => output.content,
         ]);
 
@@ -115,7 +117,7 @@ URL: ${post.originalUrl}
         return blogContent;
     }
 
-    static async deleteWeeklyNews(id: number) {
+    static async deleteWeeklyNews(id: number, env: Env) {
         const weeklyNewsManager = new WeeklyNewsManager(env.DB);
         await weeklyNewsManager.deletePost(id);
         await this.revalidateCache(id);
@@ -132,7 +134,7 @@ URL: ${post.originalUrl}
         }
     }
 
-    static async getLatestWeeklyNews(): Promise<WeeklyNewsPost | null> {
+    static async getLatestWeeklyNews(env: Env): Promise<WeeklyNewsPost | null> {
         const weeklyNewsManager = new WeeklyNewsManager(env.DB);
         const post = await weeklyNewsManager.getLatestPost();
         return post || null;

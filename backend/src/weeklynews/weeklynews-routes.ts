@@ -5,7 +5,7 @@ import { WeeklyNewsService } from "./weeklynews-service";
 export class WeeklyNewsRoutes {
     
     static async getWeeklyNewsList(req: Request, env: Env): Promise<Response> {
-        const posts = await WeeklyNewsService.getWeeklyNewsList();
+        const posts = await WeeklyNewsService.getWeeklyNewsList(env);
         return Response.json(posts);
     }
 
@@ -15,7 +15,7 @@ export class WeeklyNewsRoutes {
         if (!id) {
             return Response.json({ error: 'ID is required' }, { status: 400 });
         }
-        const post = await WeeklyNewsService.getWeeklyNews(parseInt(id));
+        const post = await WeeklyNewsService.getWeeklyNews(parseInt(id), env);
         if (!post) {
             return Response.json({ error: 'Post not found' }, { status: 404 });
         }
@@ -23,7 +23,7 @@ export class WeeklyNewsRoutes {
     }
 
     static async getLatestWeeklyNews(req: Request, env: Env): Promise<Response> {
-        const post = await WeeklyNewsService.getLatestWeeklyNews();
+        const post = await WeeklyNewsService.getLatestWeeklyNews(env);
         return Response.json(post);
     }
 
@@ -36,7 +36,7 @@ export class WeeklyNewsRoutes {
 					month: 'long',
 					day: 'numeric',
 				})} ~ ${new Date().toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' })}`;
-        const post = await WeeklyNewsService.createWeeklyNews(title);
+        const post = await WeeklyNewsService.createWeeklyNews(title, env);
         return Response.json(post);
     }
 
@@ -45,7 +45,7 @@ export class WeeklyNewsRoutes {
         if (!id) {
             return Response.json({ error: 'ID is required' }, { status: 400 });
         }
-        await WeeklyNewsService.deleteWeeklyNews(id);
+        await WeeklyNewsService.deleteWeeklyNews(id, env);
         return Response.json({ message: 'Weekly news deleted' });
     }
 
