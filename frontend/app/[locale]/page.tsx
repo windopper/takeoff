@@ -1,11 +1,11 @@
-import { getTakeoffPostCount, getTakeoffPosts } from "./action/takeoffPosts";
-import Footer from "./components/common/Footer";
-import Header from "./components/common/Header";
-import TakeoffMainWithInfiniteScroll from "./components/TakeoffMainWithInfiniteScroll";
-import TimelineBanner from "./components/timeline/TimelineBanner";
-import { PAGE_SIZE } from "./constants/pagination";
-import BenchmarkBanner from "./components/benchmarking/BenchmarkBanner";
-import WeeklyLatestNewsItem from "./components/weeklynews/WeeklyLatestNewsItem";
+import { getTakeoffPostCount, getTakeoffPosts } from "../action/takeoffPosts";
+import Footer from "../components/common/Footer";
+import Header from "../components/common/Header";
+import TakeoffMainWithInfiniteScroll from "../components/TakeoffMainWithInfiniteScroll";
+import TimelineBanner from "../components/timeline/TimelineBanner";
+import { PAGE_SIZE } from "../constants/pagination";
+import BenchmarkBanner from "../components/benchmarking/BenchmarkBanner";
+import WeeklyLatestNewsItem from "../components/weeklynews/WeeklyLatestNewsItem";
 
 interface HomeProps {
   params: Promise<{ locale: string }>;

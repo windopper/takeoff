@@ -2,19 +2,21 @@ import { getWeeklyNews } from "@/app/action/weeklynews";
 import WeeklyNewsViewer from "@/app/components/weeklynews/WeeklyNewsViewer";
 import NotFound from "@/app/components/common/NotFound";
 import { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 
 interface WeeklyNewsPageProps {
-    params: Promise<{ id: string }>;
+    params: Promise<{ id: string; locale: string }>;
 }
 
 export async function generateMetadata({ params }: WeeklyNewsPageProps): Promise<Metadata> {
-    const { id } = await params;
+    const { id, locale } = await params;
+    const t = await getTranslations({ locale, namespace: 'weeklynews.page' });
     const weeklyNews = await getWeeklyNews(id);
 
     if (!weeklyNews) {
         return {
-            title: "주간 AI 이슈 정리 - Takeoff.",
-            description: "요청하신 주간 AI 이슈 정리를 찾을 수 없습니다.",
+            title: t('notFoundTitle'),
+            description: t('notFoundDescription'),
         };
     }
 
@@ -24,17 +26,17 @@ export async function generateMetadata({ params }: WeeklyNewsPageProps): Promise
 
     return {
         title: `${weeklyNews.title} - Takeoff.`,
-        description: truncatedContent || "매주 큐레이션된 AI 분야의 최신 뉴스를 만나보세요",
+        description: truncatedContent || t('metaDescription'),
         openGraph: {
             title: weeklyNews.title,
-            description: truncatedContent || "매주 큐레이션된 AI 분야의 최신 뉴스를 만나보세요",
-            url: `${process.env.NEXT_PUBLIC_SITE_URL}/weeklynews/${id}`,
+            description: truncatedContent || t('metaDescription'),
+            url: `${process.env.NEXT_PUBLIC_SITE_URL}/${locale}/weeklynews/${id}`,
             siteName: "Takeoff.",
-            locale: "ko-KR",
+            locale: locale === 'ko' ? 'ko-KR' : 'en-US',
             type: "article",
             publishedTime: weeklyNews.createdAt,
         },
-        keywords: ["주간 AI 이슈", "인공지능 뉴스", "AI 정리", "주간 정리", "takeoff"],
+        keywords: JSON.parse(t('keywords')),
         category: "technology",
     };
 }

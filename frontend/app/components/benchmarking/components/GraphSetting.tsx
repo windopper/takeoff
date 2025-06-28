@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { ChartLine, Table } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export interface GraphFilterProps<T extends string> {
   name: string;
@@ -111,6 +112,8 @@ export function ViewTypeSetting({
   viewType: "table" | "graph";
   setViewType: Dispatch<SetStateAction<"table" | "graph">>;
 }) {
+  const t = useTranslations('benchmarking.settings');
+  
   return (
     <motion.div 
       className="flex flex-col gap-2 px-3 py-2 z-30"
@@ -124,7 +127,7 @@ export function ViewTypeSetting({
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.15, delay: 0.05, ease: "easeOut" }}
       >
-        뷰 타입
+        {t('viewType')}
       </motion.span>
       
       <motion.div 
@@ -134,8 +137,8 @@ export function ViewTypeSetting({
         transition={{ duration: 0.15, delay: 0.1, ease: "easeOut" }}
       >
         {[
-          { key: "graph" as const, label: "그래프", icon: <ChartLine className="w-4 h-4" /> },
-          { key: "table" as const, label: "테이블", icon: <Table className="w-4 h-4" /> },
+          { key: "graph" as const, label: t('graph'), icon: <ChartLine className="w-4 h-4" /> },
+          { key: "table" as const, label: t('table'), icon: <Table className="w-4 h-4" /> },
         ].map(({ key, label, icon }, index) => (
           <motion.div
             key={key}
@@ -179,6 +182,7 @@ export function GraphLabelGroupSetting({
   groupBy: "organization" | "country" | "public";
   setGroupBy: Dispatch<SetStateAction<"organization" | "country" | "public">>;
 }) {
+  const t = useTranslations('benchmarking.settings');
   return (
     <motion.div 
       className="flex flex-col gap-2 px-3 py-2 z-30"
@@ -194,7 +198,7 @@ export function GraphLabelGroupSetting({
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.15, delay: 0.2, ease: "easeOut" }}
         >
-          그룹 별 색깔 지정
+          {t('groupColorSetting')}
         </motion.span>
 
         {/* ON/OFF Toggle */}
@@ -244,7 +248,7 @@ export function GraphLabelGroupSetting({
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.15, delay: 0.05, ease: "easeOut" }}
             >
-              그룹화 기준 선택
+              {t('groupBy')}
             </motion.span>
             <motion.div 
               className="flex flex-row gap-3"
@@ -254,9 +258,9 @@ export function GraphLabelGroupSetting({
               transition={{ duration: 0.15, delay: 0.1, ease: "easeOut" }}
             >
               {[
-                { key: "country" as const, label: "국가별"},
-                { key: "organization" as const, label: "조직별"},
-                // { key: "public" as const, label: "공개 정책별"},
+                { key: "country" as const, label: t('country')},
+                { key: "organization" as const, label: t('organization')},
+                // { key: "public" as const, label: t('public')},
               ].map(({ key, label }, index) => (
                 <motion.div
                   key={key}

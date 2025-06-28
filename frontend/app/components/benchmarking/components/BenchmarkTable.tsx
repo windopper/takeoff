@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 
 interface BenchmarkTableProps {
   data: { [key: string]: string | number | React.ReactNode | Date }[];
@@ -9,6 +10,7 @@ interface BenchmarkTableProps {
 const ITEMS_PER_PAGE = 15;
 
 export default function BenchmarkTable({ data, viewFields, defaultSortBy }: BenchmarkTableProps) {
+  const t = useTranslations('benchmarking.table');
   const [sortBy, setSortBy] = useState<string>(defaultSortBy);
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -16,7 +18,7 @@ export default function BenchmarkTable({ data, viewFields, defaultSortBy }: Benc
   if (!data || data.length === 0) {
     return (
       <div className="flex items-center justify-center py-8">
-        <span className="text-zinc-400 font-semibold">데이터가 없습니다</span>
+        <span className="text-zinc-400 font-semibold">{t('noData')}</span>
       </div>
     );
   }
@@ -178,7 +180,7 @@ export default function BenchmarkTable({ data, viewFields, defaultSortBy }: Benc
             disabled={currentPage === 1}
             className="px-3 py-1 text-xs text-zinc-400 hover:text-zinc-300 disabled:text-zinc-600 disabled:cursor-not-allowed transition-colors"
           >
-            이전
+            {t('previous')}
           </button>
           
           {getPageNumbers().map((page) => (
@@ -200,7 +202,7 @@ export default function BenchmarkTable({ data, viewFields, defaultSortBy }: Benc
             disabled={currentPage === totalPages}
             className="px-3 py-1 text-xs text-zinc-400 hover:text-zinc-300 disabled:text-zinc-600 disabled:cursor-not-allowed transition-colors"
           >
-            다음
+            {t('next')}
           </button>
         </div>
       )}

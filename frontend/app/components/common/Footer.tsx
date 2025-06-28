@@ -1,7 +1,12 @@
+"use client";
+
 import Link from "next/link";
 import { version } from '@/package.json'
+import { useTranslations } from "next-intl";
 
 export default function Footer() {
+  const t = useTranslations('footer');
+
   return (
     <footer className="mt-24 border-t border-zinc-200/20 dark:border-zinc-800/20">
       <div className="max-w-4xl mx-auto px-6 py-12 flex items-center justify-center gap-3">
@@ -15,7 +20,7 @@ export default function Footer() {
         {/* vertical divider */}
         <div className="h-4 w-px bg-zinc-200/20"></div>
         <div className="flex items-center justify-center gap-3 text-zinc-400 text-sm">
-          <span>오픈소스</span>
+          <span>{t('poweredBy')}</span>
           <FooterLink href="https://react.dev/" content="React" />
           <FooterLink href="https://nextjs.org/" content="Next.js" />
           <FooterLink href="https://airbnb.io/visx/" content="Visx" />

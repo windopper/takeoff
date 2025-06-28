@@ -5,8 +5,10 @@ import { GraphSettingWrapper } from "./components/GraphSetting";
 import { useState } from "react";
 import useGraphSetting from "./hooks/useGraphSetting";
 import BenchmarkTable from "./components/BenchmarkTable";
+import { useTranslations } from "next-intl";
 
 export default function AiderPolyGlot() {
+  const t = useTranslations('benchmarking.tooltips');
   const { color, setColor, groupBy, setGroupBy, viewType, setViewType } = useGraphSetting();
 
   const { data, legends } = useEpochAIExternalBenchmarks({
@@ -36,18 +38,18 @@ export default function AiderPolyGlot() {
           data={data.map((d) => ({
             id: d.id,
             "Model version": d.modelVersion,
-            "정확도": parseFloat(d.score) / 100,
+            [t('accuracy')]: parseFloat(d.score) / 100,
             organization: d.organization,
             country: d.country,
             date: d.date,
           }))}
           viewFields={[
             "Model version",
-            "정확도",
+            t('accuracy'),
             "organization",
             "country",
           ]}
-          defaultSortBy="정확도"
+          defaultSortBy={t('accuracy')}
         />
       ) : (
         <ScatterPlot
@@ -58,12 +60,12 @@ export default function AiderPolyGlot() {
             label: d.label,
             color: d.color,
             extra: {
-              "모델 이름": d.label,
-              "모델 식별자": d.modelVersion,
-              "정확도 (%)": `${parseFloat(d.score) / 100}%`,
-              "에디트 포맷": d["Edit format"],
-              비용: d["Cost"],
-              출처: (
+              [t('modelName')]: d.label,
+              [t('modelVersion')]: d.modelVersion,
+              [t('accuracy')]: `${parseFloat(d.score) / 100}%`,
+              [t('editFormat')]: d["Edit format"],
+              [t('cost')]: d["Cost"],
+              [t('source')]: (
                 <Link
                   href={d.sourceLink}
                   target="_blank"

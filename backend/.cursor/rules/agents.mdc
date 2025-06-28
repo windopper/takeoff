@@ -141,12 +141,17 @@ async getTopPost() {
 ### 11.1 페이지 구조
 | 페이지 | 경로 | 설명 |
 |--------|------|------|
-| 메인 | `/` | AI 처리된 포스트 목록 및 무한 스크롤 |
-| 벤치마킹 | `/benchmarking` | AI 모델 성능 벤치마크 대시보드 |
-| 타임라인 | `/timeline` | AI 발전 역사 타임라인 |
-| 검색 | `/search` | 포스트 검색 기능 |
+| 메인 | `/[locale]` | AI 처리된 포스트 목록 및 무한 스크롤 |
+| 벤치마킹 | `/[locale]/benchmarking` | AI 모델 성능 벤치마크 대시보드 |
+| 타임라인 | `/[locale]/timeline` | AI 발전 역사 타임라인 |
+| 검색 | `/[locale]/search` | 포스트 검색 기능 |
+| 주간 뉴스 | `/[locale]/weeklynews` | 주간 AI 이슈 정리 목록 |
+| 주간 뉴스 상세 | `/[locale]/weeklynews/[id]` | 개별 주간 뉴스 상세 페이지 |
 | 대시보드 | `/dashboard` | 관리자 대시보드 (인증 필요) |
-| 개별 포스트 | `/posts/[id]` | 포스트 상세 페이지 |
+| 개별 포스트 | `/[locale]/posts/[id]` | 포스트 상세 페이지 |
+| 웹훅 등록 | `/[locale]/webhook` | Discord 웹훅 등록 페이지 |
+
+**참고**: `[locale]`은 `ko` 또는 `en`으로 대체됩니다. (예: `/ko/`, `/en/`)
 
 ### 11.2 벤치마킹 시스템
 벤치마킹 페이지는 EpochAI 데이터를 활용하여 다양한 AI 벤치마크 결과를 제공합니다:
@@ -176,8 +181,25 @@ async getTopPost() {
 - EpochAI Benchmarking Hub (CC BY 라이센스)
 - Citation: "Epoch AI, 'AI Benchmarking Hub'. Published online at epoch.ai. Retrieved from 'https://epoch.ai/data/ai-benchmarking-dashboard' [online resource]. Accessed 24 Jun 2025."
 
-### 11.3 기술 스택 (Frontend)
+### 11.3 국제화 (i18n)
+프론트엔드는 한국어와 영어를 지원하는 다국어 시스템을 구현하고 있습니다:
+
+**주요 특징:**
+- **라이브러리**: next-intl 기반 국제화
+- **지원 언어**: 한국어(ko), 영어(en)
+- **라우팅**: `[locale]` 기반 동적 라우팅 (`/ko/`, `/en/`)
+- **번역 파일**: `frontend/public/locales/` 디렉토리에 JSON 형태로 관리
+- **기본 언어**: 한국어 (ko)
+
+**구현 패턴:**
+- 서버 컴포넌트: `getTranslations({ locale, namespace })` 사용
+- 클라이언트 컴포넌트: `useTranslations(namespace)` 훅 사용
+- 네비게이션: `@/i18n/routing`의 `Link` 컴포넌트 사용
+- 메타데이터: 동적 `generateMetadata` 함수에서 locale별 번역 적용
+
+### 11.4 기술 스택 (Frontend)
 - **프레임워크**: Next.js 15.3.3 (React 19)
+- **국제화**: next-intl
 - **스타일링**: Tailwind CSS v4
 - **차트**: @visx 라이브러리
 - **애니메이션**: Motion 라이브러리

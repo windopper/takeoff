@@ -1,13 +1,6 @@
 import { CATEGORIES } from "@/data/timelineData";
 import { motion } from "motion/react";
-
-const CATEGORY_MAP = {
-  [CATEGORIES.MODEL_RELEASE]: "Model Release",
-  [CATEGORIES.CULTURE]: "Culture & Society",
-  [CATEGORIES.BUSINESS]: "Business & Industry",
-  [CATEGORIES.RESEARCH]: "Research & Development",
-  [CATEGORIES.POLICY]: "Policy & Regulation",
-}
+import { useTranslations } from "next-intl";
 
 export default function TimelineCategories({
   setSelectedCategories,
@@ -16,6 +9,8 @@ export default function TimelineCategories({
   setSelectedCategories: React.Dispatch<React.SetStateAction<CATEGORIES[]>>;
   categories: CATEGORIES[];
 }) {
+  const t = useTranslations('timeline.categories');
+
   const handleToggleCategories = (category: CATEGORIES) => {
     setSelectedCategories((prev: CATEGORIES[]) => {
       if (prev.includes(category)) {
@@ -39,7 +34,7 @@ export default function TimelineCategories({
             categories.includes(category) ? "bg-zinc-500/50 text-zinc-100" : "bg-zinc-200/50 text-zinc-800 backdrop-blur-2xl"
           } px-2 py-1 rounded-xl transition-all duration-150 text-xs font-medium cursor-pointer`}
         >
-          {CATEGORY_MAP[category]}
+          {t(category)}
         </button>
       ))}
     </motion.div>

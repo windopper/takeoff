@@ -1,0 +1,157 @@
+{
+  "header": {
+    "title": "Takeoff",
+    "subtitle": "A service that collects and organizes issues from AI communities",
+    "postCount": "Total {count} posts"
+  },
+  "banner": {
+    "timeline": {
+      "title": "AI Development Timeline",
+      "description": "Explore the historical development of AI technology at a glance"
+    },
+    "benchmark": {
+      "title": "AI Benchmarks",
+      "description": "Compare the performance of the latest AI models"
+    }
+  },
+  "timeline": {
+    "title": "2015-2025 AI Timeline",
+    "description": "A chronological overview of events in artificial intelligence across technology, policy, culture, and other fields from 2015 to 2025.",
+    "linkDescription": "You can access the original documents through the links in each item.",
+    "disclaimer": "All events are selected based on subjective criteria, and some important events may be omitted.",
+    "categories": {
+      "MODEL_RELEASE": "Model Release",
+      "CULTURE": "Culture & Society",
+      "BUSINESS": "Business & Industry",
+      "RESEARCH": "Research & Development",
+      "POLICY": "Policy & Regulation"
+    }
+  },
+  "weeklynews": {
+    "title": "This Week's AI News",
+    "latestNews": "Latest Weekly News",
+    "viewAll": "View All News",
+    "page": {
+      "title": "📰 Weekly AI Issue Summary",
+      "description": "Discover the latest curated AI news every week",
+      "metaTitle": "Weekly AI Issue Summary - Takeoff.",
+      "metaDescription": "Weekly curated summaries of the latest news and issues in the AI field.",
+      "keywords": ["weekly AI issues", "artificial intelligence news", "AI summary", "weekly summary", "AI trends", "AI industry updates", "takeoff"],
+      "notFoundTitle": "Weekly AI Issue Summary - Takeoff.",
+      "notFoundDescription": "The requested weekly AI issue summary could not be found."
+    },
+    "list": {
+      "noNewsTitle": "No weekly news yet",
+      "noNewsDescription": "You'll be able to see the first weekly news soon!",
+      "newsCount": "Total {count} weekly news"
+    }
+  },
+  "common": {
+    "loading": "Loading...",
+    "loadMore": "Load More",
+    "noResults": "No results found",
+    "error": "An error occurred",
+    "search": "Search",
+    "backButton": "Previous Page",
+    "returnToList": "Return to List",
+    "returnToHome": "Return to Home",
+    "notFound": {
+      "title": "Post Not Found",
+      "description": "The requested post may not exist or\nmay have been deleted."
+    }
+  },
+  "footer": {
+    "copyright": "© 2024 Takeoff. All rights reserved.",
+    "poweredBy": "Open Source"
+  },
+  "language": {
+    "korean": "한국어",
+    "english": "English",
+    "switchTo": "Switch Language"
+  },
+  "webhook": {
+    "title": "Discord Webhook Registration",
+    "description": "Get notified in your Discord channel when new posts are uploaded.",
+    "urlLabel": "Discord Webhook URL",
+    "urlPlaceholder": "https://discord.com/api/webhooks/...",
+    "urlHelp": "Copy the webhook URL from Discord Server Settings → Integrations → Webhooks and paste it here.",
+    "registerButton": "Register Webhook",
+    "status": {
+      "registering": "Registering...",
+      "success": "Registration Complete!",
+      "error": "Registration Failed"
+    },
+    "messages": {
+      "urlRequired": "Please enter a webhook URL.",
+      "invalidUrl": "Please enter a valid Discord webhook URL.",
+      "success": "Webhook has been successfully registered!",
+      "serverError": "A server error occurred. Please try again."
+    },
+    "setup": {
+      "title": "How to Set Up Webhook",
+      "steps": {
+        "1": "Go to the Discord channel where you want to receive webhooks",
+        "2": "Click on channel settings (gear icon)",
+        "3": "Select \"Integrations\" from the left menu",
+        "4": "Go to the \"Webhooks\" tab",
+        "5": "Click \"New Webhook\" button",
+        "6": "Set webhook name and click \"Copy Webhook URL\"",
+        "7": "Paste the copied URL into the input field above"
+      }
+    }
+  },
+  "benchmarking": {
+    "title": "AI Benchmark Dashboard",
+    "description": "Compare the performance of the latest AI models across various benchmarks",
+    "metaTitle": "Takeoff. AI Benchmarking",
+    "metaDescription": "AI Benchmarking Dashboard",
+    "metaOpenGraphDescription": "Compare 13 benchmark results including GPQA, Frontier Math, and more.",
+    "citation": {
+      "title": "Data Source and License",
+      "citationLabel": "Citation:",
+      "licenseLabel": "License:",
+      "licenseText": "This data is provided under the CC BY license."
+    },
+    "settings": {
+      "viewType": "View Type",
+      "graph": "Graph",
+      "table": "Table",
+      "groupColorSetting": "Group Color Setting",
+      "on": "ON",
+      "off": "OFF",
+      "groupBy": "Group By",
+      "organization": "Organization",
+      "country": "Country",
+      "public": "Public"
+    },
+    "table": {
+      "noData": "No data available",
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "tooltips": {
+      "modelName": "Model Name",
+      "modelVersion": "Model Version",
+      "accuracy": "Accuracy",
+      "averageAccuracy": "Average Accuracy",
+      "standardError": "Standard Error",
+      "standardDeviation": "Standard Deviation",
+      "pass1Accuracy": "pass@1 Accuracy",
+      "pass1StandardError": "pass@1 Standard Error",
+      "releaseDate": "Release Date",
+      "editFormat": "Edit Format",
+      "cost": "Cost",
+      "source": "Source",
+      "averageProgress": "Average Progress",
+      "averageStandardError": "Average Standard Error",
+      "productionScore": "Production Score",
+      "labSuccessRate": "Lab Success Rate",
+      "milestones": "Milestones",
+      "automation": "Automation",
+      "mostComplexItem": "Most Complex Item",
+      "environment": "Environment",
+      "metric": "Metric",
+      "contextLength": "Context Length"
+    }
+  }
+}

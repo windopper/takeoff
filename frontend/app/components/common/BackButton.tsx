@@ -1,6 +1,10 @@
 'use client';
 
+import { useTranslations } from "next-intl";
+
 export default function BackButton() {
+  const t = useTranslations('common');
+
   return (
     <button 
       onClick={() => window.history.back()}
@@ -19,7 +23,7 @@ export default function BackButton() {
           d="M10 19l-7-7m0 0l7-7m-7 7h18"
         />
       </svg>
-      이전 페이지
+      {t('backButton')}
     </button>
   );
 } 

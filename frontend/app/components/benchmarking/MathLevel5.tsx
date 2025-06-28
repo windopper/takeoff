@@ -3,8 +3,11 @@ import useEpochAIBoxplotBenchmarks from "@/app/hooks/useEpochAIBoxplotBenchmarks
 import { GraphSettingWrapper } from "./components/GraphSetting";
 import useGraphSetting from "./hooks/useGraphSetting";
 import BenchmarkTable from "./components/BenchmarkTable";
+import { useTranslations, useLocale } from "next-intl";
 
 export default function MathLevel5() {
+    const t = useTranslations('benchmarking.tooltips');
+    const locale = useLocale();
     const { color, setColor, groupBy, setGroupBy, viewType, setViewType } = useGraphSetting();
     
     const { data, legends } = useEpochAIBoxplotBenchmarks("MATH level 5", {
@@ -29,18 +32,18 @@ export default function MathLevel5() {
                     data={data.map(run => ({
                         id: run.id,
                         "Model version": run.modelVersion,
-                        "pass@1 정확도": parseFloat(run.bestScore),
+                        [t('pass1Accuracy')]: parseFloat(run.bestScore),
                         organization: run.organization,
                         country: run.country,
                         date: run.date,
                     }))}
                     viewFields={[
                         "Model version",
-                        "pass@1 정확도",
+                        t('pass1Accuracy'),
                         "organization",
                         "country",
                     ]}
-                    defaultSortBy="pass@1 정확도"
+                    defaultSortBy={t('pass1Accuracy')}
                 />
             ) : (
                 <BoxPlot data={data.map(run => ({
@@ -51,11 +54,11 @@ export default function MathLevel5() {
                     label: run.model,
                     color: run.color,
                     extra: {
-                        "모델 이름": run.model,
-                        "모델 식별자": run.modelVersion,
-                        "pass@1 정확도": `${run.bestScore}%`,
-                        "pass@1 표준 편차": `${run.standardError}%`,
-                        "출시일": run.date.toLocaleDateString("ko-KR", { year: "numeric", month: "long", day: "numeric" }),
+                        [t('modelName')]: run.model,
+                        [t('modelVersion')]: run.modelVersion,
+                        [t('pass1Accuracy')]: `${run.bestScore}%`,
+                        [t('pass1StandardError')]: `${run.standardError}%`,
+                        [t('releaseDate')]: run.date.toLocaleDateString(locale === 'ko' ? "ko-KR" : "en-US", { year: "numeric", month: "long", day: "numeric" }),
                     },
                 }))} />
             )}

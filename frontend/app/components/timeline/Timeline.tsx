@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState, useEffect, useMemo, useCallback } from "react";
+import { useLocale } from "next-intl";
 import TimelineCard from "./TimelineCard";
 import TimelineProgress from "./TimelineProgress";
 import TimelineYear from "./TimelineYear";
@@ -14,6 +15,7 @@ import useTimelineScroll from "./hooks/useTimelineScroll";
 import useTimelineCardClick from "./hooks/useTimelineCardClick";
 
 export default function Timeline() {
+  const locale = useLocale();
   const [time, setTime] = useState(new Date(END_YEAR, 0, 1));
   const [progress, setProgress] = useState(0.2);
   const [focusedCardIndex, setFocusedCardIndex] = useState(0);
@@ -43,12 +45,23 @@ export default function Timeline() {
           parseInt(event.start_date.month) - 1,
           parseInt(event.start_date.day)
         );
+        
+        // 제목은 항상 영어, 설명과 링크는 현재 언어에 따라 선택
+        const content = locale === 'ko' ? event.korean : event.text;
+        
         return {
           ...event,
           date,
+          displayContent: {
+            headline: {
+              text: event.text.headline.text, // 제목은 항상 영어
+              url: content.headline.url // 링크는 언어에 따라
+            },
+            text: content.text // 설명은 언어에 따라
+          }
         };
       });
-  }, [selectedCategories]);
+  }, [selectedCategories, locale]);
 
   useTimelineScroll({
     setTime,
@@ -160,10 +173,10 @@ export default function Timeline() {
               }}
             >
               <TimelineCard
-                title={card.text.headline.text}
-                description={card.korean.text}
+                title={card.displayContent.headline.text}
+                description={card.displayContent.text}
                 category={card.category}
-                link={card.korean.headline.url}
+                link={card.displayContent.headline.url}
                 date={card.date.toLocaleDateString()}
                 isFocused={index === focusedCardIndex}
               />

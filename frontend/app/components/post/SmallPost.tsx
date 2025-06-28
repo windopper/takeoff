@@ -1,6 +1,6 @@
 import { Post } from "@/app/types/post";
-import Link from "next/link";
 import CategoryPills from "./CategoryPills";
+import { Link } from "@/i18n/routing";
 
 export default function SmallPost({ post }: { post: Post }) {
   // 날짜 포맷팅 함수

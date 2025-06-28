@@ -5,6 +5,7 @@ import { useState } from "react";
 import { GraphSettingWrapper } from "./components/GraphSetting";
 import useGraphSetting from "./hooks/useGraphSetting";
 import BenchmarkTable from "./components/BenchmarkTable";
+import { useTranslations } from "next-intl";
 // id,Model version,Shapes easy,Shapes hard,Shuffle easy,Shuffle hard,Digits unsup,Chess winners,Average,Source,Source link (site from table),Notes
 
 
@@ -20,6 +21,7 @@ type Tasks =
 const tasks: Tasks[] = ["Average", "Shapes easy", "Shapes hard", "Shuffle easy", "Shuffle hard", "Digits unsup", "Chess winners"];
 
 export default function WeirdML() {
+  const t = useTranslations('benchmarking.tooltips');
   const [selectedTask, setSelectedTask] = useState<Tasks>("Average");
   const { color, setColor, groupBy, setGroupBy, viewType, setViewType } = useGraphSetting();
 
@@ -78,12 +80,12 @@ export default function WeirdML() {
             label: d.label,
             color: d.color,
             extra: {
-              "모델 이름": d.label,
-              "모델 식별자": d.modelVersion,
+              [t('modelName')]: d.label,
+              [t('modelVersion')]: d.modelVersion,
               [selectedTask]: `${(
                 parseFloat(d[selectedTask] as string) * 100
               ).toFixed(2)}%`,
-              출처: (
+              [t('source')]: (
                 <Link
                   href={d.sourceLink}
                   target="_blank"

@@ -1,12 +1,11 @@
 import {
   getTakeoffPostCount,
   getTakeoffPosts,
-} from "../action/takeoffPosts";
-import { Suspense } from "react";
-import Footer from "../components/common/Footer";
-import Header from "../components/common/Header";
+} from "@/app/action/takeoffPosts";
+import Footer from "@/app/components/common/Footer";
+import Header from "@/app/components/common/Header";
 import TakeoffSearchWithInfiniteScroll from "./TakeoffSearchWithInfiniteScroll";
-import { PAGE_SIZE } from "../constants/pagination";
+import { PAGE_SIZE } from "@/app/constants/pagination";
 
 interface SearchPageProps {
   searchParams: Promise<{

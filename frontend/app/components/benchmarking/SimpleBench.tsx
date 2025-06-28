@@ -4,9 +4,11 @@ import Link from "next/link";
 import { GraphSettingWrapper } from "./components/GraphSetting";
 import useGraphSetting from "./hooks/useGraphSetting";
 import BenchmarkTable from "./components/BenchmarkTable";
+import { useTranslations } from "next-intl";
 
 // id,Model version,Score (AVG@5),Source,Source link (site from table),Notes
 export default function SimpleBench() {
+  const t = useTranslations('benchmarking.tooltips');
   const { color, setColor, groupBy, setGroupBy, viewType, setViewType } = useGraphSetting();
 
   const { data, legends } = useEpochAIExternalBenchmarks({
@@ -56,10 +58,10 @@ export default function SimpleBench() {
             label: d.label,
             color: d.color,
             extra: {
-              "모델 이름": d.label,
-              "모델 식별자": d.modelVersion,
-              "정확도 (avg@5)": `${d.score}%`,
-              출처: (
+              [t('modelName')]: d.label,
+              [t('modelVersion')]: d.modelVersion,
+              [t('accuracy')]: `${d.score}%`,
+              [t('source')]: (
                 <Link
                   href={d.sourceLink as string}
                   target="_blank"

@@ -5,6 +5,7 @@ import { useState } from "react";
 import { GraphSettingWrapper } from "./components/GraphSetting";
 import useGraphSetting from "./hooks/useGraphSetting";
 import BenchmarkTable from "./components/BenchmarkTable";
+import { useTranslations } from "next-intl";
 
 // id,Model version,Tools,ACW Country %,ACW Avg Score,ACW Median Score,ACW Median Distance (km),ACW Refusal,AVW Country %,AVW Avg Score,AVW Median Score,AVW Median Distance (km),AVW Refusal,Rural Country %,Rural Avg Score,Rural Median Score,Rural Median Distance,Rural Refusal,Urban Country %,Urban Avg Score,Urban Median Score,Urban Median Distance (km),Urban Refusal,Photos Country %,Photos Avg Score,Photos Median Score,Photos Median Distance (km),Photos Refusal,Notes,Source,Source link
 
@@ -13,6 +14,7 @@ type Tasks = "ACW Avg Score" | "AVW Avg Score" | "Rural Avg Score" | "Urban Avg 
 const tasks: Tasks[] = ["ACW Avg Score", "AVW Avg Score", "Rural Avg Score", "Urban Avg Score", "Photos Avg Score"];
 
 export default function GeoBench() {
+  const t = useTranslations('benchmarking.tooltips');
   const [selectedTask, setSelectedTask] = useState<Tasks>("Photos Avg Score");
   const { color, setColor, groupBy, setGroupBy, viewType, setViewType } = useGraphSetting();
 
@@ -60,7 +62,7 @@ export default function GeoBench() {
       <GraphSettingWrapper
         filters={[
           {
-            name: "지표",
+            name: t('metric'),
             contents: tasks,
             selected: selectedTask,
             setSelected: setSelectedTask,
@@ -101,11 +103,11 @@ export default function GeoBench() {
             label: d.label,
             color: d.color,
             extra: {
-              "모델 이름": d.label,
-              "모델 식별자": d.modelVersion,
+              [t('modelName')]: d.label,
+              [t('modelVersion')]: d.modelVersion,
               [selectedTask]: `${parseFloat(d[selectedTask] as string)}`,
-              Tools: d.tools,
-              출처: (
+              "Tools": d.tools,
+              [t('source')]: (
                 <Link
                   href={d["Source link"] as string}
                   target="_blank"

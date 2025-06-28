@@ -4,8 +4,11 @@ import { GraphSettingWrapper } from "./components/GraphSetting";
 import useGraphSetting from "./hooks/useGraphSetting";
 import BenchmarkTable from "./components/BenchmarkTable";
 import { memo } from "react";
+import { useTranslations, useLocale } from "next-intl";
 
 function GPQADiamond() {
+    const t = useTranslations('benchmarking.tooltips');
+    const locale = useLocale();
     const { color, setColor, groupBy, setGroupBy, viewType, setViewType } = useGraphSetting();
     
     const { data, legends } = useEpochAIBoxplotBenchmarks("GPQA diamond", {
@@ -30,18 +33,18 @@ function GPQADiamond() {
                     data={data.map(run => ({
                         id: run.id,
                         "Model version": run.modelVersion,
-                        "평균 정확도": parseFloat(run.bestScore),
+                        [t('averageAccuracy')]: parseFloat(run.bestScore),
                         organization: run.organization,
                         country: run.country,
                         date: run.date,
                     }))}
                     viewFields={[
                         "Model version",
-                        "평균 정확도",
+                        t('averageAccuracy'),
                         "organization",
                         "country",
                     ]}
-                    defaultSortBy="평균 정확도"
+                    defaultSortBy={t('averageAccuracy')}
                 />
             ) : (
                 <BoxPlot data={data.map(run => ({
@@ -52,11 +55,11 @@ function GPQADiamond() {
                     label: run.model,
                     color: run.color,
                     extra: {
-                        "모델 이름": run.model,
-                        "모델 식별자": run.modelVersion,
-                        "평균 정확도": `${run.bestScore}%`,
-                        "표준 편차": `${run.standardError}%`,
-                        "출시일": run.date.toLocaleDateString("ko-KR", { year: "numeric", month: "long", day: "numeric" }),
+                        [t('modelName')]: run.model,
+                        [t('modelVersion')]: run.modelVersion,
+                        [t('averageAccuracy')]: `${run.bestScore}%`,
+                        [t('standardError')]: `${run.standardError}%`,
+                        [t('releaseDate')]: run.date.toLocaleDateString(locale === 'ko' ? "ko-KR" : "en-US", { year: "numeric", month: "long", day: "numeric" }),
                     },
                 }))} />
             )}

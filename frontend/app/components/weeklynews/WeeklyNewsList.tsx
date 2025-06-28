@@ -1,19 +1,50 @@
+"use client";
+
 import { getWeeklyNewsList } from "@/app/action/weeklynews";
 import WeeklyNewsItem from "./WeeklyNewsItem";
 import { WeeklyNewsPost } from "@/app/types/weeklynews";
+import { useTranslations } from "next-intl";
+import { useEffect, useState } from "react";
 
-export default async function WeeklyNewsList() {
-    const weeklyNewsList = await getWeeklyNewsList();
+export default function WeeklyNewsList() {
+    const t = useTranslations('weeklynews.list');
+    const commonT = useTranslations('common');
+    const [weeklyNewsList, setWeeklyNewsList] = useState<WeeklyNewsPost[]>([]);
+    const [loading, setLoading] = useState(true);
 
+    useEffect(() => {
+        const fetchWeeklyNews = async () => {
+            try {
+                const newsList = await getWeeklyNewsList();
+                setWeeklyNewsList(newsList);
+            } catch (error) {
+                console.error('Failed to fetch weekly news:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchWeeklyNews();
+    }, []);
+
+    if (loading) {
+        return (
+            <div className="text-center py-12">
+                <div className="bg-zinc-800/20 rounded-2xl p-8 border border-zinc-700/30">
+                    <p className="text-zinc-300/80">{commonT('loading')}</p>
+                </div>
+            </div>
+        );
+    }
     if (weeklyNewsList.length === 0) {
         return (
             <div className="text-center py-12">
                 <div className="bg-emerald-800/20 rounded-2xl p-8 border border-emerald-700/30">
                     <h3 className="text-xl font-semibold text-emerald-200 mb-2">
-                        아직 주간 뉴스가 없습니다
+                        {t('noNewsTitle')}
                     </h3>
                     <p className="text-emerald-300/80">
-                        곧 첫 번째 주간 뉴스를 만나보실 수 있습니다!
+                        {t('noNewsDescription')}
                     </p>
                 </div>
             </div>
@@ -25,7 +56,7 @@ export default async function WeeklyNewsList() {
             {/* 뉴스 카운트 */}
             <div className="text-center mb-8">
                 <p className="text-zinc-300/80 text-sm">
-                    총 <span className="font-semibold text-zinc-200">{weeklyNewsList.length}</span>개의 주간 뉴스
+                    {t('newsCount', { count: weeklyNewsList.length })}
                 </p>
             </div>
 

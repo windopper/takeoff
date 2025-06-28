@@ -1,0 +1,157 @@
+{
+  "header": {
+    "title": "Takeoff",
+    "subtitle": "AI 커뮤니티의 이슈들을 모아서 정리하는 서비스",
+    "postCount": "총 {count}개의 포스트"
+  },
+  "banner": {
+    "timeline": {
+      "title": "AI 발전 타임라인",
+      "description": "AI 기술의 역사적 발전 과정을 한눈에 확인하세요"
+    },
+    "benchmark": {
+      "title": "AI 벤치마크",
+      "description": "최신 AI 모델들의 성능을 비교해보세요"
+    }
+  },
+  "timeline": {
+    "title": "2015-2025 AI 타임라인",
+    "description": "2015년부터 2025년까지 인공지능의 기술, 정책, 문화 등 다양한 분야에서 일어난 일들을 시간순으로 정리했습니다.",
+    "linkDescription": "각 항목의 링크를 통해 관련 원본 문서를 확인하실 수 있습니다.",
+    "disclaimer": "모든 사건은 주관적 기준으로 선별되었으며, 일부 중요한 사건이 누락될 수 있습니다.",
+    "categories": {
+      "MODEL_RELEASE": "모델 출시",
+      "CULTURE": "문화 & 사회",
+      "BUSINESS": "비즈니스 & 산업",
+      "RESEARCH": "연구 & 개발",
+      "POLICY": "정책 & 규제"
+    }
+  },
+  "weeklynews": {
+    "title": "이번 주 AI 뉴스",
+    "latestNews": "최신 주간 뉴스",
+    "viewAll": "모든 뉴스 보기",
+    "page": {
+      "title": "📰 주간 AI 이슈 정리",
+      "description": "매주 큐레이션된 AI 분야의 최신 뉴스를 만나보세요",
+      "metaTitle": "주간 AI 이슈 정리 - Takeoff.",
+      "metaDescription": "매주 큐레이션된 AI 분야의 최신 뉴스와 이슈를 정리해서 제공합니다.",
+      "keywords": ["주간 AI 이슈", "인공지능 뉴스", "AI 정리", "주간 정리", "인공지능 트렌드", "AI 업계 동향", "takeoff"],
+      "notFoundTitle": "주간 AI 이슈 정리 - Takeoff.",
+      "notFoundDescription": "요청하신 주간 AI 이슈 정리를 찾을 수 없습니다."
+    },
+    "list": {
+      "noNewsTitle": "아직 주간 뉴스가 없습니다",
+      "noNewsDescription": "곧 첫 번째 주간 뉴스를 만나보실 수 있습니다!",
+      "newsCount": "총 {count}개의 주간 뉴스"
+    }
+  },
+  "common": {
+    "loading": "로딩 중...",
+    "loadMore": "더 보기",
+    "noResults": "결과가 없습니다",
+    "error": "오류가 발생했습니다",
+    "search": "검색",
+    "backButton": "이전 페이지",
+    "returnToList": "목록으로 돌아가기",
+    "returnToHome": "홈으로 돌아가기",
+    "notFound": {
+      "title": "게시글을 찾을 수 없습니다",
+      "description": "요청하신 게시글이 존재하지 않거나\n삭제되었을 수 있습니다."
+    }
+  },
+  "footer": {
+    "copyright": "© 2024 Takeoff. All rights reserved.",
+    "poweredBy": "오픈소스"
+  },
+  "language": {
+    "korean": "한국어",
+    "english": "English",
+    "switchTo": "언어 변경"
+  },
+  "webhook": {
+    "title": "Discord 웹훅 등록",
+    "description": "새로운 글이 업로드될 때 Discord 채널로 알림을 받으세요.",
+    "urlLabel": "Discord 웹훅 URL",
+    "urlPlaceholder": "https://discord.com/api/webhooks/...",
+    "urlHelp": "Discord 서버 설정 → 연동 → 웹훅에서 웹훅 URL을 복사하여 붙여넣으세요.",
+    "registerButton": "웹훅 등록하기",
+    "status": {
+      "registering": "등록 중...",
+      "success": "등록 완료!",
+      "error": "등록 실패"
+    },
+    "messages": {
+      "urlRequired": "웹훅 URL을 입력해주세요.",
+      "invalidUrl": "올바른 Discord 웹훅 URL을 입력해주세요.",
+      "success": "웹훅이 성공적으로 등록되었습니다!",
+      "serverError": "서버 오류가 발생했습니다. 다시 시도해주세요."
+    },
+    "setup": {
+      "title": "웹훅 설정 방법",
+      "steps": {
+        "1": "Discord 서버에서 웹훅을 받을 채널로 이동",
+        "2": "채널 설정 (톱니바퀴 아이콘) 클릭",
+        "3": "좌측 메뉴에서 \"연동\" 선택",
+        "4": "\"웹훅\" 탭으로 이동",
+        "5": "\"새 웹훅\" 버튼 클릭",
+        "6": "웹훅 이름 설정 후 \"웹훅 URL 복사\" 클릭",
+        "7": "복사한 URL을 위 입력창에 붙여넣기"
+      }
+    }
+  },
+  "benchmarking": {
+    "title": "AI 벤치마크 대시보드",
+    "description": "최신 인공지능 모델들의 성능을 다양한 벤치마크로 비교해보세요",
+    "metaTitle": "Takeoff. AI Benchmarking",
+    "metaDescription": "인공지능 벤치마크 대시보드",
+    "metaOpenGraphDescription": "GPQA, Frontier Math등 13종의 벤치마크 결과를 비교해보세요.",
+    "citation": {
+      "title": "데이터 출처 및 라이센스",
+      "citationLabel": "Citation:",
+      "licenseLabel": "라이센스:",
+      "licenseText": "이 데이터는 CC BY 라이센스 하에 제공됩니다."
+    },
+    "settings": {
+      "viewType": "뷰 타입",
+      "graph": "그래프",
+      "table": "테이블",
+      "groupColorSetting": "그룹 별 색깔 지정",
+      "on": "ON",
+      "off": "OFF",
+      "groupBy": "그룹 기준",
+      "organization": "기관",
+      "country": "국가",
+      "public": "공개"
+    },
+    "table": {
+      "noData": "데이터가 없습니다",
+      "previous": "이전",
+      "next": "다음"
+    },
+    "tooltips": {
+      "modelName": "모델 이름",
+      "modelVersion": "모델 식별자",
+      "accuracy": "정확도",
+      "averageAccuracy": "평균 정확도",
+      "standardError": "표준 편차",
+      "standardDeviation": "표준 편차",
+      "pass1Accuracy": "pass@1 정확도",
+      "pass1StandardError": "pass@1 표준 편차",
+      "releaseDate": "출시일",
+      "editFormat": "에디트 포맷",
+      "cost": "비용",
+      "source": "출처",
+      "averageProgress": "평균 진행도",
+      "averageStandardError": "평균 표준 오차",
+      "productionScore": "생산 점수",
+      "labSuccessRate": "실험 성공률",
+      "milestones": "마일스톤",
+      "automation": "자동화",
+      "mostComplexItem": "가장 복잡한 아이템",
+      "environment": "환경",
+      "metric": "지표",
+      "contextLength": "컨텍스트 길이"
+    }
+  }
+}

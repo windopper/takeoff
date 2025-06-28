@@ -27,19 +27,15 @@ export const metadata: Metadata = {
   description: "Takeoff는 AI 관련 아티클을 자동으로 정리 및 게시하는 서비스입니다"
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
-      <body
-        className={`antialiased`}
-      >
-        {children}
-        <Analytics />
-      </body>
-    </html>
-  );
+    <>
+      {children}
+      <Analytics />
+    </>
+  )
 }

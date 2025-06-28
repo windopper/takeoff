@@ -2,10 +2,10 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { getTakeoffPosts } from "../action/takeoffPosts";
-import { Post } from "../types/post";
-import { PAGE_SIZE } from "../constants/pagination";
-import SmallPost from "../components/post/SmallPost";
+import { getTakeoffPosts } from "../../action/takeoffPosts";
+import { Post } from "../../types/post";
+import { PAGE_SIZE } from "../../constants/pagination";
+import SmallPost from "../../components/post/SmallPost";
 
 export default function TakeoffSearchWithInfiniteScroll({
   posts,

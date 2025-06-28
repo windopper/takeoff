@@ -5,6 +5,7 @@ import { useState } from "react";
 import { GraphSettingWrapper } from "./components/GraphSetting";
 import useGraphSetting from "./hooks/useGraphSetting";
 import BenchmarkTable from "./components/BenchmarkTable";
+import { useTranslations } from "next-intl";
 // id,Model version,Tools,Production score,Lab Success %,Milestones,Automation,Most complex item,Date added,Cost,Source,Source link (site from table),Notes
 
 type Tasks = "Production score" | "Lab Success %"
@@ -12,6 +13,7 @@ type Tasks = "Production score" | "Lab Success %"
 const tasks: Tasks[] = ["Production score", "Lab Success %"]
 
 export default function Factorio() {
+  const t = useTranslations('benchmarking.tooltips');
   const [selectedTask, setSelectedTask] = useState<Tasks>("Lab Success %");
   const { color, setColor, groupBy, setGroupBy, viewType, setViewType } = useGraphSetting();
   
@@ -41,7 +43,7 @@ export default function Factorio() {
     <GraphSettingWrapper<Tasks>
         filters={[
             {
-                name: "지표",
+                name: t('metric'),
                 contents: tasks,
                 selected: selectedTask,
                 setSelected: setSelectedTask,
@@ -84,14 +86,14 @@ export default function Factorio() {
           label: d.label,
           color: d.color,
           extra: {
-            "모델 이름": d.label,
-            "모델 식별자": d.modelVersion,
-            "생산 점수": `${d["Production score"]}`,
-            "실험 성공률": `${parseFloat(d["Lab Success %"] as string) * 100}%`,
-            마일스톤: d["Milestones"],
-            자동화: d["Automation"],
-            "가장 복잡한 아이템": d["Most complex item"],
-            출처: (
+            [t('modelName')]: d.label,
+            [t('modelVersion')]: d.modelVersion,
+            [t('productionScore')]: `${d["Production score"]}`,
+            [t('labSuccessRate')]: `${parseFloat(d["Lab Success %"] as string) * 100}%`,
+            [t('milestones')]: d["Milestones"],
+            [t('automation')]: d["Automation"],
+            [t('mostComplexItem')]: d["Most complex item"],
+            [t('source')]: (
               <Link
                 href={d["Source link (site from table)"] as string}
                 target="_blank"

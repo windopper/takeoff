@@ -1,13 +1,15 @@
 "use client";
 
 import { Suspense, useState } from "react";
-import Header from "../components/common/Header";
-import Footer from "../components/common/Footer";
-import { registerWebhook } from "../action/webhook";
+import { useTranslations } from "next-intl";
+import Header from "@/app/components/common/Header";
+import Footer from "@/app/components/common/Footer";
+import { registerWebhook } from "@/app/action/webhook";
 
 type Status = "idle" | "loading" | "success" | "error";
 
 export default function Webhook() {
+  const t = useTranslations("webhook");
   const [webhookUrl, setWebhookUrl] = useState("");
   const [status, setStatus] = useState<Status>("idle");
   const [message, setMessage] = useState("");
@@ -17,14 +19,14 @@ export default function Webhook() {
 
     if (!webhookUrl.trim()) {
       setStatus("error");
-      setMessage("웹훅 URL을 입력해주세요.");
+      setMessage(t("messages.urlRequired"));
       return;
     }
 
     // 간단한 Discord 웹훅 URL 유효성 검사
     if (!webhookUrl.includes("discord.com/api/webhooks/")) {
       setStatus("error");
-      setMessage("올바른 Discord 웹훅 URL을 입력해주세요.");
+      setMessage(t("messages.invalidUrl"));
       return;
     }
 
@@ -34,7 +36,7 @@ export default function Webhook() {
     try {
       const result = await registerWebhook(webhookUrl);
       setStatus("success");
-      setMessage("웹훅이 성공적으로 등록되었습니다!");
+      setMessage(t("messages.success"));
       setWebhookUrl("");
 
       // 2초 후에 기본 상태로 돌아가기
@@ -44,7 +46,7 @@ export default function Webhook() {
       }, 2000);
     } catch (error) {
       setStatus("error");
-      setMessage("서버 오류가 발생했습니다. 다시 시도해주세요. " + error);
+      setMessage(t("messages.serverError") + " " + error);
     }
   };
 
@@ -56,10 +58,10 @@ export default function Webhook() {
       <div className="max-w-4xl mx-auto px-6 py-24">
         <div className="max-w-2xl mx-auto flex flex-col">
           <h1 className="text-3xl font-bold text-zinc-900 dark:text-zinc-100 mb-2">
-            Discord 웹훅 등록
+            {t("title")}
           </h1>
           <p className="text-zinc-600 dark:text-zinc-400 mb-8">
-            새로운 글이 업로드될 때 Discord 채널로 알림을 받으세요.
+            {t("description")}
           </p>
 
           <div>
@@ -67,21 +69,20 @@ export default function Webhook() {
               htmlFor="webhookUrl"
               className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2"
             >
-              Discord 웹훅 URL
+              {t("urlLabel")}
             </label>
             <input
               id="webhookUrl"
               type="url"
               value={webhookUrl}
               onChange={(e) => setWebhookUrl(e.target.value)}
-              placeholder="https://discord.com/api/webhooks/..."
+              placeholder={t("urlPlaceholder")}
               className="w-full py-1 border-zinc-200 dark:border-zinc-700 outline-none
                          border-b"
               disabled={status === "loading"}
             />
             <p className="mt-2 text-xs text-zinc-500 dark:text-zinc-400">
-              Discord 서버 설정 → 연동 → 웹훅에서 웹훅 URL을 복사하여
-              붙여넣으세요.
+              {t("urlHelp")}
             </p>
           </div>
 
@@ -91,7 +92,7 @@ export default function Webhook() {
                hover:bg-zinc-100/80 dark:hover:bg-zinc-800/80 rounded-lg`}
             onClick={handleSubmit}
           >
-            <div className="text-white">웹훅 등록하기</div>
+            <div className="text-white">{t("registerButton")}</div>
           </button>
           <div className="flex items-center gap-2 text-sm mt-1">
             {status === "loading" && (
@@ -116,24 +117,24 @@ export default function Webhook() {
               </svg>
             )}
             <span>
-              {status === "loading" && "등록 중..."}
-              {status === "success" && "등록 완료!"}
-              {status === "error" && (message || "등록 실패")}
+              {status === "loading" && t("status.registering")}
+              {status === "success" && t("status.success")}
+              {status === "error" && (message || t("status.error"))}
             </span>
           </div>
 
           <div className="mt-12">
             <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100 mb-3">
-              웹훅 설정 방법
+              {t("setup.title")}
             </h2>
             <ol className="space-y-2 text-sm text-zinc-600 dark:text-zinc-400">
-              <li>1. Discord 서버에서 웹훅을 받을 채널로 이동</li>
-              <li>2. 채널 설정 (톱니바퀴 아이콘) 클릭</li>
-              <li>3. 좌측 메뉴에서 "연동" 선택</li>
-              <li>4. "웹훅" 탭으로 이동</li>
-              <li>5. "새 웹훅" 버튼 클릭</li>
-              <li>6. 웹훅 이름 설정 후 "웹훅 URL 복사" 클릭</li>
-              <li>7. 복사한 URL을 위 입력창에 붙여넣기</li>
+              <li>1. {t("setup.steps.1")}</li>
+              <li>2. {t("setup.steps.2")}</li>
+              <li>3. {t("setup.steps.3")}</li>
+              <li>4. {t("setup.steps.4")}</li>
+              <li>5. {t("setup.steps.5")}</li>
+              <li>6. {t("setup.steps.6")}</li>
+              <li>7. {t("setup.steps.7")}</li>
             </ol>
           </div>
         </div>

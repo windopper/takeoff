@@ -56,26 +56,6 @@ export default function TakeoffMainWithInfiniteScroll({
     }
   };
 
-  //   useEffect(() => {
-  //     const observer = new IntersectionObserver((entries) => {
-  //       entries.forEach((entry) => {
-  //         if (entry.isIntersecting) {
-  //           loadMore();
-  //         }
-  //       });
-  //     });
-
-  //     if (scrollRef.current) {
-  //       observer.observe(scrollRef.current);
-  //     }
-
-  //     return () => {
-  //       if (scrollRef.current) {
-  //         observer.unobserve(scrollRef.current);
-  //       }
-  //     };
-  //   }, [loadMore]);
-
   return (
     <main>
       {_posts.length > 0 ? (

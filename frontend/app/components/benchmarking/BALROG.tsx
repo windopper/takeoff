@@ -4,6 +4,7 @@ import { useState } from "react";
 import { GraphSettingWrapper } from "./components/GraphSetting";
 import useGraphSetting from "./hooks/useGraphSetting";
 import BenchmarkTable from "./components/BenchmarkTable";
+import { useTranslations } from "next-intl";
 
 type Environments =
   | "BabyAI"
@@ -24,6 +25,7 @@ const environments: Environments[] = [
 ];
 
 export default function BALROG() {
+  const t = useTranslations('benchmarking.tooltips');
   const [selectedEnvironment, setSelectedEnvironment] =
     useState<Environments>("Average");
   const { color, setColor, groupBy, setGroupBy, viewType, setViewType } = useGraphSetting();
@@ -62,7 +64,7 @@ export default function BALROG() {
       <GraphSettingWrapper<Environments>
         filters={[
           {
-            name: "환경",
+            name: t('environment'),
             contents: environments,
             selected: selectedEnvironment,
             setSelected: setSelectedEnvironment,
@@ -106,10 +108,10 @@ export default function BALROG() {
             label: d.label,
             color: d.color,
             extra: {
-              "모델 이름": d.label,
-              "모델 식별자": d.modelVersion,
-              "평균 진행도": `${d.score}%`,
-              "평균 표준 오차": `${
+              [t('modelName')]: d.label,
+              [t('modelVersion')]: d.modelVersion,
+              [t('averageProgress')]: `${d.score}%`,
+              [t('averageStandardError')]: `${
                 parseFloat(d["Average Standard error"] as string) * 100
               }%`,
             },

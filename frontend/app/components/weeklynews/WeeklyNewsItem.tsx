@@ -1,5 +1,5 @@
 import { WeeklyNewsPost } from "@/app/types/weeklynews";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import WeeklyNewsBackgroundSvg from "./WeeklyNewsBackgroundSvg";
 // import WeeklyNewsBackgroundSpiralSvg from "./WeeklyNewsBackgroundSpiralSvg";
 import { getThemeById } from "./utils";

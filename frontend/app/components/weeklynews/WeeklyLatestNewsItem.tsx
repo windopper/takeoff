@@ -1,11 +1,23 @@
+"use client";
+
 import { getLatestWeeklyNews } from "@/app/action/weeklynews";
-import Link from "next/link";
 import WeeklyNewsBackgroundSvg from "./WeeklyNewsBackgroundSvg";
 import { getThemeById } from "./utils";
+import { useTranslations } from "next-intl";
+import { useEffect, useState } from "react";
+import { Link } from "@/i18n/routing";
 
+export default function WeeklyLatestNewsItem() {
+    const t = useTranslations('weeklynews');
+    const [latestWeeklyNews, setLatestWeeklyNews] = useState<any>(null);
 
-export default async function WeeklyLatestNewsItem() {
-    const latestWeeklyNews = await getLatestWeeklyNews();
+    useEffect(() => {
+        const fetchLatestNews = async () => {
+            const news = await getLatestWeeklyNews();
+            setLatestWeeklyNews(news);
+        };
+        fetchLatestNews();
+    }, []);
 
     if (!latestWeeklyNews) {
         return null;
@@ -43,7 +55,7 @@ export default async function WeeklyLatestNewsItem() {
             text-shadow-[0_2px_4px_rgba(0,0,0,0.3)]
           `}
           >
-            📰 최신 주간 뉴스
+            📰 {t('latestNews')}
           </h1>
           <p className={`text-sm ${theme.textPrimary.replace('-200', '-200/80')} group-hover:${theme.textPrimary} transition-colors duration-300`}>
             {latestWeeklyNews.title}

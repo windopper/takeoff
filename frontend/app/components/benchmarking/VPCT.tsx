@@ -4,6 +4,7 @@ import useEpochAIExternalBenchmarks from "@/app/hooks/useEpochAIExternalBenchmar
 import { GraphSettingWrapper } from "./components/GraphSetting";
 import useGraphSetting from "./hooks/useGraphSetting";
 import BenchmarkTable from "./components/BenchmarkTable";
+import { useTranslations } from "next-intl";
 
 interface VPCTData {
   id: string;
@@ -18,6 +19,7 @@ interface VPCTData {
 }
 
 export default function VPCT() {
+  const t = useTranslations('benchmarking.tooltips');
   const { color, setColor, groupBy, setGroupBy, viewType, setViewType } = useGraphSetting();
 
   const { data, legends } = useEpochAIExternalBenchmarks({
@@ -46,18 +48,18 @@ export default function VPCT() {
           data={data.map((d) => ({
             id: d.id,
             "Model version": d.modelVersion,
-            "정확도": parseFloat(d.score),
+            [t('accuracy')]: parseFloat(d.score),
             organization: d.organization,
             country: d.country,
             date: d.date,
           }))}
           viewFields={[
             "Model version",
-            "정확도",
+            t('accuracy'),
             "organization",
             "country",
           ]}
-          defaultSortBy="정확도"
+          defaultSortBy={t('accuracy')}
         />
       ) : (
         <ScatterPlot
@@ -68,10 +70,10 @@ export default function VPCT() {
             label: d.label,
             color: d.color,
             extra: {
-              "모델 이름": d.label,
-              "모델 식별자": d.modelVersion,
-              "정확도": `${d.score}%`,
-              "출처": (
+              [t('modelName')]: d.label,
+              [t('modelVersion')]: d.modelVersion,
+              [t('accuracy')]: `${d.score}%`,
+              [t('source')]: (
                 <Link
                   href={d.sourceLink}
                   target="_blank"
