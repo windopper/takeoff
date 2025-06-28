@@ -21,7 +21,7 @@ export async function generateMetadata({
 }: PostPageProps): Promise<Metadata> {
   const { id, locale } = await params;
   const response = await getTakeoffPostById(id, locale);
-  const post: Post | null = response.post;
+  const post: Post | null = response;
 
   return {
     title: post?.title,
