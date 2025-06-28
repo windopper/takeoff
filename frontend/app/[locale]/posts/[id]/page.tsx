@@ -25,8 +25,10 @@ export async function generateMetadata({
 
   return {
     title: post?.title,
+    description: post?.content,
     openGraph: {
       title: post?.title,
+      description: post?.content,
       locale: locale === "ko" ? "ko-KR" : "en-US",
       type: "website",
     },
