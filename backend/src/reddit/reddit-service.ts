@@ -46,6 +46,7 @@ export async function processRedditPosts(params: ProcessRedditPostsParams): Prom
 			}, fetcher, parser, redditFilter, aiWriter, {
 				vectorize: !!env.VECTORIZE,
 				webhook: true,
+				translate: true,
 			});
 	
 			statistics.total += result.total;

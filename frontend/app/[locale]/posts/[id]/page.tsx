@@ -1,4 +1,7 @@
-import { getTakeoffPostById } from "@/app/action/takeoffPosts";
+import {
+  getTakeoffPostById,
+  getTakeoffTranslatedPostById,
+} from "@/app/action/takeoffPosts";
 import { Post } from "@/app/types/post";
 import Link from "next/link";
 import ReturnButton from "../../../components/common/ReturnButton";
@@ -10,33 +13,33 @@ import { Metadata } from "next";
 import NotFound from "../../../components/common/NotFound";
 
 interface PostPageProps {
-  params: Promise<{ id: string }>;
+  params: Promise<{ id: string; locale: string }>;
 }
 
-export async function generateMetadata({ params }: PostPageProps): Promise<Metadata> {
-  const id = (await params).id;
-  const response = await getTakeoffPostById(id);
+export async function generateMetadata({
+  params,
+}: PostPageProps): Promise<Metadata> {
+  const { id, locale } = await params;
+  const response = await getTakeoffPostById(id, locale);
   const post: Post | null = response.post;
+
   return {
     title: post?.title,
     openGraph: {
       title: post?.title,
-      locale: 'ko-KR',
-      type: 'website',
+      locale: locale === "ko" ? "ko-KR" : "en-US",
+      type: "website",
     },
-  }
+  };
 }
 
 export default async function PostPage({ params }: PostPageProps) {
-  const id = (await params).id;
-  const response = await getTakeoffPostById(id);
+  const { id, locale } = await params;
+  const response = await getTakeoffPostById(id, locale);
+  const post: Post | null = response;
 
-  const post: Post | null = response.post;
-
-  if (! post) {
-    return (
-      <NotFound />
-    );
+  if (!post) {
+    return <NotFound />;
   }
 
   return (

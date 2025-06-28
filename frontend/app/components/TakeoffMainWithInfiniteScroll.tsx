@@ -10,9 +10,11 @@ import SmallPost from "./post/SmallPost";
 export default function TakeoffMainWithInfiniteScroll({
   posts,
   postCount,
+  locale,
 }: {
   posts: Post[];
   postCount: number;
+  locale: string;
 }) {
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const [_posts, setPosts] = useState<Post[]>(posts);
@@ -27,6 +29,7 @@ export default function TakeoffMainWithInfiniteScroll({
       const newPosts = await getTakeoffPosts({
         limit: PAGE_SIZE,
         offset: _posts.length,
+        language: locale,
       });
 
       setPosts((prev) => {

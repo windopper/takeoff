@@ -27,6 +27,16 @@ export const aiPosts = sqliteTable('ai_posts', {
   createdAtIdx: index('idx_ai_posts_created_at').on(table.createdAt),
 }));
 
+export const aiPostTranslations = sqliteTable('ai_post_translations', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  aiPostId: integer('ai_post_id').references(() => aiPosts.id),
+  language: text('language').notNull(),
+  title: text('title').notNull(),
+  content: text('content').notNull(),
+  createdAt: text('created_at').notNull().default(sql`CURRENT_TIMESTAMP`),
+  updatedAt: text('updated_at').notNull().default(sql`CURRENT_TIMESTAMP`),
+});
+
 // AI 필터로 걸러진 게시글을 저장하는 테이블
 export const aiFiltered = sqliteTable('ai_filtered', {
   id: integer('id').primaryKey({ autoIncrement: true }),
@@ -73,6 +83,16 @@ export const weeklyNewsPost = sqliteTable('weekly_news_post', {
   createdAt: text('created_at').notNull().default(sql`CURRENT_TIMESTAMP`),
 })
 
+export const weeklyNewsPostTranslations = sqliteTable('weekly_news_post_translations', {
+  id: integer('id').primaryKey({ autoIncrement: true }),
+  weeklyNewsPostId: integer('weekly_news_post_id').references(() => weeklyNewsPost.id),
+  language: text('language').notNull(),
+  title: text('title').notNull(),
+  content: text('content').notNull(),
+  createdAt: text('created_at').notNull().default(sql`CURRENT_TIMESTAMP`),
+  updatedAt: text('updated_at').notNull().default(sql`CURRENT_TIMESTAMP`),
+})
+
 // TypeScript 타입 정의
 export type AiPost = typeof aiPosts.$inferSelect;
 export type NewAiPost = typeof aiPosts.$inferInsert;
@@ -84,3 +104,7 @@ export type ProcessLog = typeof processLog.$inferSelect;
 export type NewProcessLog = typeof processLog.$inferInsert;
 export type WeeklyNewsPost = typeof weeklyNewsPost.$inferSelect;
 export type NewWeeklyNewsPost = typeof weeklyNewsPost.$inferInsert;
+export type WeeklyNewsPostTranslation = typeof weeklyNewsPostTranslations.$inferSelect;
+export type NewWeeklyNewsPostTranslation = typeof weeklyNewsPostTranslations.$inferInsert;
+export type AiPostTranslation = typeof aiPostTranslations.$inferSelect;
+export type NewAiPostTranslation = typeof aiPostTranslations.$inferInsert;

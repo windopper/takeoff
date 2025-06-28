@@ -6,7 +6,7 @@ import { getTranslations } from "next-intl/server";
 
 export default async function WeeklyLatestNewsItem({ locale }: { locale: string }) {
     const t = await getTranslations({ locale, namespace: 'weeklynews' });
-    const latestWeeklyNews = await getLatestWeeklyNews();
+    const latestWeeklyNews = await getLatestWeeklyNews(locale);
 
     if (!latestWeeklyNews) {
         return null;

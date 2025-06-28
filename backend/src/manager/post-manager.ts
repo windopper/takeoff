@@ -119,7 +119,7 @@ export class PostManager {
 		platform?: string;
 		community?: string;
 		category?: string;
-	}): Promise<any[]> {
+	}): Promise<AiPost[]> {
 		try {
 			const where = [];
 			const orderBy = [];

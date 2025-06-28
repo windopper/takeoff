@@ -14,7 +14,7 @@ export class CommonRoutes {
 		}
 
 		try {
-			const post = await processUrl(url);
+			const post = await processUrl(env, url);
 			return Response.json({
 				post,
 			});

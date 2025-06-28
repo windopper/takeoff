@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
-<url><loc>https://ai-takeoff.dev/opengraph-image.png</loc><lastmod>2025-06-28T09:01:27.733Z</lastmod><changefreq>daily</changefreq><priority>1</priority></url>
-<url><loc>https://ai-takeoff.dev/ko</loc><lastmod>2025-06-28T09:01:27.734Z</lastmod><changefreq>daily</changefreq><priority>1</priority></url>
-<url><loc>https://ai-takeoff.dev/ko/about</loc><lastmod>2025-06-28T09:01:27.734Z</lastmod><changefreq>daily</changefreq><priority>1</priority></url>
-<url><loc>https://ai-takeoff.dev/ko/benchmarking</loc><lastmod>2025-06-28T09:01:27.734Z</lastmod><changefreq>daily</changefreq><priority>1</priority></url>
-<url><loc>https://ai-takeoff.dev/ko/timeline</loc><lastmod>2025-06-28T09:01:27.734Z</lastmod><changefreq>daily</changefreq><priority>1</priority></url>
-<url><loc>https://ai-takeoff.dev/ko/webhook</loc><lastmod>2025-06-28T09:01:27.734Z</lastmod><changefreq>daily</changefreq><priority>1</priority></url>
-<url><loc>https://ai-takeoff.dev/ko/weeklynews</loc><lastmod>2025-06-28T09:01:27.734Z</lastmod><changefreq>daily</changefreq><priority>1</priority></url>
-<url><loc>https://ai-takeoff.dev/en</loc><lastmod>2025-06-28T09:01:27.734Z</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
-<url><loc>https://ai-takeoff.dev/en/about</loc><lastmod>2025-06-28T09:01:27.734Z</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
-<url><loc>https://ai-takeoff.dev/en/benchmarking</loc><lastmod>2025-06-28T09:01:27.734Z</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
-<url><loc>https://ai-takeoff.dev/en/timeline</loc><lastmod>2025-06-28T09:01:27.734Z</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
-<url><loc>https://ai-takeoff.dev/en/webhook</loc><lastmod>2025-06-28T09:01:27.734Z</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
-<url><loc>https://ai-takeoff.dev/en/weeklynews</loc><lastmod>2025-06-28T09:01:27.734Z</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+<url><loc>https://ai-takeoff.dev/opengraph-image.png</loc><lastmod>2025-06-28T13:12:39.160Z</lastmod><changefreq>daily</changefreq><priority>1</priority></url>
+<url><loc>https://ai-takeoff.dev/ko</loc><lastmod>2025-06-28T13:12:39.161Z</lastmod><changefreq>daily</changefreq><priority>1</priority></url>
+<url><loc>https://ai-takeoff.dev/ko/about</loc><lastmod>2025-06-28T13:12:39.161Z</lastmod><changefreq>daily</changefreq><priority>1</priority></url>
+<url><loc>https://ai-takeoff.dev/ko/benchmarking</loc><lastmod>2025-06-28T13:12:39.161Z</lastmod><changefreq>daily</changefreq><priority>1</priority></url>
+<url><loc>https://ai-takeoff.dev/ko/timeline</loc><lastmod>2025-06-28T13:12:39.161Z</lastmod><changefreq>daily</changefreq><priority>1</priority></url>
+<url><loc>https://ai-takeoff.dev/ko/webhook</loc><lastmod>2025-06-28T13:12:39.161Z</lastmod><changefreq>daily</changefreq><priority>1</priority></url>
+<url><loc>https://ai-takeoff.dev/ko/weeklynews</loc><lastmod>2025-06-28T13:12:39.161Z</lastmod><changefreq>daily</changefreq><priority>1</priority></url>
+<url><loc>https://ai-takeoff.dev/en</loc><lastmod>2025-06-28T13:12:39.161Z</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+<url><loc>https://ai-takeoff.dev/en/about</loc><lastmod>2025-06-28T13:12:39.161Z</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+<url><loc>https://ai-takeoff.dev/en/benchmarking</loc><lastmod>2025-06-28T13:12:39.161Z</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+<url><loc>https://ai-takeoff.dev/en/timeline</loc><lastmod>2025-06-28T13:12:39.161Z</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+<url><loc>https://ai-takeoff.dev/en/webhook</loc><lastmod>2025-06-28T13:12:39.161Z</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+<url><loc>https://ai-takeoff.dev/en/weeklynews</loc><lastmod>2025-06-28T13:12:39.161Z</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
 </urlset>

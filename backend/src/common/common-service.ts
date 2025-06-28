@@ -1,4 +1,5 @@
-import { env } from "cloudflare:workers";
+import { env } from 'cloudflare:workers';
+import { Env } from '..';
 import { PostManager } from "../manager/post-manager";
 import { ArticleAIWriter } from "./article-ai-writer";
 import { CommonFetcher } from "./common-fetcher";
@@ -12,8 +13,9 @@ import { WebhookService } from "../webhook/webhook-service";
 import { FRONTEND_URL } from "../constants";
 import { AiPost } from "../db/schema";
 import { logError, logInfo, logSuccess } from "../log/log-stream-service";
+import { TranslateService } from "../translate/translate-service";
 
-export async function processUrl(url: string) {
+export async function processUrl(env: Env, url: string) {
     const postManager = new PostManager(env.DB);
     const writer = new ArticleAIWriter({
         geminiApiKey: env.GEMINI_API_KEY,
@@ -46,9 +48,11 @@ export async function processPosts(data: {
 }, fetcher: CommonFetcher, parser: CommonParser, filter: CommonFilter, writer: CommonAIWriter, config: {
     vectorize?: boolean;
     webhook?: boolean;
+    translate?: boolean;
 } = {
     vectorize: true,
     webhook: true,
+    translate: true,
 }) {
     const postManager = new PostManager(env.DB);
     const filterManager = new FilteredPostManager(env.DB);
@@ -79,6 +83,7 @@ export async function processPosts(data: {
     
             const filtered = await filter.filterAll(result);
     
+            // 필터링 된 포스트를 처리하지 않음
             if (!filtered.shouldProcess) {
                 console.log(`Post filtered: ${result.url} - ${filtered.reason}`);
                 if (filtered.reason === "ai_relevance" && filtered.aiReason) {
@@ -98,16 +103,19 @@ export async function processPosts(data: {
 
             let similarPosts: AiPost[] = [];
     
+            // 유사 포스트 찾기
             if (config.vectorize) {
                 logInfo(`Retrieve similar posts...`, SERVICE_TAG, OPERATION_TAG);
                 similarPosts = await retrieveSimilarPosts(result.title);
                 logInfo(`Found ${similarPosts.length} similar posts`, SERVICE_TAG, OPERATION_TAG);
             }
 
+            // 포스트 처리
             const processedPost = await writer.processPost(result, similarPosts.map((post) => post.content));
             logInfo(`Processed post: ${processedPost.title}`, SERVICE_TAG, OPERATION_TAG);
             const savedPost = await postManager.savePost(processedPost);
             if (savedPost) {
+                // 벡터화
                 if (config.vectorize) {
                     await vectorizePostAndSave(savedPost);
                     logInfo(`Vectorized post`, SERVICE_TAG, OPERATION_TAG);
@@ -115,6 +123,14 @@ export async function processPosts(data: {
                 statistics.saved++;
                 logSuccess(`Saved post: ${savedPost.title}`, SERVICE_TAG, OPERATION_TAG);
 
+                // 번역
+                if (config.translate) {
+                    await TranslateService.translateAndSaveAiPost(savedPost.id, 
+                        { title: savedPost.title, content: savedPost.content }, 'en', true);
+                    logInfo(`Translated post`, SERVICE_TAG, OPERATION_TAG);
+                }
+
+                // 웹훅
                 if (config.webhook) {
                     await WebhookService.sendWebhookBatchToSubscribers([{
                         title: processedPost.title,
@@ -127,6 +143,7 @@ export async function processPosts(data: {
                 }
             }
         } catch (error) {
+            // XML 파싱 오류 처리
             if (error instanceof XmlParseError) {
                 logError(`Error parsing XML: ${error}`, SERVICE_TAG, OPERATION_TAG);
                 statistics.skipped++;

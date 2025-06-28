@@ -23,7 +23,7 @@ export default async function Home({ params, searchParams }: HomeProps) {
   
   // 현재 페이지까지의 모든 게시글을 로드
   const postsToLoad = PAGE_SIZE * currentPage;
-  const posts = await getTakeoffPosts({ limit: postsToLoad, offset: 0 });
+  const posts = await getTakeoffPosts({ limit: postsToLoad, offset: 0, language: locale });
   const postCount = await getTakeoffPostCount({});
 
   return (
@@ -41,6 +41,7 @@ export default async function Home({ params, searchParams }: HomeProps) {
         <TakeoffMainWithInfiniteScroll
           posts={posts.posts}
           postCount={postCount.count}
+          locale={locale}
         />
       </div>
       {/* 푸터 */}

@@ -11,7 +11,7 @@ interface WeeklyNewsPageProps {
 export async function generateMetadata({ params }: WeeklyNewsPageProps): Promise<Metadata> {
     const { id, locale } = await params;
     const t = await getTranslations({ locale, namespace: 'weeklynews.page' });
-    const weeklyNews = await getWeeklyNews(id);
+    const weeklyNews = await getWeeklyNews(id, locale);
 
     if (!weeklyNews) {
         return {
@@ -45,8 +45,8 @@ export async function generateMetadata({ params }: WeeklyNewsPageProps): Promise
 }
 
 export default async function WeeklyNewsDetailPage({ params }: WeeklyNewsPageProps) {
-    const { id } = await params;
-    const weeklyNews = await getWeeklyNews(id);
+    const { id, locale } = await params;
+    const weeklyNews = await getWeeklyNews(id, locale);
 
     if (!weeklyNews) {
         return (

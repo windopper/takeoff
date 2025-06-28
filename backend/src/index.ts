@@ -16,6 +16,7 @@ import { ProcessLogManager } from './manager/process-log-manager';
 import { WeeklyNewsRoutes } from './weeklynews/weeklynews-routes';
 import { WeeklyNewsManager } from './manager/weekly-news-manager';
 import { WeeklyNewsService } from './weeklynews/weeklynews-service';
+import { TranslateRoutes } from './translate/translate-routes';
 
 export interface Env {
 	DB: D1Database;
@@ -206,6 +207,31 @@ export default {
 
 			if (pathname === '/api/weekly-news-revalidate' && request.method === 'POST') {
 				const response = await WeeklyNewsRoutes.revalidateCache(request, env);
+				return addCorsHeaders(response);
+			}
+
+			if (pathname === '/api/translate' && request.method === 'POST') {
+				const response = await TranslateRoutes.translate(request, env);
+				return addCorsHeaders(response);
+			}
+
+			if (pathname === '/api/translate-post-by-id' && request.method === 'GET') {
+				const response = await TranslateRoutes.getTranslatedPostById(request, env);
+				return addCorsHeaders(response);
+			}
+
+			if (pathname === '/api/translate-weekly-news-by-id' && request.method === 'GET') {
+				const response = await TranslateRoutes.getTranslatedWeeklyNewsById(request, env);
+				return addCorsHeaders(response);
+			}
+
+			if (pathname === '/api/translate-post-list' && request.method === 'GET') {
+				const response = await TranslateRoutes.getTranslatePostList(request, env);
+				return addCorsHeaders(response);
+			}
+
+			if (pathname === '/api/translate-latest-n-posts' && request.method === 'POST') {
+				const response = await TranslateRoutes.translateLatestNPosts(request, env);
 				return addCorsHeaders(response);
 			}
 

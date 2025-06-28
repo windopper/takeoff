@@ -29,6 +29,7 @@ export async function processHackernewsPosts(params: ProcessHackernewsPostsParam
 		}, fetcher, parser, filter, aiWriter, {
 			vectorize: !!env.VECTORIZE,
 			webhook: true,
+			translate: true,	
 		});
 
 		await logSuccess(`HackerNews 포스트 처리 완료 (전체: ${result.total}, 저장: ${result.saved}, 필터링: ${result.filtered}, 건너뜀: ${result.skipped})`, 'hackernews', 'process');

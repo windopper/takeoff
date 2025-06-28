@@ -6,7 +6,7 @@ import { getTranslations } from "next-intl/server";
 export default async function WeeklyNewsList({ locale }: { locale: string }) {
     const t = await getTranslations({ locale, namespace: 'weeklynews.list' });
     // const commonT = await getTranslations({ locale, namespace: 'common' });
-    const weeklyNewsList = await getWeeklyNewsList();
+    const weeklyNewsList = await getWeeklyNewsList(locale);
 
     // useEffect(() => {
         // const fetchWeeklyNews = async () => {
