@@ -31,6 +31,7 @@ export async function getWeeklyNewsList() {
     const response = await takeoffFetch(`${BACKEND_URL}/api/weekly-news-list`, {
         method: 'GET',
         next: {
+            revalidate: 3600,
             tags: [WEEKLY_NEWS_LIST_TAG],
         },
     });
@@ -46,6 +47,7 @@ export async function getWeeklyNews(id: string) {
     const response = await takeoffFetch(`${BACKEND_URL}/api/weekly-news?id=${id}`, {
         method: 'GET',
         next: {
+            revalidate: 3600,
             tags: [WEEKLY_NEWS_ID_TAG(id)],
         },
     });
@@ -60,6 +62,7 @@ export async function getLatestWeeklyNews() {
     const response = await takeoffFetch(`${BACKEND_URL}/api/weekly-news-latest`, {
         method: 'GET',
         next: {
+            revalidate: 3600,
             tags: [WEEKLY_NEWS_LATEST_TAG],
         },
     });

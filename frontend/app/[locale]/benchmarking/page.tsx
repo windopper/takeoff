@@ -50,11 +50,11 @@ export default async function Benchmarking({ params }: BenchmarkingPageProps) {
       <div className="fixed top-0 left-0 w-full h-full backdrop-blur-sm -z-40"></div>
       <Header />
       <div className="flex flex-col items-center justify-center relative mt-20 pb-16 px-4">
-        <BenchmarkHero />
+        <BenchmarkHero locale={locale} />
         <BenchmarkSelector />
       </div>
       <div className="relative max-w-6xl m-auto flex flex-col pt-24">
-        <Citation />
+        <Citation locale={locale} />
       </div>
       <Footer />
     </div>

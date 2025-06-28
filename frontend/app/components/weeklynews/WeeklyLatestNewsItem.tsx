@@ -1,23 +1,12 @@
-"use client";
-
 import { getLatestWeeklyNews } from "@/app/action/weeklynews";
 import WeeklyNewsBackgroundSvg from "./WeeklyNewsBackgroundSvg";
 import { getThemeById } from "./utils";
-import { useTranslations } from "next-intl";
-import { useEffect, useState } from "react";
 import { Link } from "@/i18n/routing";
+import { getTranslations } from "next-intl/server";
 
-export default function WeeklyLatestNewsItem() {
-    const t = useTranslations('weeklynews');
-    const [latestWeeklyNews, setLatestWeeklyNews] = useState<any>(null);
-
-    useEffect(() => {
-        const fetchLatestNews = async () => {
-            const news = await getLatestWeeklyNews();
-            setLatestWeeklyNews(news);
-        };
-        fetchLatestNews();
-    }, []);
+export default async function WeeklyLatestNewsItem({ locale }: { locale: string }) {
+    const t = await getTranslations({ locale, namespace: 'weeklynews' });
+    const latestWeeklyNews = await getLatestWeeklyNews();
 
     if (!latestWeeklyNews) {
         return null;

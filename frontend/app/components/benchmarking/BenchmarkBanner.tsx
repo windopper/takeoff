@@ -1,11 +1,9 @@
-"use client";
-
 import Background from "./Background";
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/routing";
 
-export default function BenchmarkBanner() {
-  const t = useTranslations('banner.benchmark');
+export default async function BenchmarkBanner({ locale }: { locale: string }) {
+  const t = await getTranslations({ locale, namespace: 'banner.benchmark' });
 
   return (
     <Link

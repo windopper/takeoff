@@ -6,6 +6,8 @@ import TimelineBanner from "../components/timeline/TimelineBanner";
 import { PAGE_SIZE } from "../constants/pagination";
 import BenchmarkBanner from "../components/benchmarking/BenchmarkBanner";
 import WeeklyLatestNewsItem from "../components/weeklynews/WeeklyLatestNewsItem";
+import { Suspense } from "react";
+import { LoadingCard } from "../components/common";
 
 interface HomeProps {
   params: Promise<{ locale: string }>;
@@ -30,10 +32,12 @@ export default async function Home({ params, searchParams }: HomeProps) {
       <Header postCount={postCount.count} />
       <div className="relative max-w-4xl mx-auto px-6 mt-12 py-12">
         <div className="flex md:flex-row gap-4 mb-6 flex-col">
-          <TimelineBanner />
-          <BenchmarkBanner />
+          <TimelineBanner locale={locale} />
+          <BenchmarkBanner locale={locale} />
         </div>
-        <WeeklyLatestNewsItem />
+        <Suspense fallback={<LoadingCard variant="compact" />}>
+          <WeeklyLatestNewsItem locale={locale} />
+        </Suspense>
         <TakeoffMainWithInfiniteScroll
           posts={posts.posts}
           postCount={postCount.count}

@@ -1,9 +1,7 @@
-"use client";
+import { getTranslations } from "next-intl/server";
 
-import { useTranslations } from "next-intl";
-
-export default function Citation() {
-  const t = useTranslations('benchmarking.citation');
+export default async function Citation({ locale }: { locale: string }) {
+  const t = await getTranslations({ locale, namespace: 'benchmarking.citation' });
   
   return (
     <div className="mt-8 p-4 border-t border-zinc-700 pt-8">

@@ -1,11 +1,9 @@
-"use client";
-
 import { TimelineSvg } from "./TimelineSvg";
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/routing";
 
-export default function TimelineBanner() {
-  const t = useTranslations('banner.timeline');
+export default async function TimelineBanner({ locale }: { locale: string }) {
+  const t = await getTranslations({ locale, namespace: 'banner.timeline' });
 
   return (
     <Link

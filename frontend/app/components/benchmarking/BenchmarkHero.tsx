@@ -1,9 +1,7 @@
-"use client";
+import { getTranslations } from "next-intl/server";
 
-import { useTranslations } from "next-intl";
-
-export default function BenchmarkHero() {
-    const t = useTranslations('benchmarking');
+export default async function BenchmarkHero({ locale }: { locale: string }) {
+  const t = await getTranslations({ locale, namespace: 'benchmarking' });
     
     return (
       <div className="flex flex-col w-screen items-center justify-center pb-16 pt-20 backdrop-blur-lg">

@@ -24,6 +24,9 @@ export async function generateMetadata({ params }: WeeklyNewsPageProps): Promise
         ? weeklyNews.content.substring(0, 150) + "..." 
         : weeklyNews.content;
 
+    const keywords = t.raw('keywords');
+    const keywordsString = Array.isArray(keywords) ? keywords.join(', ') : keywords;
+
     return {
         title: `${weeklyNews.title} - Takeoff.`,
         description: truncatedContent || t('metaDescription'),
@@ -36,7 +39,7 @@ export async function generateMetadata({ params }: WeeklyNewsPageProps): Promise
             type: "article",
             publishedTime: weeklyNews.createdAt,
         },
-        keywords: JSON.parse(t('keywords')),
+        keywords: keywordsString,
         category: "technology",
     };
 }

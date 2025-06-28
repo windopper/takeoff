@@ -2,6 +2,8 @@ import WeeklyNewsList from "../../components/weeklynews/WeeklyNewsList";
 import WeeklyNewsBackgroundSvg from "../../components/weeklynews/WeeklyNewsBackgroundSvg";
 import { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
+import { Suspense } from "react";
+import { LoadingCard } from "../../components/common";
 
 interface WeeklyNewsPageProps {
     params: Promise<{ locale: string }>;
@@ -11,11 +13,15 @@ export async function generateMetadata({ params }: WeeklyNewsPageProps): Promise
     const { locale } = await params;
     const t = await getTranslations({ locale, namespace: 'weeklynews.page' });
     
+    // keywords가 배열인 경우 문자열로 변환
+    const keywords = t.raw('keywords');
+    const keywordsString = Array.isArray(keywords) ? keywords.join(', ') : keywords;
+    
     return {
         title: t('metaTitle'),
         category: "technology",
         description: t('metaDescription'),
-        keywords: t('keywords'),
+        keywords: keywordsString,
         openGraph: {
             images: ["/image/takeoff.png"],
             title: t('metaTitle'),
@@ -55,7 +61,9 @@ export default async function WeeklyNewsPage({ params }: WeeklyNewsPageProps) {
 
           {/* 뉴스 리스트 */}
           <div className="max-w-4xl mx-auto px-6">
-            <WeeklyNewsList />
+            <Suspense fallback={<LoadingCard variant="compact" />}>
+              <WeeklyNewsList locale={locale} />
+            </Suspense>
           </div>
         </div>
       </div>

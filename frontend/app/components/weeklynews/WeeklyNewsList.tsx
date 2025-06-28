@@ -1,41 +1,37 @@
-"use client";
-
 import { getWeeklyNewsList } from "@/app/action/weeklynews";
 import WeeklyNewsItem from "./WeeklyNewsItem";
 import { WeeklyNewsPost } from "@/app/types/weeklynews";
-import { useTranslations } from "next-intl";
-import { useEffect, useState } from "react";
+import { getTranslations } from "next-intl/server";
 
-export default function WeeklyNewsList() {
-    const t = useTranslations('weeklynews.list');
-    const commonT = useTranslations('common');
-    const [weeklyNewsList, setWeeklyNewsList] = useState<WeeklyNewsPost[]>([]);
-    const [loading, setLoading] = useState(true);
+export default async function WeeklyNewsList({ locale }: { locale: string }) {
+    const t = await getTranslations({ locale, namespace: 'weeklynews.list' });
+    // const commonT = await getTranslations({ locale, namespace: 'common' });
+    const weeklyNewsList = await getWeeklyNewsList();
 
-    useEffect(() => {
-        const fetchWeeklyNews = async () => {
-            try {
-                const newsList = await getWeeklyNewsList();
-                setWeeklyNewsList(newsList);
-            } catch (error) {
-                console.error('Failed to fetch weekly news:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
+    // useEffect(() => {
+        // const fetchWeeklyNews = async () => {
+        //     try {
+        //         const newsList = await getWeeklyNewsList();
+        //         setWeeklyNewsList(newsList);
+        //     } catch (error) {
+        //         console.error('Failed to fetch weekly news:', error);
+        //     } finally {
+        //         setLoading(false);
+        //     }
+        // };
 
-        fetchWeeklyNews();
-    }, []);
+        // fetchWeeklyNews();
+    // }, []);
 
-    if (loading) {
-        return (
-            <div className="text-center py-12">
-                <div className="bg-zinc-800/20 rounded-2xl p-8 border border-zinc-700/30">
-                    <p className="text-zinc-300/80">{commonT('loading')}</p>
-                </div>
-            </div>
-        );
-    }
+    // if (loading) {
+    //     return (
+    //         <div className="text-center py-12">
+    //             <div className="bg-zinc-800/20 rounded-2xl p-8 border border-zinc-700/30">
+    //                 <p className="text-zinc-300/80">{commonT('loading')}</p>
+    //             </div>
+    //         </div>
+    //     );
+    // }
     if (weeklyNewsList.length === 0) {
         return (
             <div className="text-center py-12">
