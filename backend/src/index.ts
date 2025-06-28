@@ -14,6 +14,8 @@ import { getLogs, sendLog, sendLogImmediate } from './log/log-stream-service';
 import { LogRoutes } from './log/log-routes';
 import { ProcessLogManager } from './manager/process-log-manager';
 import { WeeklyNewsRoutes } from './weeklynews/weeklynews-routes';
+import { WeeklyNewsManager } from './manager/weekly-news-manager';
+import { WeeklyNewsService } from './weeklynews/weeklynews-service';
 
 export interface Env {
 	DB: D1Database;
@@ -37,24 +39,24 @@ function addCorsHeaders(response: Response): Response {
 	headers.set('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS');
 	headers.set('Access-Control-Allow-Headers', 'Content-Type, Takeoff-Api-Key, Authorization');
 	headers.set('Access-Control-Max-Age', '86400');
-	
+
 	return new Response(response.body, {
 		status: response.status,
 		statusText: response.statusText,
-		headers: headers
+		headers: headers,
 	});
 }
 
 export default {
 	async fetch(request, env): Promise<Response> {
 		const { pathname } = new URL(request.url);
-		
+
 		// OPTIONS 요청 (CORS preflight) 처리
 		if (request.method === 'OPTIONS') {
 			return addCorsHeaders(new Response(null, { status: 204 }));
 		}
-		
-		if (pathname === "/takeoff.png") {
+
+		if (pathname === '/takeoff.png') {
 			try {
 				const assetResponse = await env.ASSETS.fetch(request);
 				return addCorsHeaders(assetResponse);
@@ -76,137 +78,138 @@ export default {
 				const forbiddenResponse = new Response('Forbidden', { status: 403 });
 				return addCorsHeaders(forbiddenResponse);
 			}
-	
-			if (pathname === "/api/reddit") {
+
+			if (pathname === '/api/reddit') {
 				const response = await RedditRoutes.getRedditPosts(request);
 				return addCorsHeaders(response);
 			}
 
 			// HackerNews 게시글 목록 조회 API
-			if (pathname === "/api/hackernews") {
+			if (pathname === '/api/hackernews') {
 				const response = await HackerNewsRoutes.getHackerNewsPosts(request);
 				return addCorsHeaders(response);
 			}
-	
+
 			// /api/posts 형식으로 게시글 목록 조회 API
-			if (pathname === "/api/posts" && request.method === 'GET') {
+			if (pathname === '/api/posts' && request.method === 'GET') {
 				const response = await CommonRoutes.getPosts(request, env);
 				return addCorsHeaders(response);
 			}
-	
-			if (pathname === "/api/post-count" && request.method === 'GET') {
+
+			if (pathname === '/api/post-count' && request.method === 'GET') {
 				const response = await CommonRoutes.getPostCount(request, env);
 				return addCorsHeaders(response);
 			}
-	
+
 			// /api/posts/:id 형식으로 특정 게시글 조회 API
-			if (pathname.startsWith("/api/posts/") && request.method === 'GET') {
+			if (pathname.startsWith('/api/posts/') && request.method === 'GET') {
 				const response = await CommonRoutes.getPostById(request, env);
 				return addCorsHeaders(response);
 			}
-	
-			if (pathname.startsWith("/api/posts/") && request.method === 'DELETE') {
+
+			if (pathname.startsWith('/api/posts/') && request.method === 'DELETE') {
 				const response = await CommonRoutes.deletePost(request, env);
 				return addCorsHeaders(response);
 			}
-	
+
 			// Reddit 게시글을 AI로 처리하고 저장하는 API
-			if (pathname === "/api/process-reddit" && request.method === 'POST') {
+			if (pathname === '/api/process-reddit' && request.method === 'POST') {
 				const response = await RedditRoutes.processRedditPosts(request, env);
 				return addCorsHeaders(response);
 			}
-	
+
 			// HackerNews 게시글을 AI로 처리하고 저장하는 API
-			if (pathname === "/api/process-hackernews" && request.method === 'POST') {
+			if (pathname === '/api/process-hackernews' && request.method === 'POST') {
 				const response = await HackerNewsRoutes.processHackerNewsPosts(request, env);
 				return addCorsHeaders(response);
 			}
-	
-			if (pathname === "/api/process-arxiv" && request.method === 'POST') {
+
+			if (pathname === '/api/process-arxiv' && request.method === 'POST') {
 				const response = await ArxivRoutes.processArxivPaper(request, env);
 				return addCorsHeaders(response);
 			}
-	
-			if (pathname === "/api/process-url" && request.method === 'POST') {
+
+			if (pathname === '/api/process-url' && request.method === 'POST') {
 				const response = await CommonRoutes.processUrl(request, env);
 				return addCorsHeaders(response);
 			}
-	
-			if (pathname === "/api/webhook-register" && request.method === 'POST') {
+
+			if (pathname === '/api/webhook-register' && request.method === 'POST') {
 				const response = await WebhookRoutes.createWebhookUrl(request, env);
 				return addCorsHeaders(response);
 			}
-	
-			if (pathname === "/api/webhook-list") {
+
+			if (pathname === '/api/webhook-list') {
 				const response = await WebhookRoutes.getWebhookList(request, env);
 				return addCorsHeaders(response);
 			}
-	
-			if (pathname === "/api/webhook-delete" && request.method === 'POST') {
+
+			if (pathname === '/api/webhook-delete' && request.method === 'POST') {
 				const response = await WebhookRoutes.deleteWebhookUrl(request, env);
 				return addCorsHeaders(response);
 			}
-	
-			if (pathname === "/api/webhook-test" && request.method === 'POST') {
+
+			if (pathname === '/api/webhook-test' && request.method === 'POST') {
 				const response = await WebhookRoutes.sendWebhookTest(request, env);
 				return addCorsHeaders(response);
 			}
 
-			if (pathname === "/api/vectorize" && request.method === 'POST') {
+			if (pathname === '/api/vectorize' && request.method === 'POST') {
 				const response = await VectorizeRoutes.vectorizeText(request, env);
 				return addCorsHeaders(response);
 			}
 
-			if (pathname === "/api/vectorize-all-post-not-indexed-and-save" && request.method === 'POST') {
+			if (pathname === '/api/vectorize-all-post-not-indexed-and-save' && request.method === 'POST') {
 				const response = await VectorizeRoutes.vectorizeAllPostNotIndexedAndSave(request, env);
 				return addCorsHeaders(response);
 			}
 
-			if (pathname === "/api/retrieve-similar-posts" && request.method === 'POST') {
+			if (pathname === '/api/retrieve-similar-posts' && request.method === 'POST') {
 				const response = await VectorizeRoutes.retrieveSimilarPosts(request, env);
 				return addCorsHeaders(response);
 			}
 
-			if (pathname === "/api/log-test") {
-				await sendLogImmediate("info", "this is test log")
-				return addCorsHeaders(new Response("Log sent", { status: 200 }));
+			if (pathname === '/api/log-test') {
+				await sendLogImmediate('info', 'this is test log');
+				return addCorsHeaders(new Response('Log sent', { status: 200 }));
 			}
 
-			if (pathname === "/api/logs" && request.method === 'GET') {
+			if (pathname === '/api/logs' && request.method === 'GET') {
 				const response = await LogRoutes.getLogs(request, env);
 				return addCorsHeaders(response);
 			}
 
-			if (pathname === "/api/weekly-news" && request.method === 'POST') {
+			if (pathname === '/api/weekly-news' && request.method === 'POST') {
 				const response = await WeeklyNewsRoutes.createWeeklyNews(request, env);
 				return addCorsHeaders(response);
 			}
 
-			if (pathname === "/api/weekly-news" && request.method === 'GET') {
+			if (pathname === '/api/weekly-news' && request.method === 'GET') {
 				const response = await WeeklyNewsRoutes.getWeeklyNews(request, env);
 				return addCorsHeaders(response);
 			}
+			
+			if (pathname === '/api/weekly-news' && request.method === 'DELETE') {
+				const response = await WeeklyNewsRoutes.deleteWeeklyNews(request, env);
+				return addCorsHeaders(response);
+			}
 
-			if (pathname === "/api/weekly-news-latest" && request.method === 'GET') {
+			if (pathname === '/api/weekly-news-latest' && request.method === 'GET') {
 				const response = await WeeklyNewsRoutes.getLatestWeeklyNews(request, env);
 				return addCorsHeaders(response);
 			}
 
-			if (pathname === "/api/weekly-news-list" && request.method === 'GET') {
+			if (pathname === '/api/weekly-news-list' && request.method === 'GET') {
 				const response = await WeeklyNewsRoutes.getWeeklyNewsList(request, env);
 				return addCorsHeaders(response);
 			}
 
-			if (pathname === "/api/weekly-news-revalidate" && request.method === 'POST') {
+			if (pathname === '/api/weekly-news-revalidate' && request.method === 'POST') {
 				const response = await WeeklyNewsRoutes.revalidateCache(request, env);
 				return addCorsHeaders(response);
 			}
 
-			if (pathname === "/api/weekly-news-delete" && request.method === 'POST') {
-				const response = await WeeklyNewsRoutes.deleteWeeklyNews(request, env);
-				return addCorsHeaders(response);
-			}
-	
+
 			const helpResponse = new Response(`사용 가능한 API:
 			- GET /api/reddit?subreddit=LocalLLaMA&limit=5 - Reddit 게시글 목록
 			- GET /api/hackernews?minScore=150&limit=10&storyType=top - HackerNews 게시글 목록
@@ -232,38 +235,55 @@ export default {
 			console.error(error);
 			return new Response('Internal Server Error', { status: 500 });
 		}
-
 	},
 
 	// Cron Trigger를 위한 scheduled 핸들러 추가
-	async scheduled(controller, env, ctx): Promise<void> {
-		console.log('매 시간마다 실행되는 작업 시작:', new Date(controller.scheduledTime));
+	async scheduled(controller: ScheduledController, env: Env, ctx: ExecutionContext): Promise<void> {
 		try {
-			if (!env.GEMINI_API_KEY) {
-				console.error('Gemini API Key가 설정되지 않았습니다.');
-				return;
+			switch (controller.cron) {
+				case '20 * * * *':
+					console.log('매 시간 20분에 실행되는 작업 시작:', new Date(controller.scheduledTime));
+					const filteredPostManager = new FilteredPostManager(env.DB);
+					await filteredPostManager.cleanupExpiredFilters();
+
+					const processLogManager = new ProcessLogManager(env.DB);
+					await processLogManager.cleanUpExpiredLogs();
+
+					const postManager = new PostManager(env.DB);
+					const deletedPosts = await postManager.cleanupOldPosts();
+					console.log(`오래된 게시글 삭제 결과: ${deletedPosts}개 삭제됨`);
+
+					const hackernewResult = await processHackernewsPosts({
+						limit: 30,
+						storyType: 'best',
+					});
+					console.log(
+						`HackerNews 게시글 처리 결과: ${hackernewResult.saved}개 처리됨, ${hackernewResult.saved}개 저장됨, ${hackernewResult.skipped}개 건너뜀`
+					);
+					break;
+				case '40 * * * *':
+					console.log('매 시간 40분에 실행되는 작업 시작:', new Date(controller.scheduledTime));
+					const redditResult = await processRedditPosts({
+						limit: 15,
+					});
+					console.log(
+						`Reddit 게시글 처리 결과: ${redditResult.saved}개 처리됨, ${redditResult.saved}개 저장됨, ${redditResult.skipped}개 건너뜀`
+					);
+					break;
+				case '0 0 * * 0':
+					console.log('매 일요일 00:00에 실행되는 작업 시작:', new Date(controller.scheduledTime));
+					const startDate = new Date();
+					startDate.setDate(startDate.getDate() - 7);
+					const title = `주간 블로그 ${startDate.toLocaleDateString('ko-KR', {
+						year: 'numeric',
+						month: 'long',
+						day: 'numeric',
+					})} ~ ${new Date().toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' })}`;
+					await WeeklyNewsService.createWeeklyNews(title);
+					break;
+				default:
+					break;
 			}
-
-			const filteredPostManager = new FilteredPostManager(env.DB);
-			await filteredPostManager.cleanupExpiredFilters();
-
-			const processLogManager = new ProcessLogManager(env.DB);
-			await processLogManager.cleanUpExpiredLogs();
-
-			const postManager = new PostManager(env.DB);
-			const deletedPosts = await postManager.cleanupOldPosts();
-			console.log(`오래된 게시글 삭제 결과: ${deletedPosts}개 삭제됨`);
-
-			const hackernewResult = await processHackernewsPosts({
-				limit: 30,
-				storyType: 'best'
-			})
-			console.log(`HackerNews 게시글 처리 결과: ${hackernewResult.saved}개 처리됨, ${hackernewResult.saved}개 저장됨, ${hackernewResult.skipped}개 건너뜀`);
-
-			const redditResult = await processRedditPosts({
-				limit: 15,
-			})
-			console.log(`Reddit 게시글 처리 결과: ${redditResult.saved}개 처리됨, ${redditResult.saved}개 저장됨, ${redditResult.skipped}개 건너뜀`);
 		} catch (error) {
 			console.error('Scheduled 작업 중 오류 발생:', error);
 		}
