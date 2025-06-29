@@ -94,21 +94,31 @@ export class CommonFilter {
             const chain = this.llm.pipe(new StringOutputParser());
             const result = await chain.invoke(prompt);
 
-            const cleanResult = result.trim()
-                    .replace(/^```(?:json)?/gm, '') // 시작 코드 블록 제거
-                    .replace(/```$/gm, '') // 끝 코드 블록 제거
-                    .trim();
-                
-            const parsed = JSON.parse(cleanResult);
+            // XML 파싱
+            const reasonMatch = result.match(/<reason>(.*?)<\/reason>/s);
+            const confidenceMatch = result.match(/<confidence>(.*?)<\/confidence>/s);
 
-            console.log(`AI 필터링 결과: ${parsed.reason} - ${parsed.confidence}`);
-            if (parsed.confidence > 0.5) {
+            if (!reasonMatch || !confidenceMatch) {
+                console.error('XML 파싱 실패:', result);
+                return null;
+            }
+
+            const reason = reasonMatch[1].trim();
+            const confidence = parseFloat(confidenceMatch[1].trim());
+
+            if (isNaN(confidence)) {
+                console.error('confidence 값이 숫자가 아닙니다:', confidenceMatch[1]);
+                return null;
+            }
+
+            console.log(`AI 필터링 결과: ${reason} - ${confidence}`);
+            if (confidence > 0.5) {
                 return null;
             }
 
             return {
-                reason: parsed.reason || '판단 불가',
-                confidence: parsed.confidence || 0.5,
+                reason: reason || '판단 불가',
+                confidence: confidence,
             };
         } catch (error) {
             console.error('AI 필터링 중 오류:', error);
