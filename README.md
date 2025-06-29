@@ -22,6 +22,7 @@ Takeoff는 AI 관련 아티클을 자동으로 정리 및 게시하는 서비스
 - [LLM 벤치마크](https://ai-takeoff.dev/benchmarking)
 - Discord Webhook으로 새로운 글 업로드마다 실시간 알림
 - AI가 일주일에 한 번 주간 뉴스를 정리하여 게시
+- 다국어 지원 (한국어, 영어)
 
 ### 인공지능 타임라인
 [인공지능 타임라인 바로가기](https://ai-takeoff.dev/timeline)

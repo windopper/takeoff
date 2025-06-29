@@ -296,7 +296,7 @@ export default {
 						`Reddit 게시글 처리 결과: ${redditResult.saved}개 처리됨, ${redditResult.saved}개 저장됨, ${redditResult.skipped}개 건너뜀`
 					);
 					break;
-				case '0 0 * * 0':
+				case '0 0 * * 1':
 					console.log('매 일요일 00:00에 실행되는 작업 시작:', new Date(controller.scheduledTime));
 					const startDate = new Date();
 					startDate.setDate(startDate.getDate() - 7);
