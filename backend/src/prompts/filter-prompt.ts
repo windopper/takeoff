@@ -39,6 +39,5 @@ confidence는 1에 가까울 수록 관련성이 높다고 판단하며 0에 가
 <result>
   <reason>판단 이유를 한 문장으로</reason>
   <confidence>0.0-1.0 (1에 가까울 수록 AI/LLM 관련성이 높다고 판단)</confidence>
-</result>
-}`;
+</result>`;
 } 
