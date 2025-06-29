@@ -5,6 +5,7 @@ import { Suspense } from "react";
 import { useTranslations } from "next-intl";
 import LanguageSwitcher from "./LanguageSwitcher";
 import { Link } from "@/i18n/routing";
+import Takeoff from "@/app/icons/Takeoff";
 
 export default function Header({
   postCount,
@@ -18,6 +19,7 @@ export default function Header({
       <div className="max-w-4xl mx-auto px-6 py-6">
         <div className="relative flex items-center justify-between">
           <div className="flex items-center gap-3">
+            <Takeoff className="w-6 h-6" fill="white" stroke="white" />
             <Link
               href="/"
               className="text-xl font-semibold text-zinc-900 dark:text-zinc-100"
@@ -45,9 +47,13 @@ export default function Header({
               <SearchInput />
             </Suspense>
             <LanguageSwitcher />
-            {postCount && (
+            {postCount ? (
               <span className="px-3 py-1.5 text-xs font-medium bg-zinc-100/80 dark:bg-zinc-800/80 text-zinc-600 dark:text-zinc-400 rounded-full backdrop-blur-sm">
                 {t('header.postCount', { count: postCount })}
+              </span>
+            ) : (
+              <span className="px-3 py-1.5 text-xs font-medium bg-zinc-100/80 dark:bg-zinc-800/80 text-zinc-600 dark:text-zinc-400 rounded-full backdrop-blur-sm">
+                {t('header.postCount', { count: 0 })}
               </span>
             )}
           </div>
