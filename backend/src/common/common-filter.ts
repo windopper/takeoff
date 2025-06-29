@@ -3,8 +3,9 @@ import { generateFilterPrompt } from "../prompts/filter-prompt";
 import { StringOutputParser } from "@langchain/core/output_parsers";
 import { ParserResult } from "./common-parser";
 import { env } from "cloudflare:workers";
+import { FilteredPostManager } from "../manager/filter-post-manager";
 
-export type FilterReason = 'time' | 'keyword' | 'score' | 'ai_relevance';
+export type FilterReason = 'time' | 'keyword' | 'score' | 'ai_relevance' | 'already_exists';
 
 export interface FilterResult {
     shouldProcess: boolean;
@@ -17,6 +18,7 @@ export class CommonFilter {
     private minScore: number;
     private diffDays: number;
     private llm?: ChatGoogleGenerativeAI;
+    private filterManager: FilteredPostManager;
 
     constructor({ minScore = 150, diffDays = 3 }: { minScore?: number; diffDays?: number;} = {}) {
         this.minScore = minScore;
@@ -26,6 +28,7 @@ export class CommonFilter {
             model: 'gemini-2.5-flash-preview-05-20',
             temperature: 0.4,
         });
+        this.filterManager = new FilteredPostManager(env.DB);
     }
 
 	async filterAll(post: ParserResult): Promise<FilterResult> {
@@ -40,6 +43,14 @@ export class CommonFilter {
             return {
                 shouldProcess: false,
                 reason: 'time',
+            };
+        }
+
+        const isFiltered = await this.filterManager.isPostFiltered(post.url);
+        if (isFiltered) {
+            return {
+                shouldProcess: false,
+                reason: 'already_exists',
             };
         }
 
