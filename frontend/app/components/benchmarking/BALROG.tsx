@@ -1,10 +1,10 @@
 import useEpochAIExternalBenchmarks from "@/app/hooks/useEpochAIExternalBenchmarks";
 import BoxPlot from "./BoxPlot";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { GraphSettingWrapper } from "./components/GraphSetting";
-import useGraphSetting from "./hooks/useGraphSetting";
 import BenchmarkTable from "./components/BenchmarkTable";
 import { useTranslations } from "next-intl";
+import { BenchmarkContext } from "./BenchmarkSelector";
 
 type Environments =
   | "BabyAI"
@@ -28,7 +28,7 @@ export default function BALROG() {
   const t = useTranslations('benchmarking.tooltips');
   const [selectedEnvironment, setSelectedEnvironment] =
     useState<Environments>("Average");
-  const { color, setColor, groupBy, setGroupBy, viewType, setViewType } = useGraphSetting();
+  const { color, groupBy, viewType, setColor, setGroupBy, setViewType } = useContext(BenchmarkContext);
 
   const { data, legends } = useEpochAIExternalBenchmarks({
     enableColor: color,
@@ -70,13 +70,7 @@ export default function BALROG() {
             setSelected: setSelectedEnvironment,
           },
         ]}
-        isGroupColorSetting={color}
-        setIsGroupColorSetting={setColor}
-        groupBy={groupBy}
-        setGroupBy={setGroupBy}
         legends={legends}
-        viewType={viewType}
-        setViewType={setViewType}
       />
       {viewType === "table" ? (
         <BenchmarkTable

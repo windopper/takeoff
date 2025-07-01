@@ -2,14 +2,14 @@ import ScatterPlot from "./ScatterPlot";
 import Link from "next/link";
 import useEpochAIExternalBenchmarks from "@/app/hooks/useEpochAIExternalBenchmarks";
 import { GraphSettingWrapper } from "./components/GraphSetting";
-import { useState } from "react";
-import useGraphSetting from "./hooks/useGraphSetting";
+import { useContext } from "react";
 import BenchmarkTable from "./components/BenchmarkTable";
 import { useTranslations } from "next-intl";
+import { BenchmarkContext } from "./BenchmarkSelector";
 
 export default function AiderPolyGlot() {
   const t = useTranslations('benchmarking.tooltips');
-  const { color, setColor, groupBy, setGroupBy, viewType, setViewType } = useGraphSetting();
+  const { color, groupBy, viewType, setColor, setGroupBy, setViewType } = useContext(BenchmarkContext);
 
   const { data, legends } = useEpochAIExternalBenchmarks({
     filepath: "/data/external_benchmark_aider_polyglot.csv",
@@ -25,13 +25,7 @@ export default function AiderPolyGlot() {
     <>
       <GraphSettingWrapper
         filters={[]}
-        isGroupColorSetting={color}
-        setIsGroupColorSetting={setColor}
-        groupBy={groupBy}
-        setGroupBy={setGroupBy}
         legends={legends}
-        viewType={viewType}
-        setViewType={setViewType}
       />
       {viewType === "table" ? (
         <BenchmarkTable

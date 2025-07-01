@@ -1,11 +1,11 @@
 import useEpochAIExternalBenchmarks from "@/app/hooks/useEpochAIExternalBenchmarks";
 import ScatterPlot from "./ScatterPlot";
 import Link from "next/link";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { GraphSettingWrapper } from "./components/GraphSetting";
-import useGraphSetting from "./hooks/useGraphSetting";
 import BenchmarkTable from "./components/BenchmarkTable";
 import { useTranslations } from "next-intl";
+import { BenchmarkContext } from "./BenchmarkSelector";
 
 // id,Model version,Tools,ACW Country %,ACW Avg Score,ACW Median Score,ACW Median Distance (km),ACW Refusal,AVW Country %,AVW Avg Score,AVW Median Score,AVW Median Distance (km),AVW Refusal,Rural Country %,Rural Avg Score,Rural Median Score,Rural Median Distance,Rural Refusal,Urban Country %,Urban Avg Score,Urban Median Score,Urban Median Distance (km),Urban Refusal,Photos Country %,Photos Avg Score,Photos Median Score,Photos Median Distance (km),Photos Refusal,Notes,Source,Source link
 
@@ -16,7 +16,7 @@ const tasks: Tasks[] = ["ACW Avg Score", "AVW Avg Score", "Rural Avg Score", "Ur
 export default function GeoBench() {
   const t = useTranslations('benchmarking.tooltips');
   const [selectedTask, setSelectedTask] = useState<Tasks>("Photos Avg Score");
-  const { color, setColor, groupBy, setGroupBy, viewType, setViewType } = useGraphSetting();
+  const { color, groupBy, viewType } = useContext(BenchmarkContext);
 
   const { data, legends } = useEpochAIExternalBenchmarks({
     enableColor: color,
@@ -68,13 +68,7 @@ export default function GeoBench() {
             setSelected: setSelectedTask,
           },
         ]}
-        isGroupColorSetting={color}
-        setIsGroupColorSetting={setColor}
-        groupBy={groupBy}
-        setGroupBy={setGroupBy}
         legends={legends}
-        viewType={viewType}
-        setViewType={setViewType}
       />
       {viewType === "table" ? (
         <BenchmarkTable

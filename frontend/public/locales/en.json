@@ -60,6 +60,9 @@
       "description": "The requested post may not exist or\nmay have been deleted."
     }
   },
+  "post": {
+    "originalLink": "Original Link"
+  },
   "footer": {
     "copyright": "© 2024 Takeoff. All rights reserved.",
     "poweredBy": "Open Source"

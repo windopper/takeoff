@@ -1,11 +1,11 @@
 import useEpochAIExternalBenchmarks from "@/app/hooks/useEpochAIExternalBenchmarks";
 import ScatterPlot from "./ScatterPlot";
 import Link from "next/link";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { GraphSettingWrapper } from "./components/GraphSetting";
-import useGraphSetting from "./hooks/useGraphSetting";
 import BenchmarkTable from "./components/BenchmarkTable";
 import { useTranslations } from "next-intl";
+import { BenchmarkContext } from "./BenchmarkSelector";
 // id,Model version,Tools,Production score,Lab Success %,Milestones,Automation,Most complex item,Date added,Cost,Source,Source link (site from table),Notes
 
 type Tasks = "Production score" | "Lab Success %"
@@ -15,8 +15,8 @@ const tasks: Tasks[] = ["Production score", "Lab Success %"]
 export default function Factorio() {
   const t = useTranslations('benchmarking.tooltips');
   const [selectedTask, setSelectedTask] = useState<Tasks>("Lab Success %");
-  const { color, setColor, groupBy, setGroupBy, viewType, setViewType } = useGraphSetting();
-  
+  const { color, groupBy, viewType, setColor, setGroupBy, setViewType } = useContext(BenchmarkContext);
+
   const { data, legends } = useEpochAIExternalBenchmarks({
     enableColor: color,
     groupBy: groupBy,
@@ -37,7 +37,6 @@ export default function Factorio() {
   });
 
   const filteredData = data.filter((d) => selectedTask === "Production score" ? d["Production score"] !== "" : d["Lab Success %"] !== "");
-
   return (
     <>
     <GraphSettingWrapper<Tasks>
@@ -49,13 +48,7 @@ export default function Factorio() {
                 setSelected: setSelectedTask,
             },
         ]}
-        isGroupColorSetting={color}
-        setIsGroupColorSetting={setColor}
-        groupBy={groupBy}
-        setGroupBy={setGroupBy}
         legends={legends}
-        viewType={viewType}
-        setViewType={setViewType}
     />
     {viewType === "table" ? (
       <BenchmarkTable

@@ -1,7 +1,8 @@
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useContext, useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { ChartLine, Table } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { BenchmarkContext } from "../BenchmarkSelector";
 
 export interface GraphFilterProps<T extends string> {
   name: string;
@@ -110,7 +111,7 @@ export function ViewTypeSetting({
   setViewType,
 }: {
   viewType: "table" | "graph";
-  setViewType: Dispatch<SetStateAction<"table" | "graph">>;
+  setViewType: (viewType: "table" | "graph") => void;
 }) {
   const t = useTranslations('benchmarking.settings');
   
@@ -183,6 +184,7 @@ export function GraphLabelGroupSetting({
   setGroupBy: Dispatch<SetStateAction<"organization" | "country" | "public">>;
 }) {
   const t = useTranslations('benchmarking.settings');
+
   return (
     <motion.div 
       className="flex flex-col gap-2 px-3 py-2 z-30"
@@ -369,66 +371,60 @@ function LegendGroupMemoWithAnimatePresence({ legends, isGroupColorSetting }: { 
 
 export function GraphSettingWrapper<T extends string>({
   filters,
-  isGroupColorSetting,
-  setIsGroupColorSetting,
-  groupBy,
-  setGroupBy,
-  legends = [],
-  viewType,
-  setViewType,
+  legends = []
 }: {
   filters: GraphFilterProps<T>[];
-  isGroupColorSetting: boolean;
-  setIsGroupColorSetting: Dispatch<SetStateAction<boolean>>;
-  groupBy: "organization" | "country" | "public";
-  setGroupBy: Dispatch<SetStateAction<"organization" | "country" | "public">>;
   legends?: {
     name: string;
     color: string;
   }[];
-  viewType: "table" | "graph";
-  setViewType: Dispatch<SetStateAction<"table" | "graph">>;
 }) {
+  const { isMobile, viewType, setViewType, color, setColor, groupBy, setGroupBy } = useContext(BenchmarkContext);
+
   return (
-    <motion.div 
-      className="flex flex-col gap-2 max-w-6xl w-full m-auto rounded-2xl px-4 min-h-52"
+    <motion.div
+      className={`flex flex-col gap-2 max-w-6xl w-full m-auto rounded-2xl px-4 min-h-52 ${
+        isMobile ? "hidden" : ""
+      }`}
     >
-      <motion.div 
-        className="flex flex-row gap-2 justify-between items-center ml-6 border-b border-zinc-700/50 pb-2"
-      >
-        <motion.h1 
-          className="text-lg font-bold"
-        >
-          그래프 설정
-        </motion.h1>
+      <motion.div className="flex flex-row gap-2 justify-between items-center ml-6 border-b border-zinc-700/50 pb-2">
+        <motion.h1 className="text-lg font-bold">그래프 설정</motion.h1>
       </motion.div>
-      <motion.div 
+      <motion.div
         className="flex flex-row gap-2 w-full px-3 py-2 z-30 max-h-40"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.2, ease: "easeOut" }}
       >
-        <ViewTypeSetting
-          viewType={viewType}
-          setViewType={setViewType}
-        />
-        {filters.map((filter, index) => (
-          <motion.div
-            key={filter.name}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.15, delay: index * 0.05, ease: "easeOut" }}
-          >
-            <GraphFilter {...filter} />
-          </motion.div>
-        ))}
-        <GraphLabelGroupSetting
-          isGroupColorSetting={isGroupColorSetting}
-          setIsGroupColorSetting={setIsGroupColorSetting}
-          groupBy={groupBy}
-          setGroupBy={setGroupBy}
-        />
-        <LegendGroupMemoWithAnimatePresence legends={legends} isGroupColorSetting={isGroupColorSetting} />
+        <ViewTypeSetting viewType={viewType} setViewType={setViewType} />
+        {viewType === "graph" && (
+          <>
+            {filters.map((filter, index) => (
+              <motion.div
+                key={filter.name}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: 0.15,
+                  delay: index * 0.05,
+                  ease: "easeOut",
+                }}
+              >
+                <GraphFilter {...filter} />
+              </motion.div>
+            ))}
+            <GraphLabelGroupSetting
+              isGroupColorSetting={color}
+              setIsGroupColorSetting={setColor}
+              groupBy={groupBy}
+              setGroupBy={setGroupBy}
+            />
+            <LegendGroupMemoWithAnimatePresence
+              legends={legends}
+              isGroupColorSetting={color}
+            />
+          </>
+        )}
       </motion.div>
     </motion.div>
   );

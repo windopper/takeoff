@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import ScatterPlot from "./ScatterPlot";
 import Link from "next/link";
 import useEpochAIExternalBenchmarks from "@/app/hooks/useEpochAIExternalBenchmarks";
 import { GraphSettingWrapper } from "./components/GraphSetting";
-import useGraphSetting from "./hooks/useGraphSetting";
 import BenchmarkTable from "./components/BenchmarkTable";
 import { useTranslations } from "next-intl";
+import { BenchmarkContext } from "./BenchmarkSelector";
 
 type Tasks = "120k token score" | "60k token score" | "32k token score" | "16k token score" | "8k token score" | "4k token score" | "2k token score" | "1k token score" | "400 token score";
 
@@ -15,7 +15,7 @@ const tasks: Tasks[] = ["120k token score", "60k token score", "32k token score"
 function FictionLiveBench() {
   const t = useTranslations('benchmarking.tooltips');
   const [selectedTask, setSelectedTask] = useState<Tasks>("120k token score");
-  const { color, setColor, groupBy, setGroupBy, viewType, setViewType } = useGraphSetting();
+  const { color, groupBy, viewType } = useContext(BenchmarkContext);
 
   const { data, legends } = useEpochAIExternalBenchmarks({
     enableColor: color,
@@ -50,13 +50,7 @@ function FictionLiveBench() {
             setSelected: setSelectedTask,
           },
         ]}
-        isGroupColorSetting={color}
-        setIsGroupColorSetting={setColor}
-        groupBy={groupBy}
-        setGroupBy={setGroupBy}
         legends={legends}
-        viewType={viewType}
-        setViewType={setViewType}
       />
       {viewType === "table" ? (
         <BenchmarkTable

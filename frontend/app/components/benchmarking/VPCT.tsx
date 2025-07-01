@@ -2,9 +2,10 @@ import ScatterPlot from "./ScatterPlot";
 import Link from "next/link";
 import useEpochAIExternalBenchmarks from "@/app/hooks/useEpochAIExternalBenchmarks";
 import { GraphSettingWrapper } from "./components/GraphSetting";
-import useGraphSetting from "./hooks/useGraphSetting";
+import { useContext } from "react";
 import BenchmarkTable from "./components/BenchmarkTable";
 import { useTranslations } from "next-intl";
+import { BenchmarkContext } from "./BenchmarkSelector";
 
 interface VPCTData {
   id: string;
@@ -20,7 +21,7 @@ interface VPCTData {
 
 export default function VPCT() {
   const t = useTranslations('benchmarking.tooltips');
-  const { color, setColor, groupBy, setGroupBy, viewType, setViewType } = useGraphSetting();
+  const { color, groupBy, viewType } = useContext(BenchmarkContext);
 
   const { data, legends } = useEpochAIExternalBenchmarks({
     enableColor: color,
@@ -35,13 +36,7 @@ export default function VPCT() {
     <>
       <GraphSettingWrapper
         filters={[]}
-        isGroupColorSetting={color}
-        setIsGroupColorSetting={setColor}
-        groupBy={groupBy}
-        setGroupBy={setGroupBy}
         legends={legends}
-        viewType={viewType}
-        setViewType={setViewType}
       />
       {viewType === "table" ? (
         <BenchmarkTable

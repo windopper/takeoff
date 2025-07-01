@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
+import { BenchmarkContext } from "../BenchmarkSelector";
 
 interface BenchmarkTableProps {
   data: { [key: string]: string | number | React.ReactNode | Date }[];
@@ -11,10 +12,24 @@ const ITEMS_PER_PAGE = 15;
 
 export default function BenchmarkTable({ data, viewFields, defaultSortBy }: BenchmarkTableProps) {
   const t = useTranslations('benchmarking.table');
+  const { tableSlice } = useContext(BenchmarkContext);
   const [sortBy, setSortBy] = useState<string>(defaultSortBy);
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [keys, setKeys] = useState<string[]>(viewFields);
 
+  useEffect(() => {
+    setSortBy(defaultSortBy);
+    setSortOrder('desc');
+    setCurrentPage(1);
+    setKeys(viewFields);
+  }, [defaultSortBy, viewFields]);
+
+  useEffect(() => {
+    setKeys(viewFields.slice(0, tableSlice));
+  }, [tableSlice, viewFields]);
+
+  // Hook 호출 이후에 early return 체크
   if (!data || data.length === 0) {
     return (
       <div className="flex items-center justify-center py-8">
@@ -22,15 +37,6 @@ export default function BenchmarkTable({ data, viewFields, defaultSortBy }: Benc
       </div>
     );
   }
-
-
-  useEffect(() => {
-    setSortBy(defaultSortBy);
-    setSortOrder('desc');
-    setCurrentPage(1);
-  }, [defaultSortBy]);
-
-  const keys = viewFields;
 
   // 데이터 정렬
   const sortedData = [...data].sort((a, b) => {

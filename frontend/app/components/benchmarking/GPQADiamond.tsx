@@ -1,15 +1,15 @@
 import BoxPlot from "./BoxPlot";
 import useEpochAIBoxplotBenchmarks from "@/app/hooks/useEpochAIBoxplotBenchmarks";
 import { GraphSettingWrapper } from "./components/GraphSetting";
-import useGraphSetting from "./hooks/useGraphSetting";
 import BenchmarkTable from "./components/BenchmarkTable";
-import { memo } from "react";
+import { memo, useContext } from "react";
 import { useTranslations, useLocale } from "next-intl";
+import { BenchmarkContext } from "./BenchmarkSelector";
 
 function GPQADiamond() {
     const t = useTranslations('benchmarking.tooltips');
     const locale = useLocale();
-    const { color, setColor, groupBy, setGroupBy, viewType, setViewType } = useGraphSetting();
+    const { color, groupBy, viewType } = useContext(BenchmarkContext);
     
     const { data, legends } = useEpochAIBoxplotBenchmarks("GPQA diamond", {
         enableColor: color,
@@ -20,13 +20,7 @@ function GPQADiamond() {
         <>
             <GraphSettingWrapper
                 filters={[]}
-                isGroupColorSetting={color}
-                setIsGroupColorSetting={setColor}
-                groupBy={groupBy}
-                setGroupBy={setGroupBy}
                 legends={legends}
-                viewType={viewType}
-                setViewType={setViewType}
             />
             {viewType === "table" ? (
                 <BenchmarkTable

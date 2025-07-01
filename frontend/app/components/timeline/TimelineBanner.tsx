@@ -19,7 +19,7 @@ export default async function TimelineBanner({ locale }: { locale: string }) {
       >
         {t('title')}
       </h1>
-      <p className="text-xs text-cyan-100 z-10">
+      <p className="text-xs text-cyan-100 z-10 text-center">
         {t('description')}
       </p>
       <TimelineSvg className="absolute w-full h-128" />

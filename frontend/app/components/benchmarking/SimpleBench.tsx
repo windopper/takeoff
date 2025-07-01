@@ -2,14 +2,15 @@ import useEpochAIExternalBenchmarks from "@/app/hooks/useEpochAIExternalBenchmar
 import ScatterPlot from "./ScatterPlot";
 import Link from "next/link";
 import { GraphSettingWrapper } from "./components/GraphSetting";
-import useGraphSetting from "./hooks/useGraphSetting";
+import { useContext } from "react";
 import BenchmarkTable from "./components/BenchmarkTable";
 import { useTranslations } from "next-intl";
+import { BenchmarkContext } from "./BenchmarkSelector";
 
 // id,Model version,Score (AVG@5),Source,Source link (site from table),Notes
 export default function SimpleBench() {
   const t = useTranslations('benchmarking.tooltips');
-  const { color, setColor, groupBy, setGroupBy, viewType, setViewType } = useGraphSetting();
+  const { color, groupBy, viewType } = useContext(BenchmarkContext);
 
   const { data, legends } = useEpochAIExternalBenchmarks({
     enableColor: color,
@@ -30,13 +31,7 @@ export default function SimpleBench() {
     <>
       <GraphSettingWrapper
         filters={[]}
-        isGroupColorSetting={color}
-        setIsGroupColorSetting={setColor}
-        groupBy={groupBy}
-        setGroupBy={setGroupBy}
         legends={legends}
-        viewType={viewType}
-        setViewType={setViewType}
       />
       {viewType === "table" ? (
         <BenchmarkTable

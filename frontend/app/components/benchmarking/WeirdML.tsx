@@ -1,11 +1,11 @@
 import useEpochAIExternalBenchmarks from "@/app/hooks/useEpochAIExternalBenchmarks";
 import ScatterPlot from "./ScatterPlot";
 import Link from "next/link";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { GraphSettingWrapper } from "./components/GraphSetting";
-import useGraphSetting from "./hooks/useGraphSetting";
 import BenchmarkTable from "./components/BenchmarkTable";
 import { useTranslations } from "next-intl";
+import { BenchmarkContext } from "./BenchmarkSelector";
 // id,Model version,Shapes easy,Shapes hard,Shuffle easy,Shuffle hard,Digits unsup,Chess winners,Average,Source,Source link (site from table),Notes
 
 
@@ -23,7 +23,7 @@ const tasks: Tasks[] = ["Average", "Shapes easy", "Shapes hard", "Shuffle easy",
 export default function WeirdML() {
   const t = useTranslations('benchmarking.tooltips');
   const [selectedTask, setSelectedTask] = useState<Tasks>("Average");
-  const { color, setColor, groupBy, setGroupBy, viewType, setViewType } = useGraphSetting();
+  const { color, groupBy, viewType } = useContext(BenchmarkContext);
 
   const { data, legends } = useEpochAIExternalBenchmarks({
     enableColor: color,
@@ -45,13 +45,7 @@ export default function WeirdML() {
             setSelected: setSelectedTask,
           },
         ]}
-        isGroupColorSetting={color}
-        setIsGroupColorSetting={setColor}
-        groupBy={groupBy}
-        setGroupBy={setGroupBy}
         legends={legends}
-        viewType={viewType}
-        setViewType={setViewType}
       />
       {viewType === "table" ? (
         <BenchmarkTable

@@ -1,14 +1,15 @@
 import BoxPlot from "./BoxPlot";
 import useEpochAIBoxplotBenchmarks from "@/app/hooks/useEpochAIBoxplotBenchmarks";
 import { GraphSettingWrapper } from "./components/GraphSetting";
-import useGraphSetting from "./hooks/useGraphSetting";
 import BenchmarkTable from "./components/BenchmarkTable";
 import { useTranslations, useLocale } from "next-intl";
+import { useContext } from "react";
+import { BenchmarkContext } from "./BenchmarkSelector";
 
 export default function MathLevel5() {
     const t = useTranslations('benchmarking.tooltips');
     const locale = useLocale();
-    const { color, setColor, groupBy, setGroupBy, viewType, setViewType } = useGraphSetting();
+    const { color, groupBy, viewType } = useContext(BenchmarkContext);
     
     const { data, legends } = useEpochAIBoxplotBenchmarks("MATH level 5", {
         enableColor: color,
@@ -19,13 +20,7 @@ export default function MathLevel5() {
         <>
             <GraphSettingWrapper
                 filters={[]}
-                isGroupColorSetting={color}
-                setIsGroupColorSetting={setColor}
-                groupBy={groupBy}
-                setGroupBy={setGroupBy}
                 legends={legends}
-                viewType={viewType}
-                setViewType={setViewType}
             />
             {viewType === "table" ? (
                 <BenchmarkTable

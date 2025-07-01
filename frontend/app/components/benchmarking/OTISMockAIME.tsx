@@ -1,14 +1,15 @@
 import useEpochAIBoxplotBenchmarks from "@/app/hooks/useEpochAIBoxplotBenchmarks";
 import BoxPlot from "./BoxPlot";
 import { GraphSettingWrapper } from "./components/GraphSetting";
-import useGraphSetting from "./hooks/useGraphSetting";
+import { useContext } from "react";
 import BenchmarkTable from "./components/BenchmarkTable";
 import { useTranslations, useLocale } from "next-intl";
+import { BenchmarkContext } from "./BenchmarkSelector";
 
 export default function OTISMockAIME() {
     const t = useTranslations('benchmarking.tooltips');
     const locale = useLocale();
-    const { color, setColor, groupBy, setGroupBy, viewType, setViewType } = useGraphSetting();
+    const { color, groupBy, viewType } = useContext(BenchmarkContext);
     
     const { data, legends } = useEpochAIBoxplotBenchmarks("OTIS Mock AIME 2024-2025", {
         enableColor: color,
@@ -19,13 +20,7 @@ export default function OTISMockAIME() {
         <>
             <GraphSettingWrapper
                 filters={[]}
-                isGroupColorSetting={color}
-                setIsGroupColorSetting={setColor}
-                groupBy={groupBy}
-                setGroupBy={setGroupBy}
                 legends={legends}
-                viewType={viewType}
-                setViewType={setViewType}
             />
             {viewType === "table" ? (
                 <BenchmarkTable

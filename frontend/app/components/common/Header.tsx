@@ -15,7 +15,7 @@ export default function Header({
   const t = useTranslations();
 
   return (
-    <header className="fixed top-0 z-50 w-full min-h-20 backdrop-blur-xl">
+    <header className="fixed top-0 z-[999] w-full min-h-20 backdrop-blur-xl">
       <div className="max-w-4xl mx-auto px-6 py-6">
         <div className="relative flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -42,7 +42,7 @@ export default function Header({
               {t('banner.benchmark.title')}
             </Link>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="items-center gap-3 hidden md:flex">
             <Suspense>
               <SearchInput />
             </Suspense>

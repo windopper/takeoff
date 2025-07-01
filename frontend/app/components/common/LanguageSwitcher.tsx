@@ -26,12 +26,12 @@ export default function LanguageSwitcher() {
         <>
           {/* 오버레이 */}
           <div 
-            className="fixed inset-0 z-10" 
+            className="fixed inset-0" 
             onClick={() => setIsOpen(false)}
           />
           
           {/* 드롭다운 메뉴 */}
-          <div className="absolute right-0 top-full mt-2 z-20 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg shadow-lg py-2 min-w-[120px]">
+          <div className="absolute right-0 top-full mt-2 bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg shadow-lg py-2 min-w-[120px]">
             <Link
               href={pathname}
               locale="ko"

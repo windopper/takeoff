@@ -1,6 +1,5 @@
 import {
   getTakeoffPostById,
-  getTakeoffTranslatedPostById,
 } from "@/app/action/takeoffPosts";
 import { Post } from "@/app/types/post";
 import Link from "next/link";
@@ -11,6 +10,7 @@ import remarkRehype from "remark-rehype";
 import CategoryPills from "@/app/components/post/CategoryPills";
 import { Metadata } from "next";
 import NotFound from "../../../components/common/NotFound";
+import { getTranslations } from "next-intl/server";
 
 interface PostPageProps {
   params: Promise<{ id: string; locale: string }>;
@@ -21,6 +21,7 @@ export async function generateMetadata({
 }: PostPageProps): Promise<Metadata> {
   const { id, locale } = await params;
   const response = await getTakeoffPostById(id, locale);
+  const t = await getTranslations()
   const post: Post | null = response;
 
   return {
@@ -39,6 +40,7 @@ export default async function PostPage({ params }: PostPageProps) {
   const { id, locale } = await params;
   const response = await getTakeoffPostById(id, locale);
   const post: Post | null = response;
+  const t = await getTranslations({ locale, namespace: 'post' });
 
   if (!post) {
     return <NotFound />;
@@ -46,47 +48,52 @@ export default async function PostPage({ params }: PostPageProps) {
 
   return (
     <div className="min-h-screen">
-      <div className="max-w-4xl mx-auto px-6 py-12">
+      <div className="max-w-4xl mx-auto px-6 py-16">
         {/* 뒤로가기 버튼 */}
         <ReturnButton />
 
         {/* 포스트 헤더 */}
-        <header className="mb-8">
-          <div className="flex items-center gap-2 mb-4">
-            <span className="px-2.5 py-1 text-xs font-medium bg-blue-50/80 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 rounded-lg">
+        <header className="mb-12">
+          <div className="flex items-center gap-3 mb-6">
+            <span className="px-3 py-1.5 text-xs font-semibold bg-zinc-800/80 text-zinc-300 rounded-xl border border-zinc-700/50 backdrop-blur-sm">
               {post.platform}
             </span>
             <CategoryPills categories={post.category.split(",")} />
           </div>
 
-          <h1 className="text-3xl font-bold text-zinc-900 dark:text-zinc-100 mb-4 leading-tight">
+          <h1 className="md:text-4xl text-2xl font-bold text-zinc-100 mb-8 leading-tight tracking-tight">
             {post.title}
           </h1>
 
-          <div className="flex items-center justify-between pt-4 border-t border-zinc-200/50 dark:border-zinc-800/50">
-            <div className="flex items-center gap-4">
+          <div className="bg-zinc-900/50 rounded-2xl p-6 border border-zinc-800/50 backdrop-blur-sm">
+            <div className="flex flex-col gap-4">
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-zinc-500 rounded-full"></div>
+                <span className="text-sm font-medium text-zinc-400">{t('originalLink')}</span>
+              </div>
               <Link
                 href={post.originalUrl}
                 target="_blank"
-                className="text-sm font-medium text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
+                className="text-sm font-medium text-zinc-300 hover:text-zinc-100 transition-all duration-200 hover:underline decoration-zinc-500 underline-offset-4 break-all"
               >
                 {post.originalUrl}
               </Link>
-            </div>
-            <div className="text-right">
-              <p className="text-sm text-zinc-500 dark:text-zinc-400">
-                {new Date(post.createdAt).toLocaleDateString("ko-KR", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}
-              </p>
+              <div className="flex items-center gap-2 pt-2 border-t border-zinc-800/50">
+                <div className="w-2 h-2 bg-zinc-600 rounded-full"></div>
+                <p className="text-sm text-zinc-500">
+                  {new Date(post.createdAt).toLocaleDateString("ko-KR", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </p>
+              </div>
             </div>
           </div>
         </header>
 
         {/* 포스트 내용 */}
-        <article className="card rounded-2xl p-8">
+        <article className="card rounded-2xl">
           <div className="prose prose-zinc dark:prose-invert prose-sm max-w-none">
             <Markdown
               remarkPlugins={[remarkGfm]}
