@@ -169,7 +169,6 @@ export default function Timeline() {
               transition={{
                 duration: 0.5,
                 ease: "easeInOut",
-                delay: index * 0.1,
               }}
             >
               <TimelineCard
