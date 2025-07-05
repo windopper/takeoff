@@ -9,7 +9,7 @@
 </h1>
 
 <p align='center'>
-Takeoff는 AI 관련 아티클을 자동으로 정리 및 게시하는 서비스
+AI 관련 아티클을 자동으로 정리 및 게시하는 서비스
 <p>
 
 ![Vercel Deploy](https://deploy-badge.vercel.app/vercel/takeoff)
