@@ -9,7 +9,7 @@
 </h1>
 
 <p align='center'>
-Takeoff는 AI 관련 아티클을 자동으로 정리 및 게시하는 서비스입니다
+AI 관련 아티클을 자동으로 정리 및 게시하는 서비스
 <p>
 
 ![Vercel Deploy](https://deploy-badge.vercel.app/vercel/takeoff)
@@ -70,3 +70,6 @@ AI가 일주일에 한 번 주간 뉴스를 정리하여 게시
 
 ### Backend
 <img src="https://img.shields.io/badge/langchain-1C3C3C?style=for-the-badge&logo=langchain&logoColor=white" style="border-radius:10px"> <img src="https://img.shields.io/badge/sqlite-003B57?style=for-the-badge&logo=sqlite&logoColor=white" style="border-radius:10px"> <img src="https://img.shields.io/badge/cloudflare-F38020?style=for-the-badge&logo=cloudflare&logoColor=white" style="border-radius:10px"> <img src="https://img.shields.io/badge/drizzleorm-C5F74F?style=for-the-badge&logo=drizzle&logoColor=black" style="border-radius:10px"> <img src="https://img.shields.io/badge/vitest-6E9F18?style=for-the-badge&logo=vitest&logoColor=white" style="border-radius:10px">
+
+## 기타
+[Takeoff MCP Server](https://github.com/windopper/mcp-takeoff)
