@@ -1889,15 +1889,14 @@ export const TIMELINE_DATA: { events: TimelineData[] } = {
       start_date: { year: "2025", month: "07", day: "10" },
       text: {
         headline: createLink(
-          // TODO: 공홈링크가 아직 없기 때문에 X 링크로 대체
-          "https://x.com/xai/status/1943158495588815072",
+          "https://x.ai/news/grok-4",
           "Grok 4"
         ),
         text: "xAI releases Grok 4, showing state-of-the-art performance across multiple benchmarks, with particularly significant improvements in HLE benchmark performance."
       },
       korean: {
         headline: createLink(
-          "https://x.com/xai/status/1943158495588815072",
+          "https://x.ai/news/grok-4",
           "Grok 4"
         ),
         text: "xAI가 Grok 4를 출시했습니다. 여러 벤치마크에서 최첨단 성능을 보여주고 있으며, 특히 HLE 벤치마크의 성능이 크게 향상되었습니다.",
