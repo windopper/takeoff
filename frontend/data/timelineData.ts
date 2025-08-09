@@ -1904,6 +1904,64 @@ export const TIMELINE_DATA: { events: TimelineData[] } = {
       importance: 3,
       category: CATEGORIES.MODEL_RELEASE,
     }
+    ,
+    {
+      start_date: { year: "2025", month: "08", day: "05" },
+      text: {
+        headline: createLink(
+          "https://openai.com/ko-KR/index/introducing-gpt-oss/",
+          "GPT-OSS"
+        ),
+        text: "OpenAI introduces GPT-OSS, an open-source initiative for GPT capabilities and tooling.",
+      },
+      korean: {
+        headline: createLink(
+          "https://openai.com/ko-KR/index/introducing-gpt-oss/",
+          "GPT-OSS"
+        ),
+        text: "OpenAI가 GPT-OSS를 발표했습니다. GPT 기능과 도구를 위한 오픈소스 이니셔티브입니다.",
+      },
+      importance: 2,
+      category: CATEGORIES.MODEL_RELEASE,
+    },
+    {
+      start_date: { year: "2025", month: "08", day: "05" },
+      text: {
+        headline: createLink(
+          "https://deepmind.google/discover/blog/genie-3-a-new-frontier-for-world-models/",
+          "Genie 3"
+        ),
+        text: "Google DeepMind announces Genie 3, a general-purpose world model that generates interactive worlds in real time (24 fps, up to 720p) with promptable world events.",
+      },
+      korean: {
+        headline: createLink(
+          "https://deepmind.google/discover/blog/genie-3-a-new-frontier-for-world-models/",
+          "Genie 3"
+        ),
+        text: "Google DeepMind가 Genie 3를 발표했습니다. 이 범용 월드 모델은 24fps, 최대 720p 해상도로 실시간 상호작용 세계를 생성하며, 프롬프트로 세계 이벤트를 제어할 수 있습니다.",
+      },
+      importance: 2,
+      category: CATEGORIES.MODEL_RELEASE,
+    },
+    {
+      start_date: { year: "2025", month: "08", day: "07" },
+      text: {
+        headline: createLink(
+          "https://openai.com/ko-KR/index/introducing-gpt-5/",
+          "GPT-5"
+        ),
+        text: "OpenAI introduces GPT-5, its next-generation flagship model.",
+      },
+      korean: {
+        headline: createLink(
+          "https://openai.com/ko-KR/index/introducing-gpt-5/",
+          "GPT-5"
+        ),
+        text: "OpenAI가 차세대 플래그십 모델 GPT-5를 공개했습니다.",
+      },
+      importance: 3,
+      category: CATEGORIES.MODEL_RELEASE,
+    }
   ],
 };
 
