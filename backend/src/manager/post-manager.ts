@@ -201,7 +201,17 @@ export class PostManager {
 	}
 
 	async getPostAfterDate(date: Date): Promise<AiPost[]> {
-		const result = await this.db.select().from(aiPosts).where(gt(aiPosts.createdAt, date.toISOString())).execute();
+			// SQLite CURRENT_TIMESTAMP는 'YYYY-MM-DD HH:MM:SS' 포맷이므로 동일 포맷으로 비교
+			const threshold = date
+				.toISOString()
+				.replace('T', ' ')
+				.replace('Z', '')
+				.replace(/\..+$/, ''); // 밀리초 제거
+			const result = await this.db
+				.select()
+				.from(aiPosts)
+				.where(gt(aiPosts.createdAt, threshold))
+				.execute();
 		return result;
 	}
 
@@ -215,7 +225,16 @@ export class PostManager {
 
 	async cleanupOldPosts(): Promise<number> {
 		try {
-			const result = await this.db.delete(aiPosts).where(lt(aiPosts.createdAt, new Date(Date.now() - POST_EXPIRATION_TIME).toISOString())).execute();
+			// SQLite의 CURRENT_TIMESTAMP 포맷('YYYY-MM-DD HH:MM:SS')에 맞춰 비교값을 정규화
+			const threshold = new Date(Date.now() - POST_EXPIRATION_TIME)
+				.toISOString()
+				.replace('T', ' ')
+				.replace('Z', '')
+				.replace(/\..+$/, ''); // 밀리초 제거
+			const result = await this.db
+				.delete(aiPosts)
+				.where(lt(aiPosts.createdAt, threshold))
+				.execute();
 			return (result as any).changes || 0;
 		} catch (error) {
 			console.error('오래된 게시글 삭제 중 오류:', error);

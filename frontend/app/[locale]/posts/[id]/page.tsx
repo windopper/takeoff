@@ -21,7 +21,6 @@ export async function generateMetadata({
 }: PostPageProps): Promise<Metadata> {
   const { id, locale } = await params;
   const response = await getTakeoffPostById(id, locale);
-  const t = await getTranslations()
   const post: Post | null = response;
 
   return {
@@ -41,6 +40,9 @@ export default async function PostPage({ params }: PostPageProps) {
   const response = await getTakeoffPostById(id, locale);
   const post: Post | null = response;
   const t = await getTranslations({ locale, namespace: 'post' });
+  const displayUrl = post?.originalUrl
+    ? post.originalUrl.replace(/^https?:\/\//, "")
+    : "";
 
   if (!post) {
     return <NotFound />;
@@ -65,29 +67,64 @@ export default async function PostPage({ params }: PostPageProps) {
             {post.title}
           </h1>
 
-          <div className="bg-zinc-900/50 rounded-2xl p-6 border border-zinc-800/50 backdrop-blur-sm">
-            <div className="flex flex-col gap-4">
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-zinc-500 rounded-full"></div>
-                <span className="text-sm font-medium text-zinc-400">{t('originalLink')}</span>
+          <div className="bg-zinc-900/60 rounded-xl p-4 border border-zinc-800/60 backdrop-blur-sm">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 text-xs sm:text-sm">
+              <div className="inline-flex items-center gap-2 min-w-0">
+                {/* link icon */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  className="w-4 h-4 text-zinc-500"
+                  aria-hidden="true"
+                >
+                  <path d="M13.06 7.94a1.5 1.5 0 0 1 2.12 0l.88.88a3.75 3.75 0 0 1 0 5.3l-3.54 3.54a3.75 3.75 0 0 1-5.3 0l-.88-.88a1.5 1.5 0 0 1 2.12-2.12l.88.88a.75.75 0 0 0 1.06 0l3.54-3.54a.75.75 0 0 0 0-1.06l-.88-.88a1.5 1.5 0 0 1 0-2.12Z" />
+                  <path d="M10.94 16.06a1.5 1.5 0 0 1-2.12 0l-.88-.88a3.75 3.75 0 0 1 0-5.3l3.54-3.54a3.75 3.75 0 0 1 5.3 0l.88.88a1.5 1.5 0 1 1-2.12 2.12l-.88-.88a.75.75 0 0 0-1.06 0L7.96 11.9a.75.75 0 0 0 0 1.06l.88.88c.59.59.59 1.53 0 2.12Z" />
+                </svg>
+                <span className="sr-only">{t('originalLink')}</span>
+                <Link
+                  href={post.originalUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="truncate max-w-full sm:max-w-[360px] text-zinc-300 hover:text-zinc-100 transition-colors"
+                >
+                  {displayUrl}
+                </Link>
+                {/* external icon */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  className="w-3.5 h-3.5 text-zinc-500"
+                  aria-hidden="true"
+                >
+                  <path d="M13 3a1 1 0 1 0 0 2h4.586L9.293 13.293a1 1 0 0 0 1.414 1.414L19 6.414V11a1 1 0 1 0 2 0V3h-8Z" />
+                  <path d="M5 6a3 3 0 0 0-3 3v9a3 3 0 0 0 3 3h9a3 3 0 0 0 3-3v-4a1 1 0 1 0-2 0v4a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1h4a1 1 0 1 0 0-2H5Z" />
+                </svg>
               </div>
-              <Link
-                href={post.originalUrl}
-                target="_blank"
-                className="text-sm font-medium text-zinc-300 hover:text-zinc-100 transition-all duration-200 hover:underline decoration-zinc-500 underline-offset-4 break-all"
+
+              <div className="hidden sm:block h-4 w-px bg-zinc-800/80" />
+
+              <time
+                dateTime={new Date(post.createdAt).toISOString()}
+                className="inline-flex items-center gap-2 text-zinc-500"
               >
-                {post.originalUrl}
-              </Link>
-              <div className="flex items-center gap-2 pt-2 border-t border-zinc-800/50">
-                <div className="w-2 h-2 bg-zinc-600 rounded-full"></div>
-                <p className="text-sm text-zinc-500">
-                  {new Date(post.createdAt).toLocaleDateString("ko-KR", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  })}
-                </p>
-              </div>
+                {/* calendar icon */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  className="w-4 h-4"
+                  aria-hidden="true"
+                >
+                  <path d="M6.75 2.25a.75.75 0 0 1 .75.75V4.5h9V3a.75.75 0 0 1 1.5 0V4.5h.75A2.25 2.25 0 0 1 21.75 6.75v10.5A2.25 2.25 0 0 1 19.5 19.5H4.5A2.25 2.25 0 0 1 2.25 17.25V6.75A2.25 2.25 0 0 1 4.5 4.5h.75V3a.75.75 0 0 1 .75-.75ZM4.5 6h15a.75.75 0 0 1 .75.75V9H3.75V6.75A.75.75 0 0 1 4.5 6Zm15 4.5H3.75v6.75c0 .414.336.75.75.75h15a.75.75 0 0 0 .75-.75V10.5Z" />
+                </svg>
+                {new Date(post.createdAt).toLocaleDateString("ko-KR", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </time>
             </div>
           </div>
         </header>
