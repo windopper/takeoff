@@ -19,7 +19,7 @@ export default async function Citation({ locale }: { locale: string }) {
           >
             https://epoch.ai/data/ai-benchmarking-dashboard
           </a>
-          {' '}[online resource]. Accessed 24 Jun 2025.
+          {' '}[online resource]. Accessed 9 Aug 2025.
         </p>
         <p>
           <strong className="text-zinc-300">{t('licenseLabel')}</strong>{' '}

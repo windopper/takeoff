@@ -29,8 +29,8 @@ recqT3OZg5zjaI5oE,codestral-2501,11.1,100.0,whole,0.0088,Aider LLM Leaderboards,
 rec59tnsvtbsczej7,Qwen2.5-Coder-32B-Instruct,8.0,71.6,diff,,Aider LLM Leaderboards,https://aider.chat/docs/leaderboards/#polyglot-leaderboard,
 recUtWAOufdMzGmou,gemma-3-27b-it,4.9,100.0,whole,,Aider LLM Leaderboards,https://aider.chat/docs/leaderboards/#polyglot-leaderboard,
 recS9uke58jAhuAU5,gpt-4o-mini-2024-07-18,3.6,100.0,whole,0.001422222222,Aider LLM Leaderboards,https://aider.chat/docs/leaderboards/#polyglot-leaderboard,
-recFWD297UQP8MRYi,,82.7,100.0,architect,0.031,Aider LLM Leaderboards,https://aider.chat/docs/leaderboards/#polyglot-leaderboard,Model version deliberately omitted because it's a mix of o3 (high) & gpt-4.1
-recxVJrYlQfsAsfER,o3-2025-04-16_high,79.6,95.1,diff,0.49,Aider LLM Leaderboards,https://aider.chat/docs/leaderboards/#polyglot-leaderboard,
+recFWD297UQP8MRYi,,78.2,100.0,architect,0.078,Aider LLM Leaderboards,https://aider.chat/docs/leaderboards/#polyglot-leaderboard,Model version deliberately omitted because it's a mix of o3 (high) & gpt-4.1
+recxVJrYlQfsAsfER,o3-2025-04-16_high,79.6,95.1,diff,0.061,Aider LLM Leaderboards,https://aider.chat/docs/leaderboards/#polyglot-leaderboard,
 recl9fv7t1P1NNdYa,o4-mini-2025-04-16_high,72.0,90.7,diff,0.087,Aider LLM Leaderboards,https://aider.chat/docs/leaderboards/#polyglot-leaderboard,
 recQlPsg6RDQbmeuu,gemini-2.5-pro-exp-03-25,72.9,92.4,diff-fenced,,Aider LLM Leaderboards,https://aider.chat/docs/leaderboards/#polyglot-leaderboard,
 recRvk7ngoGy8aCj2,DeepSeek-R1-0528,71.4,94.6,diff,0.021,Aider LLM Leaderboards,https://aider.chat/docs/leaderboards/#polyglot-leaderboard,
@@ -55,3 +55,6 @@ recuekZA2IXFF4GQE,gemini-2.5-flash-preview-05-20_23K,55.1,95.6,diff,0.038,Aider 
 recTdLkFf3W6Wsboo,gemini-2.5-pro-preview-06-05_32K,83.1,99.6,diff-fenced,0.22,Aider LLM Leaderboards,https://aider.chat/docs/leaderboards/#polyglot-leaderboard,
 rectI2Vulkqa1ab26,gemini-2.5-pro-preview-06-05,79.1,100.0,diff-fenced,0.2,Aider LLM Leaderboards,https://aider.chat/docs/leaderboards/#polyglot-leaderboard,No thinking parameter set; default thinking token length
 recQXuPMHsN1f1pXT,gemini-2.5-pro-preview-05-06,76.9,97.3,diff-fenced,0.17,Aider LLM Leaderboards,https://aider.chat/docs/leaderboards/#polyglot-leaderboard,
+recwknvKrFOHaRtr0,o3-pro-2025-06-10_high,84.9,97.8,diff,0.65,Aider LLM Leaderboards,https://aider.chat/docs/leaderboards/#polyglot-leaderboard,
+reck399Bumr5Uaml4,grok-4-0709,79.6,97.3,diff,0.094,Aider LLM Leaderboards,https://aider.chat/docs/leaderboards/#polyglot-leaderboard,
+recYmlS1cYM8gEefH,Kimi-K2-Instruct,59.1,92.9,diff,0.0055,Aider LLM Leaderboards,https://aider.chat/docs/leaderboards/#polyglot-leaderboard,

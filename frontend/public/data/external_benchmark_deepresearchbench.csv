@@ -1,0 +1,9 @@
+id,Average score,Model version,Agent,Notes,Source,Source link
+recR3uOS0BLHqkwxL,0.551,claude-opus-4-20250514_2K,True,2048 thinking token budget,DeepResearchBench Leaderboard,https://drb.futuresearch.ai
+reciPR9ZrmNzGMR41,0.544,claude-sonnet-4-20250514_2K,True,2048 thinking token budget,DeepResearchBench Leaderboard,https://drb.futuresearch.ai
+recZOsBdFIcclcWLC,0.53,o3-2025-04-16_medium,True,,DeepResearchBench Leaderboard,https://drb.futuresearch.ai
+recXizbzd3b0y22vq,0.449,gemini-2.5-pro-preview-06-05,True,,DeepResearchBench Leaderboard,https://drb.futuresearch.ai
+rec8Lh9Jnh2v0o4mA,0.368,DeepSeek-R1-0528,True,,DeepResearchBench Leaderboard,https://drb.futuresearch.ai
+rec7sfVScDTbadXOF,0.478,claude-3-7-sonnet-20250219_2K,True,2048 thinking token budget,DeepResearchBench Leaderboard,https://drb.futuresearch.ai
+recAThc100QSltAYp,0.559,grok-4-0709,True,,DeepResearchBench Leaderboard,https://drb.futuresearch.ai
+reckInEIVVazTCcXH,0.119,gemini-2.5-pro,,,DeepResearchBench Leaderboard,https://drb.futuresearch.ai

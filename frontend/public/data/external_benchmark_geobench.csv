@@ -29,3 +29,5 @@ rec9ARZdPBfnWVjCp,claude-opus-4-20250514_32K,,0.49,2915,3626,596,0.0,,,,,,,,,,,,
 recc6aFqMfrhbx2q0,claude-sonnet-4-20250514,,0.37,2468,2791,1091,0.0,,,,,,,,,,,,,,,,,,,,,,GeoBench leaderboard,https://geobench.org/
 rec633RXeiU9CsPRR,claude-sonnet-4-20250514_32K,,0.32,2369,2726,1192,0.0,,,,,,,,,,,,,,,,,,,,,"Thinking token budget was 31,448. Rounded to 32k to reference existing model version.",GeoBench leaderboard,https://geobench.org/
 recdQQcryv5aailik,gemini-2.5-flash-preview-05-20,,0.73,3854,4292,283,0.0,,,,,,,,,,,,,,,,,,,,,,GeoBench leaderboard,https://geobench.org/
+recumPLYAlNSqKfbH,gemini-2.5-pro,,0.81,4019,4472,207,0.0,,,,,,,,,,,,,,,,,,,,,,GeoBench leaderboard,
+reckc8skUG0WI9i4f,grok-4-0709,,0.45,2719,3543,639,0.0,,,,,,,,,,,,,,,,,,,,,,GeoBench leaderboard,
