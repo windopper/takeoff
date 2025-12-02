@@ -1961,6 +1961,182 @@ export const TIMELINE_DATA: { events: TimelineData[] } = {
       },
       importance: 3,
       category: CATEGORIES.MODEL_RELEASE,
+    },
+    {
+      start_date: { year: "2025", month: "08", day: "01" },
+      text: {
+        headline: createLink(
+          "https://en.wikipedia.org/wiki/Artificial_Intelligence_Act",
+          "EU AI Act"
+        ),
+        text: "The EU AI Act enters into force, marking the first comprehensive AI regulatory framework. It includes rules for general-purpose AI models and requires additional risk mitigation, transparency, and copyright compliance for high-risk and systemic risk models.",
+      },
+      korean: {
+        headline: createLink(
+          "https://en.wikipedia.org/wiki/Artificial_Intelligence_Act",
+          "EU AI 법 발효"
+        ),
+        text: "EU AI 법이 발효되기 시작했습니다. 일반 목적 AI 모델에 대한 규칙을 포함하며, 고위험·체계적 위험 모델에 대해 추가적인 리스크 완화와 투명성·저작권 준수를 요구하는 첫 포괄적 AI 규제 프레임워크로 자리 잡았습니다.",
+      },
+      importance: 2,
+      category: CATEGORIES.POLICY,
+    },
+    {
+      start_date: { year: "2025", month: "09", day: "09" },
+      text: {
+        headline: createLink("", "Sovereign AI Foundation Model"),
+        text: "South Korea launches the national Sovereign AI Foundation Model project, targeting next-generation 'post-transformer' architectures to strengthen national-level K-AI infrastructure.",
+      },
+      korean: {
+        headline: createLink("", "주권 AI 파운데이션 모델 프로젝트"),
+        text: "한국에서는 차세대 '포스트 트랜스포머' 구조를 겨냥한 국가 주도 Sovereign AI Foundation Model 프로젝트가 추진되기 시작했습니다.",
+      },
+      importance: 2,
+      category: CATEGORIES.RESEARCH,
+    },
+    {
+      start_date: { year: "2025", month: "9", day: "17" },
+      text: {
+        headline: createLink("https://deepmind.google/blog/gemini-achieves-gold-medal-level-at-the-international-collegiate-programming-contest-world-finals/", "Gemini 2.5 Deep Think ICPC"),
+        text: "Google DeepMind announces that 'Gemini 2.5 Deep Think' achieved gold medal-level performance at the ICPC programming competition.",
+      },
+      korean: {
+        headline: createLink("https://deepmind.google/blog/gemini-achieves-gold-medal-level-at-the-international-collegiate-programming-contest-world-finals/", "Gemini 2.5 Deep Think ICPC"),
+        text: "ICPC 프로그래밍 대회에서 'Gemini 2.5 Deep Think'가 금메달 수준 성능을 달성했다고 Google DeepMind가 밝혔습니다.",
+      },
+      importance: 2,
+      category: CATEGORIES.RESEARCH,
+    },
+    {
+      start_date: { year: "2025", month: "09", day: "20" },
+      text: {
+        headline: createLink("", "OpenAI Chip Partnerships"),
+        text: "OpenAI announces multi-billion dollar chip and cloud partnerships with AMD, Nvidia, and Broadcom, marking a significant expansion of AI infrastructure investments.",
+      },
+      korean: {
+        headline: createLink("", "OpenAI 칩 파트너십"),
+        text: "OpenAI는 AMD·Nvidia·Broadcom 등과 수백억 달러 규모의 칩·클라우드 파트너십을 발표했습니다.",
+      },
+      importance: 2,
+      category: CATEGORIES.BUSINESS,
+    },
+    {
+      start_date: { year: "2025", month: "09", day: "25" },
+      text: {
+        headline: createLink(
+          "https://deepmind.google/models/gemini-robotics/gemini-robotics/",
+          "Gemini Robotics 1.5"
+        ),
+        text: "Google DeepMind releases Gemini Robotics 1.5 for robots and low-cost multimodal Gemini 2.5 Flash/Flash Lite. Gemini Robotics 1.5 is the most powerful VLA (Vision-Language-Action) model, enabling robots to perform complex multi-step tasks.",
+      },
+      korean: {
+        headline: createLink(
+          "https://deepmind.google/models/gemini-robotics/gemini-robotics/",
+          "Gemini Robotics 1.5"
+        ),
+        text: "Google DeepMind는 로봇용 Gemini Robotics 1.5, 저비용 멀티모달 Gemini 2.5 Flash/Flash Lite를 내놓았습니다. Gemini Robotics 1.5는 가장 강력한 VLA 모델로, 로봇이 복잡한 다단계 작업을 수행할 수 있도록 지원합니다.",
+      },
+      importance: 2,
+      category: CATEGORIES.MODEL_RELEASE,
+    },
+    {
+      start_date: { year: "2025", month: "09", day: "25" },
+      text: {
+        headline: createLink("", "Oracle Meta AI Cloud Investment"),
+        text: "Oracle and Meta promise record-breaking AI cloud investments, contributing to trillions of dollars in announced contracts and investments over a roughly two-month period.",
+      },
+      korean: {
+        headline: createLink("", "Oracle·Meta AI 클라우드 투자"),
+        text: "Oracle·Meta도 사상 최대 수준의 AI 클라우드 투자를 약속했습니다. 두 달 남짓한 기간에 발표된 계약·투자 규모가 수조 달러에 달한다는 분석이 나왔습니다.",
+      },
+      importance: 2,
+      category: CATEGORIES.BUSINESS,
+    },
+    {
+      start_date: { year: "2025", month: "09", day: "30" },
+      text: {
+        headline: createLink("https://openai.com/blog/sora-2/", "Sora 2"),
+        text: "OpenAI releases Sora 2, a next-generation video and audio generation model. The release intensifies competition in high-quality multimodal and agent workflows.",
+      },
+      korean: {
+        headline: createLink("https://openai.com/blog/sora-2/", "Sora 2"),
+        text: "OpenAI는 차세대 비디오·오디오 생성 모델 Sora 2를 공개했습니다. 이는 고품질 멀티모달·에이전트 워크플로우 경쟁을 격화시켰습니다.",
+      },
+      importance: 2.5,
+      category: CATEGORIES.MODEL_RELEASE,
+    },
+    {
+      start_date: { year: "2025", month: "9", day: "30" },
+      text: {
+        headline: createLink(
+          "https://www.anthropic.com/news/claude-sonnet-4-5",
+          "Claude Sonnet 4.5"
+        ),
+        text: "Anthropic releases Claude Sonnet 4.5, specialized for agents and coding. The release intensifies competition in high-quality multimodal and agent workflows.",
+      },
+      korean: {
+        headline: createLink(
+          "https://www.anthropic.com/news/claude-sonnet-4-5",
+          "Claude Sonnet 4.5"
+        ),
+        text: "Anthropic은 에이전트·코딩에 특화된 Claude Sonnet 4.5를 공개했습니다. 이는 고품질 멀티모달·에이전트 워크플로우 경쟁을 격화시켰습니다.",
+      },
+      importance: 2,
+      category: CATEGORIES.MODEL_RELEASE,
+    },
+    {
+      start_date: { year: "2025", month: "11", day: "18" },
+      text: {
+        headline: createLink(
+          "https://blog.google/products/gemini/gemini-3/#note-from-ceo",
+          "Gemini 3"
+        ),
+        text: "Google DeepMind announces Gemini 3, the next-generation general-purpose model.",
+      },
+      korean: {
+        headline: createLink(
+          "https://blog.google/products/gemini/gemini-3/#note-from-ceo",
+          "Gemini 3"
+        ),
+        text: "Google DeepMind는 일반용 차세대 모델 Gemini 3를 발표했습니다.",
+      },
+      importance: 3,
+      category: CATEGORIES.MODEL_RELEASE,
+    },
+    {
+      start_date: { year: "2025", month: "11", day: "20" },
+      text: {
+        headline: createLink(
+          "https://blog.google/technology/ai/nano-banana-pro/",
+          "Nano Banana Pro"
+        ),
+        text: "Nano Banana Pro uses Gemini’s state-of-the-art reasoning and real-world knowledge to visualize information better than ever before.",
+      },
+      korean: {
+        headline: createLink("https://blog.google/technology/ai/nano-banana-pro/", "Nano Banana Pro"),
+        text: "Nano Banana Pro는 Gemini의 최첨단 추론과 실제 지식을 사용하여 이전보다 더 나은 정보 시각화를 가능하게 합니다.",
+      },
+      importance: 3,
+      category: CATEGORIES.RESEARCH,
+    },
+    {
+      start_date: { year: "2025", month: "11", day: "25" },
+      text: {
+        headline: createLink(
+          "https://www.anthropic.com/news/claude-opus-4-5",
+          "Claude Opus 4.5"
+        ),
+        text: "Anthropic releases Claude Opus 4.5, a state-of-the-art model for coding and agents.",
+      },
+      korean: {
+        headline: createLink(
+          "https://www.anthropic.com/news/claude-opus-4-5",
+          "Claude Opus 4.5"
+        ),
+        text: "Anthropic은 코딩·에이전트에 특화된 최첨단 모델 Claude Opus 4.5를 공개했습니다.",
+      },
+      importance: 3,
+      category: CATEGORIES.MODEL_RELEASE,
     }
   ],
 };

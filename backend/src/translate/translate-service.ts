@@ -16,7 +16,7 @@ export interface TranslationResult {
 
 export class TranslateService {
 	private static translator = new ChatGoogleGenerativeAI({
-		model: 'gemini-2.5-flash-lite-preview-06-17',
+		model: 'gemini-flash-lite-latest',
 		apiKey: env.GEMINI_API_KEY,
 		temperature: 0.3,
 		maxRetries: 3,
