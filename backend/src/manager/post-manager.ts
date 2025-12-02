@@ -231,13 +231,15 @@ export class PostManager {
 				.replace('T', ' ')
 				.replace('Z', '')
 				.replace(/\..+$/, ''); // 밀리초 제거
-			// sql 템플릿을 사용하여 날짜 비교를 안전하게 처리
-			// Drizzle ORM에서 컬럼 참조와 파라미터 바인딩을 올바르게 처리
+
+			// Drizzle의 lt 연산자를 사용하여 날짜 비교
 			const result = await this.db
 				.delete(aiPosts)
-				.where(sql`${aiPosts.createdAt} < ${threshold}`)
-				.execute();
-			return (result as any).changes || 0;
+				.where(lt(aiPosts.createdAt, threshold))
+				.returning({ id: aiPosts.id });
+
+			console.log(`삭제된 게시글 수: ${result.length}`);
+			return result.length;
 		} catch (error) {
 			console.error('오래된 게시글 삭제 중 오류:', error);
 			if (error instanceof Error) {
