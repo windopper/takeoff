@@ -22,7 +22,7 @@ export abstract class CommonAIWriter {
     constructor(config: Config) {
         this.llm = new ChatGoogleGenerativeAI({
             apiKey: env.GEMINI_API_KEY,
-            model: config.model || 'gemini-2.5-flash-preview-05-20',
+            model: config.model || 'gemini-flash-latest',
             temperature: config.temperature || 0.4,
         })
 

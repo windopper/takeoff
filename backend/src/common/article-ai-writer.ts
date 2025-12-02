@@ -15,7 +15,7 @@ export class ArticleAIWriter {
   constructor(config: AIWriteConfig) {
     this.llm = new ChatGoogleGenerativeAI({
       apiKey: config.geminiApiKey,
-      model: config.model || 'gemini-2.5-flash-preview-05-20',
+      model: config.model || 'gemini-flash-latest',
       temperature: config.temperature || 0.7,
     })
   }

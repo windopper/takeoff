@@ -1,6 +1,6 @@
 import { drizzle, DrizzleD1Database } from 'drizzle-orm/d1';
 import { AiPost, aiPosts } from '../db/schema';
-import { count, desc, and, ilike, like, asc, lt, inArray, gt } from 'drizzle-orm';
+import { count, desc, and, ilike, like, asc, lt, inArray, gt, sql } from 'drizzle-orm';
 import { eq } from 'drizzle-orm';
 import { POST_EXPIRATION_TIME } from '../constants';
 
@@ -231,13 +231,19 @@ export class PostManager {
 				.replace('T', ' ')
 				.replace('Z', '')
 				.replace(/\..+$/, ''); // 밀리초 제거
+			// sql 템플릿을 사용하여 날짜 비교를 안전하게 처리
+			// Drizzle ORM에서 컬럼 참조와 파라미터 바인딩을 올바르게 처리
 			const result = await this.db
 				.delete(aiPosts)
-				.where(lt(aiPosts.createdAt, threshold))
+				.where(sql`${aiPosts.createdAt} < ${threshold}`)
 				.execute();
 			return (result as any).changes || 0;
 		} catch (error) {
 			console.error('오래된 게시글 삭제 중 오류:', error);
+			if (error instanceof Error) {
+				console.error('오류 상세:', error.message);
+				console.error('오류 스택:', error.stack);
+			}
 			return 0;
 		}
 	}

@@ -25,7 +25,7 @@ export class CommonFilter {
         this.diffDays = diffDays;
         this.llm = new ChatGoogleGenerativeAI({
             apiKey: env.GEMINI_API_KEY,
-            model: 'gemini-2.5-flash-preview-05-20',
+            model: 'gemini-flash-latest',
             temperature: 0.4,
         });
         this.filterPostManager = new FilteredPostManager(env.DB);

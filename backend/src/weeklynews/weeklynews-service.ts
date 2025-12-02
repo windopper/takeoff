@@ -46,15 +46,21 @@ URL: ${post.originalUrl}
 
 		const gemini = new ChatGoogleGenerativeAI({
 			apiKey: env.GEMINI_API_KEY,
-			model: 'gemini-2.5-flash-preview-05-20',
+			model: 'gemini-flash-latest',
 			temperature: 0.4,
 		});
 
-		const claude = new ChatAnthropic({
-			apiKey: env.CLAUDE_API_KEY,
-			model: 'claude-sonnet-4-20250514',
+		// const claude = new ChatAnthropic({
+		// 	apiKey: env.CLAUDE_API_KEY,
+		// 	model: 'claude-sonnet-4-20250514',
+		// 	temperature: 0.4,
+		// 	maxTokens: 8000,
+		// });
+
+		const blogWriter = new ChatGoogleGenerativeAI({
+			apiKey: env.GEMINI_API_KEY,
+			model: 'gemini-3-pro-preview',
 			temperature: 0.4,
-			maxTokens: 8000,
 		});
 
 		const weeklyNewsManager = new WeeklyNewsManager(env.DB);
@@ -75,7 +81,7 @@ URL: ${post.originalUrl}
 				title: (input: any) => input.title,
 			},
 			WEEKLY_NEWS_BLOG_PROMPT_V2,
-			claude,
+			blogWriter,
 			(output: any) => output.content,
 		]);
 
