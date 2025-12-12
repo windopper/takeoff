@@ -2137,6 +2137,44 @@ export const TIMELINE_DATA: { events: TimelineData[] } = {
       },
       importance: 3,
       category: CATEGORIES.MODEL_RELEASE,
+    },
+    {
+      start_date: { year: "2025", month: "12", day: "04" },
+      text: {
+        headline: createLink(
+          "https://blog.google/products/gemini/gemini-3-deep-think/",
+          "Gemini 3 Deep Think"
+        ),
+        text: "Google DeepMind has announced Gemini 3 Deep Think, a model that significantly enhances the reasoning capabilities required to solve complex problems in mathematics, science, and logic.",
+      },
+      korean: {
+        headline: createLink(
+          "https://blog.google/products/gemini/gemini-3-deep-think/",
+          "Gemini 3 Deep Think"
+        ),
+        text: "Google DeepMind는 Gemini 3 Deep Think을 발표했습니다. 이 모델은 복잡한 수학, 과학 및 논리 문제를 해결하는 데 필요한 추론 능력을 크게 향상시켰습니다.",
+      },
+      importance: 3,
+      category: CATEGORIES.MODEL_RELEASE,
+    },
+    {
+      start_date: { year: "2025", month: "12", day: "11" },
+      text: {
+        headline: createLink(
+          "https://openai.com/index/introducing-gpt-5-2/",
+          "GPT 5.2"
+        ),
+        text: "OpenAI releases GPT 5.2, a state-of-the-art model for specialized work and long-running agent execution.",
+      },
+      korean: {
+        headline: createLink(
+          "https://openai.com/index/introducing-gpt-5-2/",
+          "GPT 5.2"
+        ),
+        text: "OpenAI는 GPT 5.2를 출시했습니다. GPT‑5.2는 전문 작업과 장시간 에이전트 실행에 최적화된 최신 프런티어 모델입니다.",
+      },
+      importance: 3,
+      category: CATEGORIES.MODEL_RELEASE,
     }
   ],
 };
